@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Overseerr</string>
+    
+    <!-- Authentication -->
+    <string name="auth_server_url_label">Server URL</string>
+    <string name="auth_server_url_hint">https://overseerr.example.com</string>
+    <string name="auth_connect_button">Connect</string>
+    <string name="auth_login_with_plex">Login with Plex</string>
+    <string name="auth_error_invalid_url">Invalid server URL</string>
+    <string name="auth_error_connection_failed">Connection failed</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_requests">Requests</string>
+    <string name="nav_profile">Profile</string>
+    
+    <!-- Discovery -->
+    <string name="discovery_trending_movies">Trending Movies</string>
+    <string name="discovery_trending_tv">Trending TV Shows</string>
+    <string name="discovery_search_hint">Search movies and TV shows</string>
+    
+    <!-- Requests -->
+    <string name="request_button">Request</string>
+    <string name="request_cancel">Cancel Request</string>
+    <string name="request_status_pending">Pending</string>
+    <string name="request_status_approved">Approved</string>
+    <string name="request_status_available">Available</string>
+    
+    <!-- Profile -->
+    <string name="profile_logout">Logout</string>
+    <string name="profile_settings">Settings</string>
+    
+    <!-- Settings -->
+    <string name="settings_theme">Theme</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_quality_profile">Default Quality Profile</string>
+    
+    <!-- Common -->
+    <string name="error_generic">An error occurred</string>
+    <string name="retry">Retry</string>
+    <string name="loading">Loading…</string>
+</resources>

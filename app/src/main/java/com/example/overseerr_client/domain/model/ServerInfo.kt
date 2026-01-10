@@ -1,0 +1,10 @@
+package com.example.overseerr_client.domain.model
+
+/**
+ * Represents information about an Overseerr server.
+ */
+data class ServerInfo(
+    val version: String,
+    val initialized: Boolean,
+    val applicationUrl: String
+)
