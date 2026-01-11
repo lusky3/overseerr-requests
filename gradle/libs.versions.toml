@@ -51,6 +51,7 @@ kotest = "5.9.1"
 mockk = "1.13.14"
 turbine = "1.2.0"
 robolectric = "4.13"
+mockwebserver = "4.12.0"
 
 # Other
 splashscreen = "1.2.0-alpha02"
@@ -131,6 +132,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

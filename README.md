@@ -9,6 +9,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 ## ✨ Features
 
 ### 🔐 Authentication
+
 - Plex OAuth integration
 - Secure credential storage with Android Keystore
 - Biometric authentication support
@@ -16,6 +17,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - Multi-server configuration
 
 ### 🎬 Media Discovery
+
 - Browse trending movies and TV shows
 - Fast search with debouncing
 - Infinite scrolling with pagination
@@ -24,6 +26,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - Offline cache support
 
 ### 📝 Request Management
+
 - Submit movie and TV show requests
 - Season selection for TV shows
 - Quality profile and root folder options
@@ -33,6 +36,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - Pull-to-refresh
 
 ### 👤 Profile & Settings
+
 - User profile with quota and statistics
 - Theme preferences (Light, Dark, System)
 - Material You dynamic theming
@@ -41,6 +45,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - Server management
 
 ### 🔔 Notifications
+
 - Push notifications via Firebase Cloud Messaging
 - Request approval notifications
 - Media availability notifications
@@ -48,6 +53,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - Customizable notification preferences
 
 ### 📱 Offline Support
+
 - Offline-first architecture
 - Local caching with Room database
 - Automatic sync on connectivity restore
@@ -55,6 +61,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - Offline action queueing
 
 ### 🎨 Material You Design
+
 - Material 3 components
 - Dynamic color theming (Android 12+)
 - Adaptive layouts for phones, tablets, and foldables
@@ -62,6 +69,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - Responsive navigation (bottom bar vs. rail)
 
 ### 🔒 Security & Privacy
+
 - HTTPS enforcement
 - Certificate pinning
 - Encrypted credential storage
@@ -70,6 +78,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - Biometric authentication
 
 ### ⚡ Performance
+
 - Fast app launch
 - Progressive image loading with Coil
 - Memory optimization
@@ -78,6 +87,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - Crash logging and recovery
 
 ### ♿ Accessibility
+
 - Content descriptions for screen readers
 - TalkBack support
 - Semantic structure
@@ -86,11 +96,13 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 ## 🏗️ Architecture
 
 ### Clean Architecture
+
 - **Presentation Layer**: Jetpack Compose UI, ViewModels, UI State
 - **Domain Layer**: Use Cases, Domain Models, Repository Interfaces
 - **Data Layer**: Repository Implementations, API Services, Database DAOs
 
 ### Technology Stack
+
 - **Language**: Kotlin 2.0+
 - **UI**: Jetpack Compose with Material 3
 - **Dependency Injection**: Hilt (Dagger)
@@ -104,6 +116,7 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 - **Testing**: Kotest, JUnit 5, MockK
 
 ### Design Patterns
+
 - MVVM (Model-View-ViewModel)
 - Repository Pattern
 - Dependency Injection
@@ -122,18 +135,31 @@ All 20 tasks completed, 39 correctness properties validated, 196 property tests 
 ## 🧪 Testing
 
 ### Property-Based Testing
+
 Comprehensive property-based testing with Kotest validates 39 universal correctness properties:
+
 - 196 property tests
 - 100 iterations per test
 - 19,600 total test cases
 - Custom generators for domain types
 
 ### Unit Testing
+
 Targeted unit tests for specific scenarios:
+
 - 22+ unit tests
 - Edge case coverage
 - Error condition testing
 - MockK for mocking
+
+### Mock Overseerr Server
+
+Complete mock API server for testing without real Overseerr instance:
+
+- 21 API endpoints fully implemented
+- Realistic mock data with pagination
+- Fast, deterministic test execution
+- See [Mock Server Guide](docs/MOCK_SERVER_GUIDE.md) for details
 
 ## 📱 Device Compatibility
 
@@ -146,6 +172,7 @@ Targeted unit tests for specific scenarios:
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Android Studio Hedgehog or later
 - JDK 17 or later
 - Android SDK with API 26-35
@@ -183,12 +210,14 @@ Targeted unit tests for specific scenarios:
 ## 🔧 Configuration
 
 ### Server Setup
+
 1. Launch the app
 2. Enter your Overseerr server URL
 3. Authenticate with Plex
 4. Start discovering and requesting media
 
 ### Settings
+
 - Theme: Light, Dark, or System
 - Notifications: Enable/disable by type
 - Biometric: Enable fingerprint/face authentication
@@ -212,6 +241,7 @@ Targeted unit tests for specific scenarios:
 ## 🎯 Requirements Coverage
 
 All 10 requirement categories fully implemented:
+
 1. ✅ User Authentication (1.1-1.7)
 2. ✅ Media Discovery (2.1-2.6)
 3. ✅ Media Requests (3.1-3.7)
