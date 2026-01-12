@@ -1,0 +1,116 @@
+{
+  "main": {
+    "apiKey": "test-api-key-overseerr-12345",
+    "applicationTitle": "Overseerr Test",
+    "applicationUrl": "http://localhost:5055",
+    "csrfProtection": false,
+    "cacheImages": true,
+    "defaultPermissions": 2,
+    "hideAvailable": false,
+    "localLogin": true,
+    "newPlexLogin": true,
+    "region": "US",
+    "originalLanguage": "en",
+    "trustProxy": true,
+    "partialRequestsEnabled": true,
+    "locale": "en"
+  },
+  "plex": {
+    "name": "Plex Test Server",
+    "machineId": "test-machine-id-12345",
+    "ip": "plex-mock",
+    "port": 32400,
+    "useSsl": false,
+    "libraries": [],
+    "webAppUrl": "http://plex-mock:32400"
+  },
+  "radarr": [
+    {
+      "id": 1,
+      "name": "Radarr Test",
+      "hostname": "radarr-mock",
+      "port": 7878,
+      "apiKey": "test-radarr-api-key-12345",
+      "useSsl": false,
+      "baseUrl": "",
+      "activeProfileId": 1,
+      "activeDirectory": "/movies",
+      "is4k": false,
+      "minimumAvailability": "released",
+      "tags": [],
+      "isDefault": true,
+      "externalUrl": "http://localhost:7878",
+      "syncEnabled": true
+    }
+  ],
+  "sonarr": [
+    {
+      "id": 1,
+      "name": "Sonarr Test",
+      "hostname": "sonarr-mock",
+      "port": 8989,
+      "apiKey": "test-sonarr-api-key-12345",
+      "useSsl": false,
+      "baseUrl": "",
+      "activeProfileId": 1,
+      "activeDirectory": "/tv",
+      "activeLanguageProfileId": 1,
+      "activeAnimeProfileId": null,
+      "activeAnimeDirectory": null,
+      "activeAnimeLanguageProfileId": null,
+      "tags": [],
+      "is4k": false,
+      "isDefault": true,
+      "externalUrl": "http://localhost:8989",
+      "syncEnabled": true,
+      "enableSeasonFolders": true
+    }
+  ],
+  "public": {
+    "initialized": true
+  },
+  "notifications": {
+    "agents": {
+      "email": {
+        "enabled": false,
+        "types": 0,
+        "options": {}
+      },
+      "discord": {
+        "enabled": false,
+        "types": 0,
+        "options": {}
+      },
+      "slack": {
+        "enabled": false,
+        "types": 0,
+        "options": {}
+      },
+      "telegram": {
+        "enabled": false,
+        "types": 0,
+        "options": {}
+      },
+      "pushbullet": {
+        "enabled": false,
+        "types": 0,
+        "options": {}
+      },
+      "pushover": {
+        "enabled": false,
+        "types": 0,
+        "options": {}
+      },
+      "webhook": {
+        "enabled": false,
+        "types": 0,
+        "options": {}
+      },
+      "webpush": {
+        "enabled": false,
+        "types": 0,
+        "options": {}
+      }
+    }
+  }
+}
