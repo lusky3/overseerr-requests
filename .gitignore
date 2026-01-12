@@ -82,18 +82,19 @@ lint-results.xml
 # Mac
 .DS_Store
 
-# LLMs
-.antigravity
-.kiro
-.claude
 
 # IDE
 .vscode
+.antigravity
+.kiro
+.antigravity
+.agent
 
 .kotlin
 
 # Misc
 qa_evidence
+
 # Docker Overseerr test environment data
 overseerr-config/
 radarr-config/

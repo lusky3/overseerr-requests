@@ -8,11 +8,12 @@ plugins {
 }
 
 android {
-    namespace = "com.example.overseerr_client"
+    namespace = "app.lusk.client"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
+
     defaultConfig {
-        applicationId = "com.example.overseerr_client"
+        applicationId = "app.lusk.client"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
@@ -156,6 +157,7 @@ dependencies {
     testImplementation(libs.turbine)
     testImplementation(libs.robolectric)
     testImplementation(libs.mockwebserver)
+    debugImplementation(libs.mockwebserver)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

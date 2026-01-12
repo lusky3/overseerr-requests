@@ -20,5 +20,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Overseerr Client"
+rootProject.name = "Lusk"
 include(":app")
