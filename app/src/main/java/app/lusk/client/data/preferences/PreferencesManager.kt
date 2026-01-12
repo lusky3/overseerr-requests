@@ -1,0 +1,348 @@
+package app.lusk.client.data.preferences
+
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import app.lusk.client.domain.repository.NotificationSettings
+import app.lusk.client.domain.repository.ServerConfig
+import app.lusk.client.domain.repository.ThemePreference
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import javax.inject.Inject
+import javax.inject.Singleton
+
+/**
+ * Extension property to create DataStore instance.
+ */
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "overseerr_preferences")
+
+/**
+ * Manages application preferences using DataStore.
+ * Feature: overseerr-android-client
+ * Validates: Requirements 5.2, 5.3
+ */
+@Singleton
+class PreferencesManager @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
+    
+    private val dataStore = context.dataStore
+    
+    /**
+     * Preference keys.
+     */
+    object PreferenceKeys {
+        val SERVER_URL = stringPreferencesKey("server_url")
+        val API_KEY = stringPreferencesKey("api_key")
+        val USER_ID = intPreferencesKey("user_id")
+        val THEME_MODE = stringPreferencesKey("theme_mode")
+        val DYNAMIC_COLOR_ENABLED = booleanPreferencesKey("dynamic_color_enabled")
+        val BIOMETRIC_ENABLED = booleanPreferencesKey("biometric_enabled")
+        val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
+        val NOTIFICATION_APPROVED = booleanPreferencesKey("notification_approved")
+        val NOTIFICATION_AVAILABLE = booleanPreferencesKey("notification_available")
+        val NOTIFICATION_DECLINED = booleanPreferencesKey("notification_declined")
+        val DEFAULT_QUALITY_PROFILE = intPreferencesKey("default_quality_profile")
+        val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
+        val CONFIGURED_SERVERS = stringPreferencesKey("configured_servers")
+        val CURRENT_SERVER_URL = stringPreferencesKey("current_server_url")
+    }
+    
+    /**
+     * Theme modes.
+     */
+    enum class ThemeMode {
+        LIGHT,
+        DARK,
+        SYSTEM
+    }
+    
+    // Server Configuration
+    
+    suspend fun setServerUrl(url: String) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.SERVER_URL] = url
+        }
+    }
+    
+    fun getServerUrl(): Flow<String?> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.SERVER_URL]
+        }
+    }
+    
+    suspend fun setApiKey(apiKey: String) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.API_KEY] = apiKey
+        }
+    }
+    
+    fun getApiKey(): Flow<String?> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.API_KEY]
+        }
+    }
+    
+    suspend fun setUserId(userId: Int) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.USER_ID] = userId
+        }
+    }
+    
+    fun getUserId(): Flow<Int?> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.USER_ID]
+        }
+    }
+    
+    // Theme Settings
+    
+    suspend fun setThemeMode(mode: ThemeMode) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.THEME_MODE] = mode.name
+        }
+    }
+    
+    fun getThemeMode(): Flow<ThemeMode> {
+        return dataStore.data.map { preferences ->
+            val modeName = preferences[PreferenceKeys.THEME_MODE] ?: ThemeMode.SYSTEM.name
+            try {
+                ThemeMode.valueOf(modeName)
+            } catch (e: IllegalArgumentException) {
+                ThemeMode.SYSTEM
+            }
+        }
+    }
+    
+    suspend fun setDynamicColorEnabled(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.DYNAMIC_COLOR_ENABLED] = enabled
+        }
+    }
+    
+    fun getDynamicColorEnabled(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.DYNAMIC_COLOR_ENABLED] ?: true
+        }
+    }
+    
+    // Security Settings
+    
+    suspend fun setBiometricEnabled(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.BIOMETRIC_ENABLED] = enabled
+        }
+    }
+    
+    fun getBiometricEnabled(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.BIOMETRIC_ENABLED] ?: false
+        }
+    }
+    
+    // Notification Settings
+    
+    suspend fun setNotificationsEnabled(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.NOTIFICATIONS_ENABLED] = enabled
+        }
+    }
+    
+    fun getNotificationsEnabled(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.NOTIFICATIONS_ENABLED] ?: true
+        }
+    }
+    
+    suspend fun setNotificationApprovedEnabled(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.NOTIFICATION_APPROVED] = enabled
+        }
+    }
+    
+    fun getNotificationApprovedEnabled(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.NOTIFICATION_APPROVED] ?: true
+        }
+    }
+    
+    suspend fun setNotificationAvailableEnabled(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.NOTIFICATION_AVAILABLE] = enabled
+        }
+    }
+    
+    fun getNotificationAvailableEnabled(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.NOTIFICATION_AVAILABLE] ?: true
+        }
+    }
+    
+    suspend fun setNotificationDeclinedEnabled(enabled: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.NOTIFICATION_DECLINED] = enabled
+        }
+    }
+    
+    fun getNotificationDeclinedEnabled(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.NOTIFICATION_DECLINED] ?: true
+        }
+    }
+    
+    // Media Settings
+    
+    suspend fun setDefaultQualityProfile(profileId: Int) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.DEFAULT_QUALITY_PROFILE] = profileId
+        }
+    }
+    
+    fun getDefaultQualityProfile(): Flow<Int?> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.DEFAULT_QUALITY_PROFILE]
+        }
+    }
+    
+    // Onboarding
+    
+    suspend fun setOnboardingCompleted(completed: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.ONBOARDING_COMPLETED] = completed
+        }
+    }
+    
+    fun getOnboardingCompleted(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.ONBOARDING_COMPLETED] ?: false
+        }
+    }
+    
+    // Clear All
+    
+    suspend fun clearAll() {
+        dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
+    
+    suspend fun clearAuthData() {
+        dataStore.edit { preferences ->
+            preferences.remove(PreferenceKeys.API_KEY)
+            preferences.remove(PreferenceKeys.USER_ID)
+        }
+    }
+    
+    // New methods for SettingsRepository
+    
+    fun getThemePreference(): Flow<ThemePreference> {
+        return getThemeMode().map { mode ->
+            when (mode) {
+                ThemeMode.LIGHT -> ThemePreference.LIGHT
+                ThemeMode.DARK -> ThemePreference.DARK
+                ThemeMode.SYSTEM -> ThemePreference.SYSTEM
+            }
+        }
+    }
+    
+    suspend fun setThemePreference(theme: ThemePreference) {
+        val mode = when (theme) {
+            ThemePreference.LIGHT -> ThemeMode.LIGHT
+            ThemePreference.DARK -> ThemeMode.DARK
+            ThemePreference.SYSTEM -> ThemeMode.SYSTEM
+        }
+        setThemeMode(mode)
+    }
+    
+    fun getNotificationSettings(): Flow<NotificationSettings> {
+        return dataStore.data.map { preferences ->
+            NotificationSettings(
+                enabled = preferences[PreferenceKeys.NOTIFICATIONS_ENABLED] ?: true,
+                requestApproved = preferences[PreferenceKeys.NOTIFICATION_APPROVED] ?: true,
+                requestAvailable = preferences[PreferenceKeys.NOTIFICATION_AVAILABLE] ?: true,
+                requestDeclined = preferences[PreferenceKeys.NOTIFICATION_DECLINED] ?: true
+            )
+        }
+    }
+    
+    suspend fun setNotificationSettings(settings: NotificationSettings) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.NOTIFICATIONS_ENABLED] = settings.enabled
+            preferences[PreferenceKeys.NOTIFICATION_APPROVED] = settings.requestApproved
+            preferences[PreferenceKeys.NOTIFICATION_AVAILABLE] = settings.requestAvailable
+            preferences[PreferenceKeys.NOTIFICATION_DECLINED] = settings.requestDeclined
+        }
+    }
+    
+    fun getCurrentServerUrl(): Flow<String?> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.CURRENT_SERVER_URL]
+        }
+    }
+    
+    suspend fun setCurrentServerUrl(url: String) {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.CURRENT_SERVER_URL] = url
+        }
+    }
+    
+    fun getConfiguredServers(): Flow<List<ServerConfig>> {
+        return dataStore.data.map { preferences ->
+            val serversJson = preferences[PreferenceKeys.CONFIGURED_SERVERS]
+            if (serversJson != null) {
+                try {
+                    Json.decodeFromString<List<ServerConfig>>(serversJson)
+                } catch (e: Exception) {
+                    emptyList()
+                }
+            } else {
+                emptyList()
+            }
+        }
+    }
+    
+    suspend fun addServer(config: ServerConfig) {
+        dataStore.edit { preferences ->
+            val currentServers = preferences[PreferenceKeys.CONFIGURED_SERVERS]?.let {
+                try {
+                    Json.decodeFromString<List<ServerConfig>>(it)
+                } catch (e: Exception) {
+                    emptyList()
+                }
+            } ?: emptyList()
+            
+            val updatedServers = currentServers.toMutableList().apply {
+                // Remove existing server with same URL
+                removeAll { it.url == config.url }
+                // Add new config
+                add(config)
+            }
+            
+            preferences[PreferenceKeys.CONFIGURED_SERVERS] = Json.encodeToString(updatedServers)
+        }
+    }
+    
+    suspend fun removeServer(url: String) {
+        dataStore.edit { preferences ->
+            val currentServers = preferences[PreferenceKeys.CONFIGURED_SERVERS]?.let {
+                try {
+                    Json.decodeFromString<List<ServerConfig>>(it)
+                } catch (e: Exception) {
+                    emptyList()
+                }
+            } ?: emptyList()
+            
+            val updatedServers = currentServers.filter { it.url != url }
+            
+            preferences[PreferenceKeys.CONFIGURED_SERVERS] = Json.encodeToString(updatedServers)
+        }
+    }
+}

@@ -1,0 +1,10 @@
+package app.lusk.client.domain.model
+
+/**
+ * Contains information about media availability and request status.
+ */
+data class MediaInfo(
+    val status: MediaStatus,
+    val requestId: Int?,
+    val available: Boolean
+)
