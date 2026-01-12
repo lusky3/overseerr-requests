@@ -26,6 +26,29 @@ Documentation and code example retrieval for libraries and frameworks. Use this 
 
 Framework-specific documentation, patterns, and code examples. Provides comprehensive guides for modern development frameworks including Android/Kotlin ecosystem.
 
+#### 5. github-mcp-server
+
+Provides tools for interacting with GitHub repositories, though specific resource lists may be limited. Useful for repo management tasks.
+
+#### 6. firebase-mcp-server
+
+Comprehensive toolset for Firebase development.
+
+- **Guides**: Access guides for App ID selection, Crashlytics investigation, Firestore setup, Auth configuration, and Hosting deployment.
+- **Resources**: `list_resources` provides a rich set of step-by-step guides (e.g., `firebase://guides/init/auth`).
+
+#### 7. qdrant
+
+Vector database integration. Note: Currently shows no public resources, but likely available for memory/embedding tasks if configured.
+
+#### 8. perplexity-ask
+
+Web search and research capability. Use this to find information not covered by Context7 or Augments.
+
+#### 9. sequential-thinking
+
+A reasoning tool to help break down complex problems into step-by-step logical processes. Use this when you need to "think out loud" or plan a complex refactor.
+
 ## When to Use Each MCP Server
 
 ### Use `mcp-android` for
@@ -72,7 +95,7 @@ Framework-specific documentation, patterns, and code examples. Provides comprehe
 
 **Check development environment:**
 
-```
+```text
 Use mobile-dev: health_check
 - verbose: true
 ```
@@ -81,7 +104,7 @@ This will verify that all required tools (Android SDK, platform tools, build too
 
 **Check device status and ADB:**
 
-```
+```text
 Use mcp-android: get_device_status
 ```
 
@@ -89,7 +112,7 @@ Returns connection status, ADB availability, and basic device info.
 
 **List available devices:**
 
-```
+```text
 Use mobile-dev: android_list_devices
 OR
 Use mcp-android: check_adb_and_list_devices
@@ -97,7 +120,7 @@ Use mcp-android: check_adb_and_list_devices
 
 **If no devices available, create an Android emulator:**
 
-```
+```text
 Use mobile-dev: android_list_emulators (to see existing AVDs)
 Use mobile-dev: android_create_avd (to create a new one if needed)
 Use mobile-dev: android_start_emulator (to start it)
@@ -117,7 +140,7 @@ Use mobile-dev: android_start_emulator (to start it)
 
 **Install APK on device:**
 
-```
+```text
 Use mobile-dev: android_install_apk
 - serial: <device-id>
 - apkPath: app/build/outputs/apk/debug/app-debug.apk
@@ -126,7 +149,7 @@ Use mobile-dev: android_install_apk
 
 **Launch the app:**
 
-```
+```text
 Use mcp-android: start_app
 - package_name: com.example.overseerr_client
 - device_id: <device-id> (optional, uses first device if not specified)
@@ -135,7 +158,7 @@ Use mcp-android: start_app
 
 **Stop the app:**
 
-```
+```text
 Use mcp-android: stop_app
 - package_name: com.example.overseerr_client
 - device_id: <device-id> (optional)
@@ -143,7 +166,7 @@ Use mcp-android: stop_app
 
 **Clear app data:**
 
-```
+```text
 Use mcp-android: clear_app_data
 - package_name: com.example.overseerr_client
 - device_id: <device-id> (optional)
@@ -153,14 +176,14 @@ Use mcp-android: clear_app_data
 
 **Connect to device (recommended first step):**
 
-```
+```text
 Use mcp-android: connect_device
 - device_id: <device-id> (optional, connects to first device if not specified)
 ```
 
 **Get device information:**
 
-```
+```text
 Use mcp-android: get_device_info
 - device_id: <device-id> (optional)
 ```
@@ -169,7 +192,7 @@ Returns: serial, screen resolution, Android version, SDK level, battery status, 
 
 **Take a screenshot:**
 
-```
+```text
 Use mcp-android: screenshot
 - filename: ./screenshots/test.png
 - device_id: <device-id> (optional)
@@ -177,7 +200,7 @@ Use mcp-android: screenshot
 
 **Dump UI hierarchy:**
 
-```
+```text
 Use mcp-android: dump_hierarchy
 - device_id: <device-id> (optional)
 - pretty: true
@@ -189,7 +212,7 @@ Returns the complete UI hierarchy as XML for understanding screen structure and 
 
 **Interact with UI elements:**
 
-```
+```text
 # Click on element by text
 Use mcp-android: click
 - selector: "Login"
@@ -233,7 +256,7 @@ Use mcp-android: drag
 
 **Wait for elements and get info:**
 
-```
+```text
 # Wait for element to appear
 Use mcp-android: wait_for_element
 - selector: "Welcome"
@@ -254,7 +277,7 @@ Use mcp-android: scroll_to
 
 **View Android logs:**
 
-```
+```text
 Use mobile-dev: android_logcat
 - serial: <device-id>
 - lines: 100
@@ -263,7 +286,7 @@ Use mobile-dev: android_logcat
 
 **Screen control:**
 
-```
+```text
 # Turn screen on
 Use mcp-android: screen_on
 - device_id: <device-id> (optional)
@@ -279,7 +302,7 @@ Use mcp-android: unlock_screen
 
 **Press hardware keys:**
 
-```
+```text
 Use mcp-android: press_key
 - key: "back" (or "home", "menu", "volume_up", "volume_down", "power", "enter", "delete")
 - device_id: <device-id> (optional)
@@ -287,14 +310,14 @@ Use mcp-android: press_key
 
 **Get toast messages:**
 
-```
+```text
 Use mcp-android: get_toast
 - device_id: <device-id> (optional)
 ```
 
 **Wait for activity:**
 
-```
+```text
 Use mcp-android: wait_activity
 - activity: ".MainActivity"
 - timeout: 10
@@ -305,7 +328,7 @@ Use mcp-android: wait_activity
 
 **List all connected devices:**
 
-```
+```text
 Use mobile-dev: android_list_devices
 OR
 Use mcp-android: check_adb_and_list_devices
@@ -313,7 +336,7 @@ Use mcp-android: check_adb_and_list_devices
 
 **Get installed apps:**
 
-```
+```text
 Use mcp-android: get_installed_apps
 - device_id: <device-id> (optional)
 ```
@@ -322,7 +345,7 @@ Returns list of all installed package names.
 
 **Get current foreground app:**
 
-```
+```text
 Use mcp-android: get_current_app
 - device_id: <device-id> (optional)
 ```
@@ -331,7 +354,7 @@ Returns package name, activity, and version info of the current app.
 
 **Stop all apps:**
 
-```
+```text
 Use mcp-android: stop_all_apps
 - device_id: <device-id> (optional)
 ```
@@ -340,13 +363,13 @@ Use mcp-android: stop_all_apps
 
 **Check MCP server health:**
 
-```
+```text
 Use mcp-android: mcp_health
 ```
 
 **View device status:**
 
-```
+```text
 Use mcp-android: get_device_status
 ```
 
@@ -360,7 +383,7 @@ Use mcp-android: get_device_status
 
 **Look up library documentation:**
 
-```
+```text
 Use Context7: resolve-library-id
 - libraryName: "retrofit" (or "jetpack compose", "hilt", "room", etc.)
 - query: "your question about the library"
@@ -372,7 +395,7 @@ Then use Context7: query-docs
 
 **Get framework guides and patterns:**
 
-```
+```text
 Use Augments: search_frameworks
 - query: "kotlin coroutines" (or "jetpack compose", "material design", etc.)
 
@@ -387,7 +410,7 @@ Use Augments: get_framework_examples
 
 **Get context for multiple frameworks:**
 
-```
+```text
 Use Augments: get_framework_context
 - frameworks: ["kotlin", "jetpack-compose", "material-design"]
 - task_description: "implementing authentication with biometric support"
@@ -522,7 +545,7 @@ Use Augments: get_framework_context
 
 Before running any device-specific commands, check device status and list available devices:
 
-```
+```text
 Use mcp-android: get_device_status
 OR
 Use mcp-android: check_adb_and_list_devices
@@ -532,7 +555,7 @@ Use mcp-android: check_adb_and_list_devices
 
 For best results, explicitly connect to the device before running UI automation:
 
-```
+```text
 Use mcp-android: connect_device
 - device_id: <device-id> (optional)
 ```
@@ -561,7 +584,7 @@ Take screenshots during testing to document:
 
 Use `android_logcat` to monitor app behavior and catch errors:
 
-```
+```text
 Use mobile-dev: android_logcat
 - serial: <device-id>
 - filter: "com.example.overseerr_client:*"
@@ -608,7 +631,7 @@ When using UI interaction commands, you can select elements by:
 
 ### "No devices found"
 
-```
+```text
 1. Use mcp-android: check_adb_and_list_devices
 2. If empty, use mobile-dev: android_list_emulators
 3. Start an emulator or connect a physical device
@@ -617,7 +640,7 @@ When using UI interaction commands, you can select elements by:
 
 ### "Build failed"
 
-```
+```text
 1. Run: ./gradlew clean
 2. Check dependencies in build.gradle files
 3. Retry build: ./gradlew assembleDebug
@@ -625,7 +648,7 @@ When using UI interaction commands, you can select elements by:
 
 ### "App won't install"
 
-```
+```text
 1. Stop the app using mcp-android: stop_app
 2. Clear app data using mcp-android: clear_app_data
 3. Rebuild APK
@@ -634,7 +657,7 @@ When using UI interaction commands, you can select elements by:
 
 ### "Element not found"
 
-```
+```text
 1. Use mcp-android: dump_hierarchy to see all UI elements
 2. Check the exact text, resource_id, or description
 3. Use mcp-android: wait_for_element with longer timeout
@@ -643,7 +666,7 @@ When using UI interaction commands, you can select elements by:
 
 ### "How do I implement X feature?"
 
-```
+```text
 1. Use Context7: resolve-library-id to find relevant libraries
 2. Use Context7: query-docs to get API documentation
 3. Use Augments: get_framework_examples for implementation patterns
@@ -652,7 +675,7 @@ When using UI interaction commands, you can select elements by:
 
 ### "Library version conflicts"
 
-```
+```text
 1. Use Context7 to check latest compatible versions
 2. Use Augments to find migration guides if updating versions
 3. Update dependencies in build.gradle
@@ -695,7 +718,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 ## Quick Reference
 
 | Task | MCP Server | Command |
-|------|-----------|---------|
+| ------ | ----------- | --------- |
 | Check environment | mobile-dev | health_check |
 | Check device status | mcp-android | get_device_status |
 | List devices | mcp-android | check_adb_and_list_devices |
@@ -736,7 +759,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 1. **Research** (Context7 + Augments):
 
-   ```
+   ```text
    Context7: resolve-library-id
    - libraryName: "android biometric"
    - query: "biometric authentication implementation"
@@ -757,7 +780,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 3. **Test** (mcp-android + mobile-dev):
 
-   ```
+   ```text
    Build APK: ./gradlew assembleDebug
    mobile-dev: android_install_apk (install on device)
    mcp-android: start_app (launch app)
@@ -769,7 +792,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 1. **Check Implementation** (Context7):
 
-   ```
+   ```text
    Context7: query-docs
    - libraryId: "/square/retrofit"
    - query: "debugging network requests and responses"
@@ -777,7 +800,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 2. **Review Patterns** (Augments):
 
-   ```
+   ```text
    Augments: get_framework_examples
    - framework: "retrofit"
    - pattern: "error-handling"
@@ -785,7 +808,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 3. **Test and Debug** (mobile-dev + mcp-android):
 
-   ```
+   ```text
    mobile-dev: android_logcat (view network logs)
    mcp-android: dump_hierarchy (check UI state)
    mcp-android: screenshot (capture error state)
@@ -795,7 +818,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 1. **Setup**:
 
-   ```
+   ```text
    mcp-android: connect_device
    mcp-android: start_app
    - package_name: com.example.overseerr_client
@@ -803,7 +826,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 2. **Navigate and Interact**:
 
-   ```
+   ```text
    mcp-android: wait_for_element
    - selector: "Login"
    - selector_type: "text"
@@ -821,7 +844,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 3. **Verify and Document**:
 
-   ```
+   ```text
    mcp-android: wait_for_element
    - selector: "Welcome"
    - selector_type: "text"
@@ -834,7 +857,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 1. **Learn Patterns** (Augments):
 
-   ```
+   ```text
    Augments: get_framework_context
    - frameworks: ["jetpack-compose", "material-design"]
    - task_description: "implementing Material You dynamic theming"
@@ -842,7 +865,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 2. **Get Specific Examples** (Context7 + Augments):
 
-   ```
+   ```text
    Context7: query-docs
    - libraryId: "/androidx/compose-material3"
    - query: "dynamic color scheme implementation"
