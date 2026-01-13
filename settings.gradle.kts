@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Lusk"
-include(":app")
+include(":androidApp", ":composeApp")
