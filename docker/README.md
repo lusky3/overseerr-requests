@@ -2,6 +2,16 @@
 
 Complete Dockerized Overseerr setup for testing the Android app.
 
+## 📚 Documentation
+
+**New here?** Check the [Documentation Index](DOCUMENTATION_INDEX.md) for a complete guide to all available documentation.
+
+**Quick links:**
+
+- [Configuration Templates](config-templates/README.md) - Pre-configured service templates
+- [Plex Mock API](plex-mock/API_REFERENCE.md) - Complete API reference
+- [Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
+
 ## 🚀 Quick Start (2 minutes)
 
 ```bash
@@ -13,51 +23,81 @@ Then follow the [Quick Setup Guide](QUICK_SETUP_GUIDE.md) for 2-minute configura
 
 ## 📁 Directory Structure
 
-```
+```text
 docker/
 ├── compose.yml                 # Docker Compose configuration
 ├── setup-overseerr-test.sh     # Setup script
+├── config-templates/           # Template configurations (committed to git)
+│   ├── radarr/                 # Radarr templates
+│   │   ├── config.xml          # Pre-configured settings
+│   │   └── radarr.db           # Pre-configured database
+│   └── sonarr/                 # Sonarr templates
+│       ├── config.xml          # Pre-configured settings
+│       └── sonarr.db           # Pre-configured database
 ├── plex-mock/                  # Mock Plex server
 │   ├── nginx.conf              # Nginx configuration
-│   └── html/                   # Static files
-├── QUICK_SETUP_GUIDE.md        # 2-minute setup instructions
-├── AUTO_CONFIG_STATUS.md       # Why auto-config doesn't work
-└── README_AUTO_SETUP.md        # Detailed documentation
-```
+│   ├── html/                   # Static files
+│   └── API_REFERENCE.md        # Plex API documentation
+├── overseerr-config/           # Runtime data (not in git)
+├── radarr-config/              # Runtime data (not in git)
+├── sonarr-config/              # Runtime data (not in git)
 
 ## 🎯 What's Included
 
 ### Services
+
 - **Overseerr** (port 5055) - Main API server
-- **Radarr** (port 7878) - Movie management
-- **Sonarr** (port 8989) - TV show management
-- **Plex Mock** (port 32400) - Authentication server
+- **Radarr** (port 7878) - Movie management (pre-configured with API key)
+- **Sonarr** (port 8989) - TV show management (pre-configured with API key)
+- **Plex Mock** (port 32400) - Authentication server (comprehensive API mock)
 
 ### Features
+
 - ✅ One-command startup
 - ✅ All services networked together
 - ✅ Health checks configured
 - ✅ Data persistence
+- ✅ **Pre-configured Radarr & Sonarr** with databases and API keys
+- ✅ **Comprehensive Plex API mock** with 50+ endpoints
 - ✅ Clear documentation
+
+### Pre-Configured API Keys
+
+Both Radarr and Sonarr come pre-configured with the same API key:
+
+```text
+1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x
+```
+
+No manual configuration needed - services are ready to use immediately!
+
+### Clean Repository
+
+The setup uses a template-based approach:
+
+- ✅ Only essential config files are committed (`config-templates/`)
+- ✅ Runtime directories are created from templates
+- ✅ Logs, PIDs, and temp files stay out of git
+- ✅ Easy reset: just delete runtime directories and re-run setup
 
 ## 📖 Documentation
 
-- **[QUICK_SETUP_GUIDE.md](QUICK_SETUP_GUIDE.md)** - Start here! 2-minute setup
-- **[README_AUTO_SETUP.md](README_AUTO_SETUP.md)** - Detailed documentation
-- **[AUTO_CONFIG_STATUS.md](AUTO_CONFIG_STATUS.md)** - Technical explanation
+- **[plex-mock/API_REFERENCE.md](plex-mock/API_REFERENCE.md)** - Complete Plex API documentation
 
 ## 🔧 Usage
 
 ### First Time Setup (2 minutes)
 
 1. **Start services**:
+
    ```bash
    ./setup-overseerr-test.sh
    ```
 
 2. **Configure Overseerr**:
-   - Open http://localhost:5055
-   - Follow [QUICK_SETUP_GUIDE.md](QUICK_SETUP_GUIDE.md)
+
+   - Open <http://localhost:5055>
+   - Follow instructions
 
 3. **Done!** Ready for Android app testing
 
@@ -72,11 +112,13 @@ Configuration is preserved in `overseerr-config/`, `radarr-config/`, and `sonarr
 ## 📱 For Android App
 
 ### Get Your IP
+
 ```bash
 hostname -I | awk '{print $1}'
 ```
 
 ### Configure App
+
 - Server URL: `http://YOUR_IP:5055`
 - Username: `admin@overseerr.local`
 - Password: `admin123`
@@ -84,6 +126,7 @@ hostname -I | awk '{print $1}'
 ## 🔑 Default Credentials
 
 After setup:
+
 - **Username**: `admin@overseerr.local`
 - **Password**: `admin123`
 - **API Key**: Available in Settings → General
@@ -115,11 +158,13 @@ rm -rf overseerr-config radarr-config sonarr-config
 ## 🔄 Backup & Restore
 
 ### Backup Configuration
+
 ```bash
 tar -czf overseerr-backup.tar.gz overseerr-config radarr-config sonarr-config
 ```
 
 ### Restore Configuration
+
 ```bash
 tar -xzf overseerr-backup.tar.gz
 docker compose up -d
@@ -128,11 +173,13 @@ docker compose up -d
 ## 🐛 Troubleshooting
 
 ### Services won't start
+
 ```bash
 docker compose logs
 ```
 
 ### Can't connect from Android
+
 ```bash
 # Check firewall
 sudo ufw allow 5055
@@ -142,11 +189,14 @@ hostname -I
 ```
 
 ### Overseerr shows setup wizard again
+
 Your configuration was reset. Either:
+
 1. Complete the 2-minute setup again
 2. Restore from backup
 
 ### Port already in use
+
 ```bash
 # Check what's using the port
 sudo lsof -i :5055
@@ -166,6 +216,7 @@ sudo lsof -i :5055
 **This is a TEST environment!**
 
 For production:
+
 - Change all passwords
 - Enable HTTPS
 - Use real Plex server
@@ -190,7 +241,3 @@ This Docker environment provides:
 ✅ **Easy Reset** - One command to start fresh  
 
 Perfect for Android app development and testing!
-
----
-
-**Need help?** Check [QUICK_SETUP_GUIDE.md](QUICK_SETUP_GUIDE.md) or [AUTO_CONFIG_STATUS.md](AUTO_CONFIG_STATUS.md)

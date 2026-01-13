@@ -73,13 +73,15 @@ interface RequestRepository {
      * Get available quality profiles.
      * Property 12: Advanced Options Availability
      */
-    suspend fun getQualityProfiles(): Result<List<QualityProfile>>
+    suspend fun getQualityProfiles(isMovie: Boolean = true): Result<List<QualityProfile>>
     
     /**
      * Get available root folders.
      * Property 12: Advanced Options Availability
      */
-    suspend fun getRootFolders(): Result<List<RootFolder>>
+    suspend fun getRootFolders(isMovie: Boolean = true): Result<List<RootFolder>>
+    
+    suspend fun getPartialRequestsEnabled(): Result<Boolean>
 }
 
 /**

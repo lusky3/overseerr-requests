@@ -82,12 +82,14 @@ class MyApiTest : MockServerTest() {
 ## Supported Endpoints
 
 ### Authentication
+
 - `POST /api/v1/auth/plex` - Authenticate with Plex
 - `GET /api/v1/auth/me` - Get current user
 - `POST /api/v1/auth/logout` - Logout
 - `GET /api/v1/status` - Get server info
 
 ### Discovery
+
 - `GET /api/v1/discover/trending` - Get trending media
 - `GET /api/v1/discover/movies` - Get trending movies
 - `GET /api/v1/discover/tv` - Get trending TV shows
@@ -96,6 +98,7 @@ class MyApiTest : MockServerTest() {
 - `GET /api/v1/tv/{id}` - Get TV show details
 
 ### Requests
+
 - `POST /api/v1/request` - Submit a request
 - `GET /api/v1/request` - Get requests list
 - `GET /api/v1/request/{id}` - Get request details
@@ -105,6 +108,7 @@ class MyApiTest : MockServerTest() {
 - `GET /api/v1/settings/radarr/folders` - Get root folders
 
 ### User
+
 - `GET /api/v1/user/{id}` - Get user profile
 - `GET /api/v1/user` - Get current user
 - `GET /api/v1/user/quota` - Get user quota
@@ -258,6 +262,7 @@ class MediaRepositoryTest : FunSpec({
 ## Mock Data Characteristics
 
 ### User Data
+
 - User IDs: Sequential (1, 2, 3, ...)
 - Emails: `user{id}@example.com`
 - Display Names: `User {id}`
@@ -265,6 +270,7 @@ class MediaRepositoryTest : FunSpec({
 - Permissions: User 1 is admin, others are regular users
 
 ### Media Data
+
 - Movie IDs: Even numbers
 - TV Show IDs: Odd numbers
 - Titles: `Movie {id}` or `TV Show {id}`
@@ -272,11 +278,13 @@ class MediaRepositoryTest : FunSpec({
 - Vote Averages: 6.5 - 9.0 range
 
 ### Request Data
+
 - Request IDs: Sequential
 - Status: Rotates through Pending (1), Approved (2), Declined (3), Available (5)
 - Created dates: Distributed across January 2024
 
 ### Pagination
+
 - Page size: 20 items per page
 - Total pages: 10
 - Total results: 200
@@ -367,6 +375,7 @@ mockServer.enqueue(
 ## Troubleshooting
 
 ### Port Already in Use
+
 ```kotlin
 // Let the system assign a random port
 mockServer.start() // Uses random available port
@@ -376,6 +385,7 @@ mockServer.start(8080)
 ```
 
 ### Timeout Issues
+
 ```kotlin
 // Increase timeout in OkHttpClient
 val client = OkHttpClient.Builder()
@@ -385,6 +395,7 @@ val client = OkHttpClient.Builder()
 ```
 
 ### Serialization Errors
+
 Ensure your models match the mock response structure. Check the `MockResponses` object for the exact format.
 
 ## Contributing

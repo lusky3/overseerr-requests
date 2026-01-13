@@ -19,12 +19,7 @@ object MockResponses {
         displayName = "User $userId",
         avatar = "/avatar/$userId.jpg",
         requestCount = userId * 3,
-        permissions = ApiPermissions(
-            canRequest = true,
-            canManageRequests = userId == 1,
-            canViewRequests = true,
-            isAdmin = userId == 1
-        )
+        permissions = if (userId == 1) 2L else 32L // 2 = Admin, 32 = Request
     )
     
     fun serverInfo() = ApiServerInfo(
@@ -146,10 +141,7 @@ object MockResponses {
     
     fun mediaRequest(requestId: Int) = ApiMediaRequest(
         id = requestId,
-        mediaType = if (requestId % 2 == 0) "movie" else "tv",
-        mediaId = requestId * 10,
-        title = if (requestId % 2 == 0) "Movie Request $requestId" else "TV Show Request $requestId",
-        posterPath = "/poster/request_$requestId.jpg",
+        type = if (requestId % 2 == 0) "movie" else "tv",
         status = when (requestId % 4) {
             0 -> 1 // Pending
             1 -> 2 // Approved
@@ -157,7 +149,22 @@ object MockResponses {
             else -> 5 // Available
         },
         createdAt = "2024-01-${(requestId % 28) + 1}T10:00:00.000Z",
-        seasons = if (requestId % 2 != 0) listOf(1, 2) else null
+        media = ApiRequestMedia(
+            mediaType = if (requestId % 2 == 0) "movie" else "tv",
+            tmdbId = requestId * 10,
+            status = when (requestId % 4) {
+                0 -> 1
+                1 -> 2
+                2 -> 3
+                else -> 5
+            }
+        ),
+        seasons = if (requestId % 2 != 0) {
+            listOf(
+                ApiRequestSeason(id = 1, seasonNumber = 1, status = 1),
+                ApiRequestSeason(id = 2, seasonNumber = 2, status = 1)
+            )
+        } else null
     )
     
     fun requestsList(page: Int = 1) = ApiRequestsResponse(

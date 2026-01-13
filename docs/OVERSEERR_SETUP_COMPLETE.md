@@ -1,4 +1,4 @@
-# ✅ Overseerr Docker Environment - READY!
+# ✅ Overseerr Docker Environment - READY
 
 ## 🎉 Services Successfully Started
 
@@ -8,10 +8,10 @@ All services are now running and ready for testing your Android app!
 
 | Service | Status | URL | Purpose |
 |---------|--------|-----|---------|
-| **Overseerr** | ✅ Running | http://localhost:5055 | Main API server |
-| **Radarr** | ✅ Running | http://localhost:7878 | Movie management |
-| **Sonarr** | ✅ Running | http://localhost:8989 | TV show management |
-| **Plex Mock** | ✅ Running | http://localhost:32400 | Authentication |
+| **Overseerr** | ✅ Running | <http://localhost:5055> | Main API server |
+| **Radarr** | ✅ Running | <http://localhost:7878> | Movie management |
+| **Sonarr** | ✅ Running | <http://localhost:8989> | TV show management |
+| **Plex Mock** | ✅ Running | <http://localhost:32400> | Authentication |
 
 ### Your IP Address
 
@@ -21,7 +21,7 @@ All services are now running and ready for testing your Android app!
 
 ### 1. Complete Overseerr Setup (5 minutes)
 
-Open in your browser: **http://localhost:5055**
+Open in your browser: **<http://localhost:5055>**
 
 **Setup Wizard Steps**:
 
@@ -42,7 +42,7 @@ Open in your browser: **http://localhost:5055**
    - Server Name: `Radarr Test`
    - Hostname/IP: `radarr-mock`
    - Port: `7878`
-   - API Key: Get from http://localhost:7878/settings/general
+   - API Key: Get from <http://localhost:7878/settings/general>
    - Quality Profile: Select any
    - Root Folder: `/movies`
    - Click "Test" then "Save"
@@ -52,7 +52,7 @@ Open in your browser: **http://localhost:5055**
    - Server Name: `Sonarr Test`
    - Hostname/IP: `sonarr-mock`
    - Port: `8989`
-   - API Key: Get from http://localhost:8989/settings/general
+   - API Key: Get from <http://localhost:8989/settings/general>
    - Quality Profile: Select any
    - Root Folder: `/tv`
    - Click "Test" then "Save"
@@ -63,6 +63,7 @@ Open in your browser: **http://localhost:5055**
 ### 2. Get API Key
 
 After setup:
+
 1. Sign in to Overseerr
 2. Go to **Settings** → **General**
 3. Copy your **API Key**
@@ -83,29 +84,34 @@ Server URL: http://172.29.125.229:5055
 Now you can test all features:
 
 ✅ **Authentication**
+
 - Sign in with Plex
 - Local authentication
 - Session management
 
 ✅ **Discovery**
+
 - Browse trending movies
 - Browse trending TV shows
 - Search for media
 - View details
 
 ✅ **Requests**
+
 - Request movies
 - Request TV shows
 - View request status
 - Track requests
 
 ✅ **Profile**
+
 - View user profile
 - Check quota
 - View statistics
 - Manage settings
 
 ✅ **Notifications**
+
 - Request notifications
 - Availability notifications
 
@@ -139,6 +145,7 @@ Let users enter the server URL in the app (recommended for production).
 ## 🧪 Testing Scenarios
 
 ### Test 1: Authentication Flow
+
 1. Open app
 2. Enter server URL: `http://172.29.125.229:5055`
 3. Click "Sign In"
@@ -146,6 +153,7 @@ Let users enter the server URL in the app (recommended for production).
 5. Verify home screen loads
 
 ### Test 2: Browse Media
+
 1. View trending movies
 2. Scroll through list
 3. Search for "Inception"
@@ -153,6 +161,7 @@ Let users enter the server URL in the app (recommended for production).
 5. Check availability status
 
 ### Test 3: Submit Request
+
 1. Find unavailable movie
 2. Click "Request"
 3. Select quality profile
@@ -160,12 +169,14 @@ Let users enter the server URL in the app (recommended for production).
 5. Verify confirmation
 
 ### Test 4: View Profile
+
 1. Navigate to profile
 2. View quota information
 3. Check statistics
 4. View request history
 
 ### Test 5: Offline Mode
+
 1. Browse media while online
 2. Enable airplane mode
 3. Verify cached content
@@ -175,6 +186,7 @@ Let users enter the server URL in the app (recommended for production).
 ## 🔧 Useful Commands
 
 ### View Logs
+
 ```bash
 # All services
 docker compose logs -f
@@ -186,21 +198,25 @@ docker compose logs -f sonarr-mock
 ```
 
 ### Restart Services
+
 ```bash
 docker compose restart
 ```
 
 ### Stop Services
+
 ```bash
 docker compose down
 ```
 
 ### Check Status
+
 ```bash
 docker compose ps
 ```
 
 ### Reset Everything
+
 ```bash
 docker compose down
 rm -rf overseerr-config radarr-config sonarr-config
@@ -257,23 +273,27 @@ sudo ufw disable
 ## 📊 Service Details
 
 ### Overseerr (Port 5055)
+
 - **Version**: 1.34.0
-- **API**: http://localhost:5055/api/v1
-- **Web UI**: http://localhost:5055
+- **API**: <http://localhost:5055/api/v1>
+- **Web UI**: <http://localhost:5055>
 - **Config**: ./overseerr-config
 
 ### Radarr (Port 7878)
-- **API**: http://localhost:7878/api/v3
-- **Web UI**: http://localhost:7878
+
+- **API**: <http://localhost:7878/api/v3>
+- **Web UI**: <http://localhost:7878>
 - **Config**: ./radarr-config
 
 ### Sonarr (Port 8989)
-- **API**: http://localhost:8989/api/v3
-- **Web UI**: http://localhost:8989
+
+- **API**: <http://localhost:8989/api/v3>
+- **Web UI**: <http://localhost:8989>
 - **Config**: ./sonarr-config
 
 ### Plex Mock (Port 32400)
-- **API**: http://localhost:32400
+
+- **API**: <http://localhost:32400>
 - **Purpose**: Mock authentication server
 
 ## 🎯 What's Working
@@ -289,7 +309,9 @@ sudo ufw disable
 ## 📝 Notes
 
 ### Data Persistence
+
 All configuration is stored in local directories:
+
 - `./overseerr-config` - Overseerr data
 - `./radarr-config` - Radarr data
 - `./sonarr-config` - Sonarr data
@@ -297,12 +319,15 @@ All configuration is stored in local directories:
 These directories persist between container restarts.
 
 ### Network Access
+
 - **From host**: Use `localhost` or `127.0.0.1`
 - **From Android**: Use your IP address (`172.29.125.229`)
 - **Between containers**: Use service names (`overseerr-test`, `radarr-mock`, etc.)
 
 ### Security
+
 This is a **test environment**. For production:
+
 - Enable HTTPS
 - Use strong passwords
 - Configure proper authentication
@@ -313,22 +338,26 @@ This is a **test environment**. For production:
 ## 🆘 Troubleshooting
 
 ### Can't Access from Android
+
 1. Check firewall: `sudo ufw status`
 2. Verify IP: `hostname -I`
 3. Test locally: `curl http://localhost:5055/api/v1/status`
 4. Check services: `docker compose ps`
 
 ### Services Not Starting
+
 1. Check Docker: `docker ps`
 2. View logs: `docker compose logs`
 3. Restart: `docker compose restart`
 
 ### API Errors
+
 1. Verify API key is correct
 2. Check request format
 3. View Overseerr logs: `docker compose logs -f overseerr`
 
 ### Reset Configuration
+
 ```bash
 docker compose down
 rm -rf overseerr-config radarr-config sonarr-config
@@ -359,6 +388,6 @@ You now have a **fully functional Overseerr test environment** with:
 
 **Server URL for Android**: `http://172.29.125.229:5055`
 
-**Web UI**: http://localhost:5055
+**Web UI**: <http://localhost:5055>
 
 **Status**: ✅ ALL SYSTEMS OPERATIONAL

@@ -29,7 +29,7 @@ interface UserApiService {
      * 
      * @return Current user profile
      */
-    @GET("/api/v1/user")
+    @GET("/api/v1/auth/me")
     suspend fun getCurrentUser(): ApiUserProfile
     
     /**
@@ -37,14 +37,18 @@ interface UserApiService {
      * 
      * @return User quota details
      */
-    @GET("/api/v1/user/quota")
-    suspend fun getUserQuota(): ApiRequestQuota
+    @GET("/api/v1/user/{userId}/quota")
+    suspend fun getUserQuota(
+        @Path("userId") userId: Int
+    ): ApiRequestQuota
     
     /**
      * Get user's statistics.
      * 
      * @return User statistics
      */
-    @GET("/api/v1/user/stats")
-    suspend fun getUserStatistics(): ApiUserStatistics
+    @GET("/api/v1/user/{userId}/stats")
+    suspend fun getUserStatistics(
+        @Path("userId") userId: Int
+    ): ApiUserStatistics
 }

@@ -7,6 +7,7 @@ A complete mock Overseerr API server implementation for testing the Android app 
 ## Files Created
 
 ### 1. Core Implementation
+
 - **`app/src/test/java/com/example/overseerr_client/mock/MockOverseerrServer.kt`**
   - Main server class using OkHttp MockWebServer
   - Handles all Overseerr API endpoints
@@ -14,6 +15,7 @@ A complete mock Overseerr API server implementation for testing the Android app 
   - ~250 lines of code
 
 ### 2. Mock Data Provider
+
 - **`app/src/test/java/com/example/overseerr_client/mock/MockResponses.kt`**
   - Realistic mock data for all API responses
   - Pagination support (20 items per page, 10 pages)
@@ -21,6 +23,7 @@ A complete mock Overseerr API server implementation for testing the Android app 
   - ~200 lines of code
 
 ### 3. Test Utilities
+
 - **`app/src/test/java/com/example/overseerr_client/mock/MockServerTestHelper.kt`**
   - Helper methods for creating Retrofit instances
   - Base test class for easy setup/teardown
@@ -28,6 +31,7 @@ A complete mock Overseerr API server implementation for testing the Android app 
   - ~60 lines of code
 
 ### 4. Example Tests
+
 - **`app/src/test/java/com/example/overseerr_client/mock/MockOverseerrServerTest.kt`**
   - Comprehensive test examples for all endpoints
   - Demonstrates authentication, discovery, requests, and user APIs
@@ -35,6 +39,7 @@ A complete mock Overseerr API server implementation for testing the Android app 
   - ~150 lines of code
 
 ### 5. Documentation
+
 - **`app/src/test/java/com/example/overseerr_client/mock/README.md`**
   - Detailed documentation with usage examples
   - API endpoint reference
@@ -60,6 +65,7 @@ A complete mock Overseerr API server implementation for testing the Android app 
 ## Dependencies Added
 
 ### gradle/libs.versions.toml
+
 ```toml
 [versions]
 mockwebserver = "4.12.0"
@@ -69,6 +75,7 @@ mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", versio
 ```
 
 ### app/build.gradle.kts
+
 ```kotlin
 testImplementation(libs.mockwebserver)
 ```
@@ -76,12 +83,14 @@ testImplementation(libs.mockwebserver)
 ## API Coverage
 
 ### ✅ Authentication (4 endpoints)
+
 - POST /api/v1/auth/plex
 - GET /api/v1/auth/me
 - POST /api/v1/auth/logout
 - GET /api/v1/status
 
 ### ✅ Discovery (6 endpoints)
+
 - GET /api/v1/discover/trending
 - GET /api/v1/discover/movies
 - GET /api/v1/discover/tv
@@ -90,6 +99,7 @@ testImplementation(libs.mockwebserver)
 - GET /api/v1/tv/{id}
 
 ### ✅ Requests (7 endpoints)
+
 - POST /api/v1/request
 - GET /api/v1/request
 - GET /api/v1/request/{id}
@@ -99,6 +109,7 @@ testImplementation(libs.mockwebserver)
 - GET /api/v1/settings/radarr/folders
 
 ### ✅ User (4 endpoints)
+
 - GET /api/v1/user/{id}
 - GET /api/v1/user
 - GET /api/v1/user/quota
@@ -109,6 +120,7 @@ testImplementation(libs.mockwebserver)
 ## Key Features
 
 ### 1. Realistic Mock Data
+
 - User profiles with permissions
 - Movies and TV shows with metadata
 - Requests with different statuses
@@ -117,24 +129,28 @@ testImplementation(libs.mockwebserver)
 - User quotas and statistics
 
 ### 2. Deterministic Behavior
+
 - Same inputs always produce same outputs
 - Predictable pagination
 - Consistent data patterns
 - Easy to test edge cases
 
 ### 3. Easy Integration
+
 - Simple API: `start()` and `shutdown()`
 - Helper methods for common tasks
 - Base test class for convenience
 - Works with existing test frameworks
 
 ### 4. Flexible Configuration
+
 - Custom responses via `enqueue()`
 - Custom dispatcher for advanced scenarios
 - Request verification with `takeRequest()`
 - Network delay simulation
 
 ### 5. Comprehensive Documentation
+
 - Quick start guide
 - Detailed API reference
 - Usage examples
@@ -174,18 +190,21 @@ mockServer.shutdown()
 ## Benefits
 
 ### For Development
+
 - ✅ Test without real Overseerr server
 - ✅ Fast test execution
 - ✅ Offline development
 - ✅ Easy debugging
 
 ### For Testing
+
 - ✅ Deterministic results
 - ✅ Easy to test edge cases
 - ✅ No external dependencies
 - ✅ Parallel test execution
 
 ### For CI/CD
+
 - ✅ No infrastructure setup needed
 - ✅ Fast pipeline execution
 - ✅ Reliable test results
@@ -194,38 +213,44 @@ mockServer.shutdown()
 ## Mock Data Patterns
 
 ### Pagination
+
 - 20 items per page
 - 10 total pages
 - 200 total results
 - 1-indexed pages
 
 ### User Data
+
 - Sequential IDs
 - Email: `user{id}@example.com`
 - Display Name: `User {id}`
 - User 1 is admin
 
 ### Media Data
+
 - Movies: even IDs
 - TV Shows: odd IDs
 - Vote averages: 6.5-9.0
 - Dates: 2024
 
 ### Request Data
+
 - Sequential IDs
 - Status rotates: Pending → Approved → Declined → Available
 - Created dates: January 2024
 
 ## Next Steps
 
-### To Use the Mock Server:
+### To Use the Mock Server
 
 1. **Sync Gradle**
+
    ```bash
    ./gradlew --refresh-dependencies
    ```
 
 2. **Run Example Tests**
+
    ```bash
    ./gradlew :app:test
    ```
@@ -250,6 +275,7 @@ mockServer.shutdown()
 ## Support
 
 For issues or questions:
+
 1. Check the documentation files
 2. Review the example tests
 3. Verify dependencies are synced

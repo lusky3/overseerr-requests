@@ -76,6 +76,7 @@ class MyTest : FunSpec({
 ## Available Endpoints
 
 ### Authentication
+
 ```kotlin
 val authApi = MockServerTestHelper.createApiService<AuthApiService>(mockServer)
 
@@ -90,6 +91,7 @@ val info = authApi.getServerInfo()
 ```
 
 ### Discovery
+
 ```kotlin
 val discoveryApi = MockServerTestHelper.createApiService<DiscoveryApiService>(mockServer)
 
@@ -110,6 +112,7 @@ val tvShow = discoveryApi.getTvShowDetails(tvId = 456)
 ```
 
 ### Requests
+
 ```kotlin
 val requestApi = MockServerTestHelper.createApiService<RequestApiService>(mockServer)
 
@@ -132,6 +135,7 @@ val folders = requestApi.getRootFolders()
 ```
 
 ### User
+
 ```kotlin
 val userApi = MockServerTestHelper.createApiService<UserApiService>(mockServer)
 
@@ -148,6 +152,7 @@ val stats = userApi.getUserStatistics()
 ## Mock Data Examples
 
 ### User Profile
+
 ```json
 {
   "id": 1,
@@ -165,6 +170,7 @@ val stats = userApi.getUserStatistics()
 ```
 
 ### Movie Details
+
 ```json
 {
   "id": 123,
@@ -183,6 +189,7 @@ val stats = userApi.getUserStatistics()
 ```
 
 ### Search Results
+
 ```json
 {
   "page": 1,
@@ -205,6 +212,7 @@ val stats = userApi.getUserStatistics()
 ## Testing Scenarios
 
 ### Test Successful Authentication
+
 ```kotlin
 test("should authenticate successfully") {
     runTest {
@@ -218,6 +226,7 @@ test("should authenticate successfully") {
 ```
 
 ### Test Pagination
+
 ```kotlin
 test("should handle pagination") {
     runTest {
@@ -234,6 +243,7 @@ test("should handle pagination") {
 ```
 
 ### Test Error Handling
+
 ```kotlin
 test("should handle 404 error") {
     mockServer.enqueue(
@@ -251,6 +261,7 @@ test("should handle 404 error") {
 ```
 
 ### Test Request Verification
+
 ```kotlin
 test("should send correct request") {
     runTest {
@@ -387,18 +398,22 @@ mockServer.setDispatcher(object : Dispatcher() {
 ## Troubleshooting
 
 ### Server Won't Start
+
 - Check if port is already in use
 - Use `mockServer.start()` without port to use random port
 
 ### Serialization Errors
+
 - Verify your models match the mock response structure
 - Check `MockResponses.kt` for exact format
 
 ### Connection Refused
+
 - Ensure server is started before making requests
 - Verify you're using `mockServer.baseUrl`
 
 ### Tests Hanging
+
 - Always call `mockServer.shutdown()` in cleanup
 - Check for infinite loops in test code
 

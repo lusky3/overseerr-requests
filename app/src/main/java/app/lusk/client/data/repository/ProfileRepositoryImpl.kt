@@ -1,7 +1,7 @@
 package app.lusk.client.data.repository
 
 import app.lusk.client.data.remote.api.UserApiService
-import app.lusk.client.data.remote.model.toPermissions
+import app.lusk.client.data.mapper.toDomain
 import app.lusk.client.data.remote.safeApiCall
 import app.lusk.client.domain.model.Result
 import app.lusk.client.domain.model.UserProfile
@@ -21,19 +21,12 @@ class ProfileRepositoryImpl @Inject constructor(
     
     override suspend fun getUserProfile(): Result<UserProfile> = safeApiCall {
         val apiProfile = userApiService.getCurrentUser()
-        
-        UserProfile(
-            id = apiProfile.id,
-            email = apiProfile.email,
-            displayName = apiProfile.displayName ?: apiProfile.email,
-            avatar = apiProfile.avatar,
-            requestCount = apiProfile.requestCount ?: 0,
-            permissions = apiProfile.permissions.toPermissions()
-        )
+        apiProfile.toDomain()
     }
     
     override suspend fun getUserQuota(): Result<RequestQuota> = safeApiCall {
-        val apiQuota = userApiService.getUserQuota()
+        val user = userApiService.getCurrentUser()
+        val apiQuota = userApiService.getUserQuota(user.id)
         
         RequestQuota(
             movieLimit = apiQuota.movie?.limit,
@@ -46,14 +39,16 @@ class ProfileRepositoryImpl @Inject constructor(
     }
     
     override suspend fun getUserStatistics(): Result<UserStatistics> = safeApiCall {
-        val apiStats = userApiService.getUserStatistics()
+        val user = userApiService.getCurrentUser()
         
+        // The statistics endpoint often returns 404 or requires different permissions.
+        // For now, we use the basic request count from the user profile.
         UserStatistics(
-            totalRequests = apiStats.totalRequests,
-            approvedRequests = apiStats.approvedRequests,
-            declinedRequests = apiStats.declinedRequests,
-            pendingRequests = apiStats.pendingRequests,
-            availableRequests = apiStats.availableRequests
+            totalRequests = user.requestCount,
+            approvedRequests = 0,
+            declinedRequests = 0,
+            pendingRequests = 0,
+            availableRequests = 0
         )
     }
 }

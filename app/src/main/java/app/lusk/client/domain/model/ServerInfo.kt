@@ -5,6 +5,6 @@ package app.lusk.client.domain.model
  */
 data class ServerInfo(
     val version: String,
-    val initialized: Boolean,
-    val applicationUrl: String
+    val initialized: Boolean = true,
+    val applicationUrl: String = ""
 )

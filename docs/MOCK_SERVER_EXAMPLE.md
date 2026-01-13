@@ -138,12 +138,14 @@ Once the project builds successfully, run:
 ## API Endpoints Supported
 
 ### Authentication Endpoints
+
 - ✅ `POST /api/v1/auth/plex` - Authenticate with Plex
 - ✅ `GET /api/v1/auth/me` - Get current user
 - ✅ `POST /api/v1/auth/logout` - Logout
 - ✅ `GET /api/v1/status` - Get server info
 
 ### Discovery Endpoints
+
 - ✅ `GET /api/v1/discover/trending` - Get trending media (20 items per page)
 - ✅ `GET /api/v1/discover/movies` - Get trending movies (20 items per page)
 - ✅ `GET /api/v1/discover/tv` - Get trending TV shows (20 items per page)
@@ -152,6 +154,7 @@ Once the project builds successfully, run:
 - ✅ `GET /api/v1/tv/{id}` - Get TV show details
 
 ### Request Endpoints
+
 - ✅ `POST /api/v1/request` - Submit a request
 - ✅ `GET /api/v1/request` - Get requests list (20 items per page)
 - ✅ `GET /api/v1/request/{id}` - Get request details
@@ -161,6 +164,7 @@ Once the project builds successfully, run:
 - ✅ `GET /api/v1/settings/radarr/folders` - Get root folders (4 folders)
 
 ### User Endpoints
+
 - ✅ `GET /api/v1/user/{id}` - Get user profile
 - ✅ `GET /api/v1/user` - Get current user
 - ✅ `GET /api/v1/user/quota` - Get user quota
@@ -169,12 +173,14 @@ Once the project builds successfully, run:
 ## Mock Data Characteristics
 
 ### Pagination
+
 - **Page Size**: 20 items per page
 - **Total Pages**: 10 pages
 - **Total Results**: 200 items
 - **Page Numbers**: 1-indexed (page 1, page 2, etc.)
 
 ### User Data
+
 - **User ID**: Sequential (1, 2, 3, ...)
 - **Email**: `user{id}@example.com`
 - **Display Name**: `User {id}`
@@ -183,6 +189,7 @@ Once the project builds successfully, run:
 - **Request Count**: `userId * 3`
 
 ### Media Data
+
 - **Movie IDs**: Even numbers (2, 4, 6, ...)
 - **TV Show IDs**: Odd numbers (1, 3, 5, ...)
 - **Titles**: `Movie {id}` or `TV Show {id}`
@@ -192,6 +199,7 @@ Once the project builds successfully, run:
 - **Release Dates**: Distributed across 2024
 
 ### Request Data
+
 - **Request IDs**: Sequential (1, 2, 3, ...)
 - **Status Values**:
   - 1 = Pending (requestId % 4 == 0)
@@ -202,22 +210,26 @@ Once the project builds successfully, run:
 - **Media Type**: Alternates between movie and tv
 
 ### Quality Profiles
+
 1. HD-1080p (id: 1)
 2. Ultra-HD (id: 2)
 3. SD (id: 3)
 4. 4K (id: 4)
 
 ### Root Folders
+
 1. /movies (id: 1)
 2. /tv (id: 2)
 3. /media/movies (id: 3)
 4. /media/tv (id: 4)
 
 ### User Quota
+
 - **Movie Quota**: 10 limit, 5 remaining, 7 days
 - **TV Quota**: 15 limit, 7 remaining, 7 days
 
 ### User Statistics
+
 - **Total Requests**: 25
 - **Approved**: 15
 - **Declined**: 3
@@ -414,7 +426,7 @@ mockServer.start(8080)
 5. ✅ Example tests created
 6. ✅ Documentation created
 
-### To Use:
+### To Use
 
 1. **Sync Gradle** to download MockWebServer dependency
 2. **Run Tests** to verify everything works

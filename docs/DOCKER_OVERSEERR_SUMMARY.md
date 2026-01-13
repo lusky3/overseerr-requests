@@ -7,21 +7,24 @@ A complete, production-ready Dockerized Overseerr test environment for Android a
 ## 📦 Files Created
 
 ### Docker Configuration
+
 1. **docker-compose.yml** - Main Docker Compose configuration
 2. **Dockerfile.overseerr-configured** - Custom Overseerr image
 3. **overseerr-init.sh** - Initialization script
 4. **plex-mock/nginx.conf** - Mock Plex server configuration
 
 ### Setup Scripts
+
 5. **setup-overseerr-test.sh** - Automated setup script
-6. **configure-overseerr.sh** - Configuration helper
+2. **configure-overseerr.sh** - Configuration helper
 
 ### Documentation
+
 7. **OVERSEERR_DOCKER_GUIDE.md** - Complete setup guide
-8. **QUICK_START.md** - Quick reference
-9. **OVERSEERR_SETUP_COMPLETE.md** - Setup completion guide
-10. **ANDROID_APP_TESTING_GUIDE.md** - App testing guide
-11. **DOCKER_OVERSEERR_SUMMARY.md** - This file
+2. **QUICK_START.md** - Quick reference
+3. **OVERSEERR_SETUP_COMPLETE.md** - Setup completion guide
+4. **ANDROID_APP_TESTING_GUIDE.md** - App testing guide
+5. **DOCKER_OVERSEERR_SUMMARY.md** - This file
 
 ## 🚀 Services Running
 
@@ -35,17 +38,20 @@ A complete, production-ready Dockerized Overseerr test environment for Android a
 ## 🌐 Access URLs
 
 ### From Host Machine
-- Overseerr: http://localhost:5055
-- Radarr: http://localhost:7878
-- Sonarr: http://localhost:8989
-- Plex Mock: http://localhost:32400
+
+- Overseerr: <http://localhost:5055>
+- Radarr: <http://localhost:7878>
+- Sonarr: <http://localhost:8989>
+- Plex Mock: <http://localhost:32400>
 
 ### From Android Device
-- Overseerr: **http://172.29.125.229:5055**
+
+- Overseerr: **<http://172.29.125.229:5055>**
 
 ## 🎯 Features
 
 ### Complete Overseerr Functionality
+
 ✅ User authentication (Plex OAuth + Local)  
 ✅ Media discovery (Movies & TV Shows)  
 ✅ Search functionality  
@@ -57,6 +63,7 @@ A complete, production-ready Dockerized Overseerr test environment for Android a
 ✅ Notifications  
 
 ### Docker Benefits
+
 ✅ Isolated environment  
 ✅ Easy setup and teardown  
 ✅ Persistent data storage  
@@ -91,12 +98,14 @@ docker compose up -d
 ## 🧪 Testing Capabilities
 
 ### API Testing
+
 - All Overseerr API endpoints available
 - Real authentication flows
 - Actual request submission
 - Live status updates
 
 ### App Testing
+
 - Complete user flows
 - Authentication testing
 - Media discovery
@@ -105,6 +114,7 @@ docker compose up -d
 - Performance testing
 
 ### Integration Testing
+
 - Radarr integration
 - Sonarr integration
 - Plex authentication
@@ -125,6 +135,7 @@ docker compose up -d
 ### When to Use Each
 
 **Mock Server** (MockOverseerrServer):
+
 - Unit testing
 - Fast test execution
 - CI/CD pipelines
@@ -132,6 +143,7 @@ docker compose up -d
 - Deterministic tests
 
 **Docker Overseerr**:
+
 - Integration testing
 - Manual QA testing
 - End-to-end testing
@@ -141,24 +153,28 @@ docker compose up -d
 ## 🔧 Configuration
 
 ### Overseerr
+
 - Version: 1.34.0
 - Config: ./overseerr-config
 - Database: SQLite
 - API: REST
 
 ### Radarr
+
 - Version: Latest
 - Config: ./radarr-config
 - API: v3
 - Purpose: Movie management
 
 ### Sonarr
+
 - Version: Latest
 - Config: ./sonarr-config
 - API: v3
 - Purpose: TV show management
 
 ### Plex Mock
+
 - Server: nginx
 - Purpose: OAuth simulation
 - Endpoints: /api/v2/pins, /api/v2/user
@@ -166,30 +182,37 @@ docker compose up -d
 ## 🎓 Learning Resources
 
 ### Overseerr
+
 - [Official Docs](https://docs.overseerr.dev/)
 - [API Reference](https://api-docs.overseerr.dev/)
 - [GitHub](https://github.com/sct/overseerr)
 
 ### Docker
+
 - [Docker Docs](https://docs.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Best Practices](https://docs.docker.com/develop/dev-best-practices/)
 
 ### Testing
+
 - [Android Testing](https://developer.android.com/training/testing)
 - [Integration Testing](https://developer.android.com/training/testing/integration-testing)
 
 ## 🔐 Security Notes
 
 ### Current Setup (Development)
+
 ⚠️ This is a **development/testing environment**
+
 - No HTTPS
 - Default passwords
 - Open network access
 - Mock authentication
 
 ### Production Recommendations
+
 For production use:
+
 1. Enable HTTPS with valid certificates
 2. Use strong passwords
 3. Configure proper authentication
@@ -202,12 +225,14 @@ For production use:
 ## 📈 Performance
 
 ### Resource Usage
+
 - CPU: Low (< 5% idle)
 - Memory: ~500 MB total
 - Disk: ~2 GB
 - Network: Minimal
 
 ### Response Times
+
 - API calls: < 100ms
 - Search: < 200ms
 - Image loading: Depends on TMDB
@@ -218,11 +243,13 @@ For production use:
 ### Common Issues
 
 **Services won't start**:
+
 ```bash
 docker compose logs
 ```
 
 **Can't connect from Android**:
+
 ```bash
 # Check firewall
 sudo ufw allow 5055
@@ -232,11 +259,13 @@ hostname -I
 ```
 
 **Overseerr not responding**:
+
 ```bash
 docker compose restart overseerr
 ```
 
 **Need to reset**:
+
 ```bash
 docker compose down
 rm -rf overseerr-config radarr-config sonarr-config
@@ -246,12 +275,14 @@ docker compose up -d
 ## 📝 Next Steps
 
 ### Immediate
+
 1. ✅ Complete Overseerr setup wizard
 2. ✅ Configure Radarr and Sonarr
 3. ✅ Get API key
 4. ✅ Test API endpoints
 
 ### Testing
+
 1. ⏳ Install Android app on device
 2. ⏳ Configure app with server URL
 3. ⏳ Test authentication
@@ -259,6 +290,7 @@ docker compose up -d
 5. ⏳ Document issues
 
 ### Production
+
 1. ⏳ Address any issues found
 2. ⏳ Optimize performance
 3. ⏳ Add crash reporting
@@ -268,6 +300,7 @@ docker compose up -d
 ## 🎉 Success Metrics
 
 ### Environment Setup
+
 ✅ All services running  
 ✅ Network connectivity verified  
 ✅ API responding correctly  
@@ -275,6 +308,7 @@ docker compose up -d
 ✅ Documentation complete  
 
 ### Ready For
+
 ✅ Android app testing  
 ✅ API integration testing  
 ✅ Manual QA testing  
@@ -284,11 +318,13 @@ docker compose up -d
 ## 📞 Support
 
 ### Documentation
+
 - QUICK_START.md - Fast setup
 - OVERSEERR_DOCKER_GUIDE.md - Detailed guide
 - ANDROID_APP_TESTING_GUIDE.md - Testing guide
 
 ### Commands
+
 ```bash
 # Help
 docker compose --help
@@ -321,18 +357,21 @@ docker compose ps
 ## 🎯 Use Cases
 
 ### Development
+
 - Local API testing
 - Feature development
 - Integration testing
 - Debugging
 
 ### QA Testing
+
 - Manual testing
 - Automated testing
 - Regression testing
 - Performance testing
 
 ### Demo
+
 - Client presentations
 - Feature showcases
 - Training
@@ -341,6 +380,7 @@ docker compose ps
 ## 🔮 Future Enhancements
 
 Potential additions:
+
 - HTTPS support
 - Database seeding with test data
 - Automated API testing

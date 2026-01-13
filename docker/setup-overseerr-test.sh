@@ -1,6 +1,10 @@
 #!/bin/bash
 
-set -e
+# Function to safely check if container is running
+container_is_running() {
+    docker ps --filter "name=$1" --filter "status=running" --format '{{.Names}}' | grep -q "^$1$"
+    return $?
+}
 
 echo "=========================================="
 echo "Overseerr Test Environment Setup"
@@ -39,13 +43,58 @@ echo -e "${GREEN}✓ Docker is installed${NC}"
 echo ""
 
 # Create necessary directories
-echo "Creating configuration directories..."
-mkdir -p overseerr-config
-mkdir -p radarr-config
-mkdir -p sonarr-config
+echo "Setting up configuration directories..."
+
+# Create base directories
 mkdir -p plex-mock/html
 
-echo -e "${GREEN}✓ Directories created${NC}"
+# Setup Overseerr with template
+if [ ! -d "overseerr-config" ]; then
+    echo "  Creating Overseerr configuration from template..."
+    mkdir -p overseerr-config
+    cp config-templates/overseerr/settings.json overseerr-config/
+    echo -e "  ${GREEN}✓ Overseerr configured${NC}"
+elif [ ! -f "overseerr-config/settings.json" ]; then
+    echo -e "  ${YELLOW}⚠ Overseerr config incomplete, restoring from template...${NC}"
+    cp config-templates/overseerr/settings.json overseerr-config/
+    echo -e "  ${GREEN}✓ Overseerr restored${NC}"
+else
+    echo -e "  ${GREEN}✓ Overseerr already configured${NC}"
+fi
+
+# Setup Radarr with template
+if [ ! -d "radarr-config" ]; then
+    echo "  Creating Radarr configuration from template..."
+    mkdir -p radarr-config
+    cp config-templates/radarr/config.xml radarr-config/
+    cp config-templates/radarr/radarr.db radarr-config/
+    echo -e "  ${GREEN}✓ Radarr configured${NC}"
+elif [ ! -f "radarr-config/config.xml" ] || [ ! -f "radarr-config/radarr.db" ]; then
+    echo -e "  ${YELLOW}⚠ Radarr config incomplete, restoring from template...${NC}"
+    cp config-templates/radarr/config.xml radarr-config/
+    cp config-templates/radarr/radarr.db radarr-config/
+    echo -e "  ${GREEN}✓ Radarr restored${NC}"
+else
+    echo -e "  ${GREEN}✓ Radarr already configured${NC}"
+fi
+
+# Setup Sonarr with template
+if [ ! -d "sonarr-config" ]; then
+    echo "  Creating Sonarr configuration from template..."
+    mkdir -p sonarr-config
+    cp config-templates/sonarr/config.xml sonarr-config/
+    cp config-templates/sonarr/sonarr.db sonarr-config/
+    echo -e "  ${GREEN}✓ Sonarr configured${NC}"
+elif [ ! -f "sonarr-config/config.xml" ] || [ ! -f "sonarr-config/sonarr.db" ]; then
+    echo -e "  ${YELLOW}⚠ Sonarr config incomplete, restoring from template...${NC}"
+    cp config-templates/sonarr/config.xml sonarr-config/
+    cp config-templates/sonarr/sonarr.db sonarr-config/
+    echo -e "  ${GREEN}✓ Sonarr restored${NC}"
+else
+    echo -e "  ${GREEN}✓ Sonarr already configured${NC}"
+fi
+
+echo -e "${GREEN}✓ All configurations ready${NC}"
 echo ""
 
 # Stop any existing containers
@@ -65,9 +114,8 @@ echo ""
 
 # Function to check health status of a container
 check_health() {
-    local container=$1
-    local status=$(docker inspect --format='{{.State.Health.Status}}' "$container" 2>/dev/null || echo "none")
-    echo "$status"
+    local container="$1"
+    docker inspect --format='{{.State.Health.Status}}' "$container" 2>/dev/null || echo "none"
 }
 
 # Function to wait for a container to be healthy
@@ -79,8 +127,17 @@ wait_for_healthy() {
     
     echo -e "${BLUE}Waiting for $display_name to be ready...${NC}"
     
+    # Give containers a moment to initialize
+    sleep 1
+    
     while [ $attempt -lt $max_attempts ]; do
-        local health=$(check_health "$container")
+        local health
+        health=$(check_health "$container")
+        
+        # Debug output every 10 attempts
+        if [ $((attempt % 10)) -eq 0 ] && [ $attempt -gt 0 ]; then
+            echo -e "${YELLOW}  Debug: Container=$container, Health=[$health], Attempt=$attempt${NC}"
+        fi
         
         case "$health" in
             "healthy")
@@ -89,18 +146,26 @@ wait_for_healthy() {
                 ;;
             "none")
                 # Container doesn't have health check, check if it's running
-                if docker ps --filter "name=$container" --filter "status=running" | grep -q "$container"; then
+                if container_is_running "$container"; then
                     echo -e "${GREEN}✓ $display_name is running${NC}"
                     return 0
                 fi
                 ;;
             "starting")
-                echo -ne "${YELLOW}  $display_name is starting... (attempt $((attempt+1))/$max_attempts)\r${NC}"
+                if [ $((attempt % 5)) -eq 0 ]; then
+                    echo -e "${YELLOW}  $display_name is starting... (attempt $((attempt+1))/$max_attempts)${NC}"
+                fi
                 ;;
             "unhealthy")
                 echo -e "${RED}✗ $display_name is unhealthy${NC}"
                 echo "Check logs with: docker compose logs $container"
                 return 1
+                ;;
+            *)
+                # Unknown status, treat as starting
+                if [ $((attempt % 5)) -eq 0 ]; then
+                    echo -e "${YELLOW}  $display_name status: [$health] (attempt $((attempt+1))/$max_attempts)${NC}"
+                fi
                 ;;
         esac
         
@@ -109,6 +174,7 @@ wait_for_healthy() {
     done
     
     echo -e "${RED}✗ $display_name failed to become healthy after $max_attempts attempts${NC}"
+    echo "Last status: [$health]"
     return 1
 }
 
@@ -146,19 +212,43 @@ echo -e "${GREEN}Overseerr:${NC}     http://localhost:5055"
 echo -e "  ${YELLOW}⚠ Requires 2-minute setup (see QUICK_SETUP_GUIDE.md)${NC}"
 echo ""
 echo -e "${GREEN}Radarr:${NC}        http://localhost:7878"
+echo -e "  ${BLUE}API Key: 1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x${NC}"
 echo -e "${GREEN}Sonarr:${NC}        http://localhost:8989"
+echo -e "  ${BLUE}API Key: 1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x${NC}"
 echo -e "${GREEN}Plex Mock:${NC}     http://localhost:32400"
+echo ""
+echo -e "${BLUE}ℹ️  Radarr and Sonarr are pre-configured with databases and API keys!${NC}"
 echo ""
 echo "Next steps:"
 echo "  1. Open http://localhost:5055 in your browser"
-echo "  2. Follow ${BLUE}QUICK_SETUP_GUIDE.md${NC} (2 minutes)"
-echo "  3. Configure your Android app with ${GREEN}http://YOUR_IP:5055${NC}"
+echo -e "  2. Follow steps"
+echo -e "  3. Configure your Android app with ${GREEN}http://YOUR_IP:5055${NC}"
 echo ""
 echo "Get your IP address:"
-echo "  ${GREEN}hostname -I | awk '{print \$1}'${NC}"
+echo -e "  ${GREEN}hostname -I | awk '{print \$1}'${NC}"
 echo ""
 echo "Useful commands:"
 echo "  View logs:    docker compose logs -f overseerr"
 echo "  Stop:         docker compose down"
 echo "  Restart:      docker compose restart"
+echo "  Clean reset:  docker compose down && rm -rf overseerr-config radarr-config sonarr-config && ./setup-overseerr-test.sh"
+echo "  Note: Clean reset will restore all services from templates with pre-configured settings"
+echo ""
+echo -e "${RED}=========================================="
+echo "⚠️  SECURITY WARNING"
+echo -e "==========================================${NC}"
+echo -e "${YELLOW}All services are exposed on 0.0.0.0 (all network interfaces)${NC}"
+echo -e "${YELLOW}This means they are accessible from ANY device on your network!${NC}"
+echo ""
+echo -e "${RED}DO NOT use this setup in production or on untrusted networks!${NC}"
+echo -e "${RED}This is for DEVELOPMENT and TESTING purposes ONLY!${NC}"
+echo ""
+echo "Exposed ports:"
+echo "  - 5055  (Overseerr)"
+echo "  - 7878  (Radarr - API Key: 1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x)"
+echo "  - 8989  (Sonarr - API Key: 1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x1x)"
+echo "  - 32400 (Plex Mock (nginx))"
+echo ""
+echo "To restrict access, edit docker/compose.yml and change:"
+echo -e "  ${YELLOW}0.0.0.0:PORT:PORT${NC} to ${GREEN}127.0.0.1:PORT:PORT${NC}"
 echo ""
