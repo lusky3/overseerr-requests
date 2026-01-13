@@ -7,9 +7,15 @@ package app.lusk.client.navigation
  */
 sealed class Screen(val route: String) {
     
+    // Initialization
+    data object Splash : Screen("splash")
+    
     // Authentication
     data object ServerConfig : Screen("server_config")
     data object PlexAuth : Screen("plex_auth")
+    data object PlexAuthCallback : Screen("plex_auth_callback/{token}") {
+        fun createRoute(token: String) = "plex_auth_callback/$token"
+    }
     
     // Main Navigation
     data object Home : Screen("home")
@@ -18,8 +24,9 @@ sealed class Screen(val route: String) {
     data object Profile : Screen("profile")
     
     // Details
-    data object MediaDetails : Screen("media_details/{mediaType}/{mediaId}") {
-        fun createRoute(mediaType: String, mediaId: Int) = "media_details/$mediaType/$mediaId"
+    data object MediaDetails : Screen("media_details/{mediaType}/{mediaId}?openRequest={openRequest}") {
+        fun createRoute(mediaType: String, mediaId: Int, openRequest: Boolean = false) = 
+            "media_details/$mediaType/$mediaId?openRequest=$openRequest"
     }
     
     data object RequestDetails : Screen("request_details/{requestId}") {
@@ -65,6 +72,13 @@ sealed class Screen(val route: String) {
                 uri.startsWith("lusk://request/") -> {
                     val requestId = uri.removePrefix("lusk://request/").toIntOrNull()
                     requestId?.let { RequestDetails.createRoute(it) }
+                }
+                uri.startsWith("lusk://auth") -> {
+                    // Extract token from query parameter: lusk://auth?token=XYZ
+                    val token = uri.substringAfter("token=", "")
+                    if (token.isNotEmpty()) {
+                        "plex_auth_callback/$token"
+                    } else null
                 }
                 else -> null
             }

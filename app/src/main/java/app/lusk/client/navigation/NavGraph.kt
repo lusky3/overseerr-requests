@@ -1,6 +1,7 @@
 package app.lusk.client.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -10,8 +11,10 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.lusk.client.domain.model.MediaType
+import app.lusk.client.presentation.auth.AuthViewModel
 import app.lusk.client.presentation.auth.PlexAuthScreen
 import app.lusk.client.presentation.auth.ServerConfigScreen
+import app.lusk.client.presentation.auth.SplashScreen
 import app.lusk.client.presentation.discovery.DiscoveryViewModel
 import app.lusk.client.presentation.discovery.HomeScreen
 import app.lusk.client.presentation.discovery.MediaDetailsScreen
@@ -38,7 +41,7 @@ import app.lusk.client.ui.animation.popExitTransition
 @Composable
 fun OverseerrNavHost(
     navController: NavHostController,
-    startDestination: String = Screen.ServerConfig.route,
+    startDestination: String = Screen.Splash.route,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -46,6 +49,22 @@ fun OverseerrNavHost(
         startDestination = startDestination,
         modifier = modifier
     ) {
+        // Initialization
+        composable(route = Screen.Splash.route) {
+            SplashScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                },
+                onNavigateToServerConfig = {
+                    navController.navigate(Screen.ServerConfig.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         // Authentication Flow
         composable(
             route = Screen.ServerConfig.route,
@@ -83,6 +102,37 @@ fun OverseerrNavHost(
                     // Handle auth error - could navigate to error screen or show snackbar
                     navController.popBackStack()
                 }
+            )
+        }
+        
+        composable(
+            route = Screen.PlexAuthCallback.route,
+            arguments = listOf(navArgument("token") { type = NavType.StringType }),
+            enterTransition = { forwardTransition() },
+            exitTransition = { backwardTransition() },
+            popEnterTransition = { popEnterTransition() },
+            popExitTransition = { popExitTransition() }
+        ) { backStackEntry ->
+            val token = backStackEntry.arguments?.getString("token") ?: ""
+            val viewModel: AuthViewModel = hiltViewModel()
+            
+            // Auto-trigger token exchange when arriving from deep link
+            LaunchedEffect(token) {
+                if (token.isNotEmpty()) {
+                    viewModel.handleAuthCallback(token)
+                }
+            }
+            
+            PlexAuthScreen(
+                onAuthSuccess = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.ServerConfig.route) { inclusive = true }
+                    }
+                },
+                onAuthError = { error ->
+                    navController.popBackStack()
+                },
+                viewModel = viewModel
             )
         }
         
@@ -132,7 +182,11 @@ fun OverseerrNavHost(
             route = Screen.MediaDetails.route,
             arguments = listOf(
                 navArgument("mediaType") { type = NavType.StringType },
-                navArgument("mediaId") { type = NavType.IntType }
+                navArgument("mediaId") { type = NavType.IntType },
+                navArgument("openRequest") { 
+                    type = NavType.BoolType
+                    defaultValue = false
+                }
             ),
             deepLinks = listOf(
                 navDeepLink { uriPattern = "lusk://media/{mediaType}/{mediaId}" }
@@ -144,6 +198,7 @@ fun OverseerrNavHost(
         ) { backStackEntry ->
             val mediaTypeString = backStackEntry.arguments?.getString("mediaType") ?: "movie"
             val mediaId = backStackEntry.arguments?.getInt("mediaId") ?: 0
+            val openRequest = backStackEntry.arguments?.getBoolean("openRequest") ?: false
             val mediaType = if (mediaTypeString == "tv") MediaType.TV else MediaType.MOVIE
             val viewModel: DiscoveryViewModel = hiltViewModel()
             
@@ -151,6 +206,7 @@ fun OverseerrNavHost(
                 viewModel = viewModel,
                 mediaType = mediaType,
                 mediaId = mediaId,
+                openRequest = openRequest,
                 onBackClick = {
                     navController.popBackStack()
                 }
@@ -195,6 +251,12 @@ fun OverseerrNavHost(
                 viewModel = viewModel,
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onModifyRequest = { mediaId ->
+                    // Navigate to TV Show details with request dialog open
+                    navController.navigate(
+                        Screen.MediaDetails.createRoute("tv", mediaId, openRequest = true)
+                    )
                 }
             )
         }

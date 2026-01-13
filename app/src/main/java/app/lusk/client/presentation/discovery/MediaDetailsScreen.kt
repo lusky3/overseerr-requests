@@ -5,7 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -24,16 +24,24 @@ import app.lusk.client.presentation.request.RequestViewModel
 @Composable
 fun MediaDetailsScreen(
     viewModel: DiscoveryViewModel,
-    requestViewModel: RequestViewModel = hiltViewModel(),
     mediaType: MediaType,
     mediaId: Int,
+    openRequest: Boolean = false,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val detailsState by viewModel.mediaDetailsState.collectAsState()
+    val requestViewModel: RequestViewModel = hiltViewModel()
+    val state by viewModel.mediaDetailsState.collectAsState()
     var showRequestDialog by remember { mutableStateOf(false) }
-
-    LaunchedEffect(mediaId) {
+    
+    // Auto-open request dialog if requested
+    LaunchedEffect(openRequest) {
+        if (openRequest) {
+            showRequestDialog = true
+        }
+    }
+    
+    LaunchedEffect(mediaId, mediaType) {
         viewModel.loadMediaDetails(mediaType, mediaId)
     }
 
@@ -43,7 +51,7 @@ fun MediaDetailsScreen(
                 title = { Text("Details") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
                     }
                 }
             )
@@ -55,7 +63,7 @@ fun MediaDetailsScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            when (val state = detailsState) {
+            when (val detailsState = state) {
                 is MediaDetailsState.Loading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -65,8 +73,13 @@ fun MediaDetailsScreen(
                     }
                 }
                 is MediaDetailsState.Success -> {
+                    val canModifyRequest = !detailsState.details.isAvailable && 
+                        (detailsState.details.isRequested || detailsState.details.isPartiallyAvailable) && 
+                        detailsState.details.isPartialRequestsEnabled && 
+                        detailsState.details.numberOfSeasons > 0
+
                     MediaDetailsContent(
-                        details = state.details,
+                        details = detailsState.details,
                         onRequestClick = { showRequestDialog = true }
                     )
                     
@@ -74,7 +87,11 @@ fun MediaDetailsScreen(
                         RequestDialog(
                             mediaId = mediaId,
                             mediaType = mediaType,
-                            mediaTitle = state.details.title,
+                            mediaTitle = detailsState.details.title,
+                            seasonCount = detailsState.details.numberOfSeasons,
+                            partialRequestsEnabled = detailsState.details.isPartialRequestsEnabled,
+                            isModify = canModifyRequest,
+                            requestedSeasons = detailsState.details.requestedSeasons,
                             viewModel = requestViewModel,
                             onDismiss = { showRequestDialog = false },
                             onSuccess = {
@@ -86,7 +103,7 @@ fun MediaDetailsScreen(
                 }
                 is MediaDetailsState.Error -> {
                     ErrorDisplay(
-                        message = state.message,
+                        message = detailsState.message,
                         onRetry = { viewModel.loadMediaDetails(mediaType, mediaId) }
                     )
                 }
@@ -177,14 +194,20 @@ private fun MediaDetailsContent(
                     }
 
                     // Request button
+                    val canModifyRequest = !details.isAvailable && 
+                        (details.isRequested || details.isPartiallyAvailable) && 
+                        details.isPartialRequestsEnabled && 
+                        details.numberOfSeasons > 0 // Only for TV basically
+
                     Button(
                         onClick = onRequestClick,
-                        enabled = !details.isAvailable && !details.isRequested,
+                        enabled = (!details.isAvailable && !details.isRequested) || canModifyRequest,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
                             when {
                                 details.isAvailable -> "Available"
+                                canModifyRequest -> "Modify Request"
                                 details.isRequested -> "Requested"
                                 else -> "Request"
                             }

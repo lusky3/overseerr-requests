@@ -3,7 +3,7 @@ package app.lusk.client.presentation.request
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,11 +23,13 @@ fun RequestDetailsScreen(
     requestId: Int,
     viewModel: RequestViewModel,
     onBackClick: () -> Unit,
+    onModifyRequest: (Int) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val userRequests by viewModel.userRequests.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
+    val partialRequestsEnabled by viewModel.partialRequestsEnabled.collectAsState()
     
     val request = userRequests.find { it.id == requestId }
     var showCancelDialog by remember { mutableStateOf(false) }
@@ -38,7 +40,7 @@ fun RequestDetailsScreen(
                 title = { Text("Request Details") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
                     }
                 },
                 actions = {
@@ -67,8 +69,28 @@ fun RequestDetailsScreen(
                     }
                 }
                 request != null -> {
-                    RequestDetailsContent(request = request)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        RequestDetailsContent(
+                            request = request,
+                            modifier = Modifier.weight(1f)
+                        )
+                        
+                        if (partialRequestsEnabled && request.mediaType == app.lusk.client.domain.model.MediaType.TV) {
+                            Button(
+                                onClick = { onModifyRequest(request.mediaId) },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text("Request More Seasons")
+                            }
+                        }
+                    }
                 }
+                // ... (loading state)
                 isLoading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
