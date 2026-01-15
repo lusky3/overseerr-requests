@@ -26,3 +26,33 @@ buildscript {
         }
     }
 }
+
+// Force upgrade vulnerable transitive dependencies across all subprojects
+subprojects {
+    configurations.configureEach {
+        resolutionStrategy {
+            // Netty vulnerabilities - upgrade to patched versions
+            force("io.netty:netty-codec:4.1.118.Final")
+            force("io.netty:netty-codec-http:4.1.118.Final")
+            force("io.netty:netty-codec-http2:4.1.118.Final")
+            force("io.netty:netty-common:4.1.118.Final")
+            force("io.netty:netty-handler:4.1.118.Final")
+            force("io.netty:netty-buffer:4.1.118.Final")
+            force("io.netty:netty-transport:4.1.118.Final")
+            force("io.netty:netty-resolver:4.1.118.Final")
+            
+            // Protobuf vulnerabilities - CVE for DoS
+            force("com.google.protobuf:protobuf-java:4.29.3")
+            force("com.google.protobuf:protobuf-kotlin:4.29.3")
+            
+            // JDOM2 XXE vulnerability
+            force("org.jdom:jdom2:2.0.6.1")
+            
+            // jose4j DoS via compressed JWE
+            force("org.bitbucket.b_c:jose4j:0.9.6")
+            
+            // Commons Lang3 uncontrolled recursion
+            force("org.apache.commons:commons-lang3:3.17.0")
+        }
+    }
+}
