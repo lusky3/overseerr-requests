@@ -102,7 +102,7 @@ fun ServerManagementScreen(
                         },
                         onDeleteClick = { serverToDelete = server.url }
                     )
-                    Divider()
+                    HorizontalDivider()
                 }
             }
         }

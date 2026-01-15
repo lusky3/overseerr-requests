@@ -70,7 +70,7 @@ fun SettingsScreen(
                 onClick = { showThemeDialog = true }
             )
             
-            Divider()
+            HorizontalDivider()
             
             // Notifications Section
             SettingsSectionHeader(title = "Notifications")
@@ -121,7 +121,7 @@ fun SettingsScreen(
                 )
             }
             
-            Divider()
+            HorizontalDivider()
             
             // Security Section
             SettingsSectionHeader(title = "Security")
@@ -133,7 +133,7 @@ fun SettingsScreen(
                 onCheckedChange = { viewModel.setBiometricEnabled(it) }
             )
             
-            Divider()
+            HorizontalDivider()
             
             // Requests Section
             SettingsSectionHeader(title = "Requests")
@@ -144,7 +144,7 @@ fun SettingsScreen(
                 onClick = { showQualityProfileDialog = true }
             )
             
-            Divider()
+            HorizontalDivider()
             
             // Server Section
             SettingsSectionHeader(title = "Server")

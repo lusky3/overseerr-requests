@@ -61,7 +61,7 @@ fun RequestsListScreen(
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                ScrollableTabRow(
+                PrimaryScrollableTabRow(
                     selectedTabIndex = selectedTab,
                     modifier = Modifier.fillMaxWidth()
                 ) {
