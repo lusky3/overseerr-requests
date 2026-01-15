@@ -51,7 +51,8 @@ render.experimental.xml
 .cxx/
 
 # Google Services (e.g. APIs or Firebase)
-google-services.json
+androidApp/src/release/google-services.json
+
 
 # Freeline
 freeline.py
