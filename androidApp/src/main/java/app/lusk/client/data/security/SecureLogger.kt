@@ -57,39 +57,65 @@ class SecureLogger {
      * @return Redacted message with sensitive data replaced
      */
     fun redact(message: String): String {
+        var redacted = applySensitivePatterns(message)
+        redacted = redactJsonSensitiveKeys(redacted)
+        return redacted
+    }
+    
+    /**
+     * Apply all regex patterns to redact sensitive data.
+     */
+    private fun applySensitivePatterns(message: String): String {
         var redacted = message
-        
-        // Apply all regex patterns
         SENSITIVE_PATTERNS.forEach { pattern ->
             redacted = pattern.replace(redacted) { matchResult ->
-                when (matchResult.groupValues.size) {
-                    // For patterns with key-value pairs, keep the key but redact the value
-                    3 -> "${matchResult.groupValues[1]}=$REDACTED"
-                    // For email addresses, partially redact
-                    else -> {
-                        if (matchResult.value.contains("@")) {
-                            val parts = matchResult.value.split("@")
-                            if (parts.size == 2) {
-                                val username = parts[0]
-                                val domain = parts[1]
-                                val redactedUsername = if (username.length > 2) {
-                                    username.take(2) + "***"
-                                } else {
-                                    "***"
-                                }
-                                "$redactedUsername@$domain"
-                            } else {
-                                REDACTED
-                            }
-                        } else {
-                            REDACTED
-                        }
-                    }
-                }
+                redactMatchResult(matchResult)
             }
         }
+        return redacted
+    }
+    
+    /**
+     * Process a single regex match result and return the redacted string.
+     */
+    private fun redactMatchResult(matchResult: MatchResult): String {
+        // For patterns with key-value pairs (3 groups), keep the key but redact the value
+        if (matchResult.groupValues.size == 3) {
+            return "${matchResult.groupValues[1]}=$REDACTED"
+        }
         
-        // Redact JSON-like sensitive keys
+        // For email addresses, partially redact
+        if (matchResult.value.contains("@")) {
+            return redactEmailAddress(matchResult.value)
+        }
+        
+        return REDACTED
+    }
+    
+    /**
+     * Partially redact an email address, keeping first 2 characters of username.
+     */
+    private fun redactEmailAddress(email: String): String {
+        val parts = email.split("@")
+        if (parts.size != 2) {
+            return REDACTED
+        }
+        
+        val username = parts[0]
+        val domain = parts[1]
+        val redactedUsername = if (username.length > 2) {
+            username.take(2) + "***"
+        } else {
+            "***"
+        }
+        return "$redactedUsername@$domain"
+    }
+    
+    /**
+     * Redact JSON-like sensitive keys in the message.
+     */
+    private fun redactJsonSensitiveKeys(message: String): String {
+        var redacted = message
         JSON_SENSITIVE_KEYS.forEach { key ->
             // Match "key": "value" or 'key': 'value' or key=value
             val jsonPattern = Regex("""["']?$key["']?\s*[:=]\s*["']([^"']+)["']""", RegexOption.IGNORE_CASE)
@@ -99,7 +125,6 @@ class SecureLogger {
                 "$prefix$REDACTED$suffix"
             }
         }
-        
         return redacted
     }
     

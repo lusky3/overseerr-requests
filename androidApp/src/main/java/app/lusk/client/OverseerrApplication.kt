@@ -20,22 +20,5 @@ class OverseerrApplication : Application() {
             modules(app.lusk.client.di.androidAppModule)
         }
         
-        // Mock server disabled to prevent confusion with real server connections
-        // if (app.lusk.client.BuildConfig.DEBUG) {
-        //     startMockServer()
-        // }
-    }
-    
-    private fun startMockServer() {
-        Thread {
-            try {
-                app.lusk.client.mock.MockOverseerrServer().apply {
-                    start(5055)
-                }
-                android.util.Log.d("OverseerrApp", "Mock server started on port 5055")
-            } catch (e: Exception) {
-                android.util.Log.e("OverseerrApp", "Failed to start mock server", e)
-            }
-        }.start()
     }
 }

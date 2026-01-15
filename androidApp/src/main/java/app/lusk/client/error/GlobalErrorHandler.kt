@@ -13,7 +13,6 @@ import java.io.StringWriter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlin.system.exitProcess
 
 /**
  * Global error handler for uncaught exceptions and crash reporting.
@@ -191,7 +190,15 @@ class GlobalErrorHandler(
      */
     private fun getAppVersion(): String {
         return try {
-            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                context.packageManager.getPackageInfo(
+                    context.packageName,
+                    android.content.pm.PackageManager.PackageInfoFlags.of(0)
+                )
+            } else {
+                @Suppress("DEPRECATION")
+                context.packageManager.getPackageInfo(context.packageName, 0)
+            }
             packageInfo.versionName ?: "Unknown"
         } catch (e: Exception) {
             "Unknown"
