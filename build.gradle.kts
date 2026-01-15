@@ -20,6 +20,9 @@ buildscript {
             classpath("org.apache.commons:commons-compress:1.27.1") {
                 because("Fixes CVE-2024-25710 and CVE-2024-26308")
             }
+            classpath("com.google.protobuf:protobuf-java:3.25.5") {
+                because("Fixes Denial of Service vulnerability")
+            }
         }
     }
 }
