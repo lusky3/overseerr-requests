@@ -33,7 +33,7 @@ kotlinxSerialization = "1.7.3"
 
 # Database
 room = "2.8.4"
-datastore = "1.1.1"
+datastore = "1.2.0"
 workmanager = "2.9.1"
 
 # CMP & KMP
