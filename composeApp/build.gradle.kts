@@ -3,20 +3,39 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.android.library.kmp)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.buildkonfig)
     `maven-publish`
 }
 
 kotlin {
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+    // androidTarget() is created automatically by com.android.kotlin.multiplatform.library
+    targets.configureEach {
+        if (name == "android") {
+             (this as? org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget)?.let { android ->
+                 @OptIn(ExperimentalKotlinGradlePluginApi::class)
+                 android.compilerOptions {
+                     jvmTarget.set(JvmTarget.JVM_17)
+                 }
+             }
+        }
+    }
+
+    androidLibrary {
+        namespace = "app.lusk.client.shared"
+        compileSdk = libs.versions.compileSdk.get().toInt()
+        minSdk = libs.versions.minSdk.get().toInt()
+    }
+
+    buildkonfig {
+        packageName = "app.lusk.client.shared"
+        defaultConfigs {
+            buildConfigField(com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN, "DEBUG", "true")
         }
     }
     
@@ -94,24 +113,7 @@ kotlin {
     }
 }
 
-android {
-    namespace = "app.lusk.client.shared"
-    compileSdk = libs.versions.compileSdk.get().toInt()
 
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-    }
-    
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    buildFeatures {
-        buildConfig = true
-    }
-}
 
 room {
     schemaDirectory("$projectDir/schemas")
