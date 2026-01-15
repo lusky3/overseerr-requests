@@ -83,7 +83,7 @@ jobs:
       run: ./gradlew jacocoTestReport
 
     - name: Upload Coverage Report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: coverage-report
         path: androidApp/build/reports/jacoco/jacocoTestReport/html/
@@ -95,7 +95,7 @@ jobs:
       run: ./gradlew assembleDebug
 
     - name: Upload Debug APK
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: minimal-android-debug
         path: androidApp/build/outputs/apk/debug/androidApp-debug.apk
