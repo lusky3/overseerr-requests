@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -438,7 +439,7 @@ private fun IssueTypeChip(
         IssueType.VIDEO -> Icons.Default.Videocam to "Video"
         IssueType.AUDIO -> Icons.Default.MusicNote to "Audio"
         IssueType.SUBTITLES -> Icons.Default.Subtitles to "Subtitles"
-        IssueType.OTHER -> Icons.Default.Help to "Other"
+        IssueType.OTHER -> Icons.AutoMirrored.Filled.Help to "Other"
     }
     
     AssistChip(

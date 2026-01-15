@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
@@ -74,7 +75,7 @@ fun IssuesListScreen(
                 }
                 
                 // Filter tabs
-                TabRow(
+                PrimaryTabRow(
                     selectedTabIndex = selectedTab,
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -175,7 +176,7 @@ private fun IssueCountsCard(
                 color = MaterialTheme.colorScheme.tertiary
             )
             IssueCountItem(
-                icon = Icons.Default.List,
+                icon = Icons.AutoMirrored.Filled.List,
                 count = counts.total,
                 label = "Total",
                 color = MaterialTheme.colorScheme.primary
@@ -344,7 +345,7 @@ private fun IssueItem(
                     // Comment count
                     if (issue.comments.isNotEmpty()) {
                         Icon(
-                            imageVector = Icons.Default.Comment,
+                            imageVector = Icons.AutoMirrored.Filled.Comment,
                             contentDescription = null,
                             modifier = Modifier.size(14.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -418,9 +419,9 @@ private fun IssueTypeIcon(
 ) {
     val (icon, color) = when (issueType) {
         IssueType.VIDEO -> Icons.Default.Videocam to MaterialTheme.colorScheme.primary
-        IssueType.AUDIO -> Icons.Default.VolumeUp to MaterialTheme.colorScheme.secondary
+        IssueType.AUDIO -> Icons.AutoMirrored.Filled.VolumeUp to MaterialTheme.colorScheme.secondary
         IssueType.SUBTITLES -> Icons.Default.Subtitles to MaterialTheme.colorScheme.tertiary
-        IssueType.OTHER -> Icons.Default.HelpOutline to MaterialTheme.colorScheme.outline
+        IssueType.OTHER -> Icons.AutoMirrored.Filled.HelpOutline to MaterialTheme.colorScheme.outline
     }
     
     Surface(
