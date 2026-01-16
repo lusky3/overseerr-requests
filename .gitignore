@@ -112,3 +112,6 @@ sonarr-config/
 .env.local
 .env.production
 .env.staging
+
+# Sentry Config File
+sentry.properties

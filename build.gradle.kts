@@ -13,6 +13,8 @@ plugins {
     alias(libs.plugins.buildkonfig) apply false
     alias(libs.plugins.google.services) apply false
     id("org.sonarqube") version "7.2.2.6593"
+
+    id("io.sentry.android.gradle") version "5.12.2"
 }
 
 sonar {
@@ -64,4 +66,15 @@ subprojects {
             force("org.apache.commons:commons-lang3:3.17.0")
         }
     }
+}
+
+
+sentry {
+    org.set(System.getenv("SENTRY_ORG") ?: "")
+    projectName.set(System.getenv("SENTRY_PROJECT") ?: "")
+    authToken.set(System.getenv("SENTRY_AUTH_TOKEN") ?: "")
+
+    // Upload source code to Sentry for better stack traces
+    // Only works when auth token is provided
+    includeSourceContext.set(!System.getenv("SENTRY_AUTH_TOKEN").isNullOrBlank())
 }

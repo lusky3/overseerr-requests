@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.services)
+    id("io.sentry.android.gradle")
 }
 
 android {
@@ -37,6 +38,8 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             enableUnitTestCoverage = true
+            // Sentry DSN - empty by default, set via SENTRY_DSN env var
+            buildConfigField("String", "SENTRY_DSN", "\"${System.getenv("SENTRY_DSN") ?: ""}\"")
         }
         release {
             isMinifyEnabled = true
@@ -46,6 +49,8 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("debug") // TODO: Configure release signing
+            // Sentry DSN - empty by default, set via SENTRY_DSN env var
+            buildConfigField("String", "SENTRY_DSN", "\"${System.getenv("SENTRY_DSN") ?: ""}\"")
         }
     }
 
@@ -140,6 +145,9 @@ dependencies {
 
     // Other
     implementation(libs.androidx.splashscreen)
+
+    // Sentry - Error monitoring (optional, only active if DSN is configured)
+    implementation("io.sentry:sentry-android:8.7.0")
 
     // Testing
     testImplementation(libs.junit)
