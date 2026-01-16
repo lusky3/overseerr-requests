@@ -22,6 +22,9 @@ jobs:
       actions: read           # required for private repos
     runs-on: ubuntu-latest
     
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,8 +40,6 @@ jobs:
 
       - name: Set up Snyk CLI
         uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Create dummy google-services.json for build
         run: |
@@ -77,26 +78,23 @@ jobs:
 
       # Snyk Code (SAST) - Static Application Security Testing
       - name: Snyk Code Test
-        run: snyk code test --sarif > snyk-code.sarif || true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+        run: snyk code test --sarif-file-output=snyk-code.sarif
 
       # Snyk Open Source (SCA) - Dependency vulnerability scanning
       - name: Snyk Open Source Test
-        run: snyk test --all-projects --sarif-file-output=snyk-deps.sarif || true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+        run: snyk test --all-projects --sarif-file-output=snyk-deps.sarif
 
       # Monitor project on Snyk dashboard for continuous tracking
       - name: Snyk Monitor
+        continue-on-error: true
         run: snyk monitor --all-projects
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       # Upload SAST results to GitHub Code Scanning
       - name: Upload Snyk Code results to GitHub
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        if: always() && hashFiles('snyk-code.sarif') != ''
         with:
           sarif_file: snyk-code.sarif
           category: snyk-code
@@ -104,7 +102,7 @@ jobs:
       # Upload SCA results to GitHub Code Scanning
       - name: Upload Snyk dependency results to GitHub
         uses: github/codeql-action/upload-sarif@v3
-        if: always()
+        if: always() && hashFiles('snyk-deps.sarif') != ''
         with:
           sarif_file: snyk-deps.sarif
           category: snyk-dependencies
