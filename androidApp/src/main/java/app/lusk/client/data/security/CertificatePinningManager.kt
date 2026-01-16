@@ -2,6 +2,7 @@ package app.lusk.client.data.security
 
 import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
+import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 
 import javax.net.ssl.HostnameVerifier
@@ -97,7 +98,7 @@ class CertificatePinningManager {
     fun createTrustManager(): X509TrustManager {
         return object : X509TrustManager {
             override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-                // Not used for client
+                throw CertificateException("Client authentication not supported")
             }
 
             override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
