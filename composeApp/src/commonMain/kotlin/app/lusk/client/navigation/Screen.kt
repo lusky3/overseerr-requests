@@ -10,7 +10,16 @@ sealed class Screen(val route: String) {
     data object Splash : Screen("splash")
     
     // Authentication
-    data object ServerConfig : Screen("server_config")
+    data object ServerConfig : Screen("server_config?serverUrl={serverUrl}") {
+        const val BASE_ROUTE = "server_config"
+        fun createRoute(serverUrl: String? = null): String {
+            return if (serverUrl != null) {
+                "server_config?serverUrl=${java.net.URLEncoder.encode(serverUrl, "UTF-8")}"
+            } else {
+                "server_config"
+            }
+        }
+    }
     data object PlexAuth : Screen("plex_auth")
     data object PlexAuthCallback : Screen("plex_auth_callback/{token}") {
         fun createRoute(token: String) = "plex_auth_callback/$token"
@@ -72,9 +81,21 @@ sealed class Screen(val route: String) {
         
         /**
          * Parse deep link URI to screen route.
+         * Supported formats:
+         * - lusk://setup?server=https://overseerr.example.com (server setup)
+         * - lusk://media/{type}/{id} (media details)
+         * - lusk://request/{id} (request details)
+         * - lusk://auth?token=XYZ (plex auth callback)
          */
         fun parseDeepLink(uri: String): String? {
             return when {
+                uri.startsWith("lusk://setup") -> {
+                    // Extract server URL from query parameter: lusk://setup?server=https://...
+                    val serverUrl = uri.substringAfter("server=", "")
+                        .takeIf { it.isNotEmpty() }
+                        ?.let { java.net.URLDecoder.decode(it, "UTF-8") }
+                    ServerConfig.createRoute(serverUrl)
+                }
                 uri.startsWith("lusk://media/") -> {
                     val parts = uri.removePrefix("lusk://media/").split("/")
                     if (parts.size == 2) {

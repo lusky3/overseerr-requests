@@ -48,6 +48,17 @@
                     android:host="request" />
             </intent-filter>
 
+            <!-- Deep link support for server setup -->
+            <!-- Format: lusk://setup?server=https://overseerr.example.com -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="lusk"
+                    android:host="setup" />
+            </intent-filter>
+
             <!-- Deep link support for authentication callback -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

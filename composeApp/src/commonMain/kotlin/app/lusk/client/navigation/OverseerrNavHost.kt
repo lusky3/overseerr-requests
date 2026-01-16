@@ -63,20 +63,31 @@ fun OverseerrNavHost(
         // Authentication Flow
         composable(
             route = Screen.ServerConfig.route,
+            arguments = listOf(
+                navArgument("serverUrl") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            ),
             enterTransition = { forwardTransition() },
             exitTransition = { backwardTransition() },
             popEnterTransition = { popEnterTransition() },
             popExitTransition = { popExitTransition() }
-        ) {
+        ) { backStackEntry ->
+            val serverUrl = backStackEntry.arguments?.getString("serverUrl")
+                ?.let { java.net.URLDecoder.decode(it, "UTF-8") }
+            
             ServerConfigScreen(
                 onServerValidated = {
                     navController.navigate(Screen.PlexAuth.route)
                 },
                 onAuthenticated = {
                     navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.ServerConfig.route) { inclusive = true }
+                        popUpTo(Screen.ServerConfig.BASE_ROUTE) { inclusive = true }
                     }
-                }
+                },
+                prefillServerUrl = serverUrl
             )
         }
         

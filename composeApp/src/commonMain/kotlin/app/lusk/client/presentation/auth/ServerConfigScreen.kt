@@ -21,23 +21,30 @@ import kotlinx.coroutines.flow.first
  * Feature: overseerr-android-client
  * Validates: Requirements 1.1, 1.2
  * Property 28: Koin Dependency Injection
+ * 
+ * @param prefillServerUrl Optional server URL from deep link (lusk://setup?server=...)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServerConfigScreen(
     onServerValidated: () -> Unit,
     onAuthenticated: () -> Unit,
+    prefillServerUrl: String? = null,
     viewModel: AuthViewModel = koinViewModel()
 ) {
     val authState by viewModel.authState.collectAsState()
     val serverValidationState by viewModel.serverValidationState.collectAsState()
-    var serverUrl by remember { mutableStateOf("") }
+    var serverUrl by remember { mutableStateOf(prefillServerUrl ?: "") }
     var allowHttp by remember { mutableStateOf(false) }
     
-    // Prefill server URL if already stored
+    // Prefill server URL from deep link or storage
     LaunchedEffect(Unit) {
-        viewModel.getServerUrl().first()?.let {
-            serverUrl = it
+        if (prefillServerUrl != null) {
+            serverUrl = prefillServerUrl
+        } else {
+            viewModel.getServerUrl().first()?.let {
+                serverUrl = it
+            }
         }
     }
     
