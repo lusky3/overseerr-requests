@@ -15,4 +15,5 @@ actual fun platformModule(): Module = module {
     single<SyncScheduler> { AndroidSyncScheduler(get()) }
     single<AppLogger> { AndroidLogger() }
     single { app.lusk.client.data.security.BiometricAuthenticator(get()) }
+    single<app.lusk.client.domain.security.BiometricManager> { get<app.lusk.client.data.security.BiometricAuthenticator>() }
 }

@@ -23,11 +23,11 @@ class MainViewModel(
             initialValue = ThemePreference.SYSTEM
         )
 
-    val isBiometricEnabled: StateFlow<Boolean> = settingsRepository.getBiometricEnabled()
+    val isBiometricEnabled: StateFlow<Boolean?> = settingsRepository.getBiometricEnabled()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = false
+            initialValue = null
         )
 
     private val _isAppLocked = kotlinx.coroutines.flow.MutableStateFlow(false)

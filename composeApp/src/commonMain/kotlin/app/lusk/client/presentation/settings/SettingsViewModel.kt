@@ -24,7 +24,8 @@ import kotlinx.coroutines.launch
 class SettingsViewModel(
     private val settingsRepository: SettingsRepository,
     private val authRepository: app.lusk.client.domain.repository.AuthRepository,
-    private val requestRepository: app.lusk.client.domain.repository.RequestRepository
+    private val requestRepository: app.lusk.client.domain.repository.RequestRepository,
+    private val biometricManager: app.lusk.client.domain.security.BiometricManager
 ) : ViewModel() {
     
     private val _themePreference = MutableStateFlow(ThemePreference.SYSTEM)
@@ -35,6 +36,9 @@ class SettingsViewModel(
     
     private val _biometricEnabled = MutableStateFlow(false)
     val biometricEnabled: StateFlow<Boolean> = _biometricEnabled.asStateFlow()
+
+    private val _isBiometricAvailable = MutableStateFlow(false)
+    val isBiometricAvailable: StateFlow<Boolean> = _isBiometricAvailable.asStateFlow()
     
     private val _defaultMovieProfile = MutableStateFlow<Int?>(null)
     val defaultMovieProfile: StateFlow<Int?> = _defaultMovieProfile.asStateFlow()
@@ -57,8 +61,13 @@ class SettingsViewModel(
     init {
         loadSettings()
         fetchProfiles()
+        checkBiometricAvailability()
     }
     
+    private fun checkBiometricAvailability() {
+        _isBiometricAvailable.value = biometricManager.isBiometricAvailable()
+    }
+
     private fun loadSettings() {
         viewModelScope.launch {
             settingsRepository.getThemePreference().collect {
@@ -132,6 +141,10 @@ class SettingsViewModel(
     }
     
     fun setBiometricEnabled(enabled: Boolean) {
+        if (enabled && !_isBiometricAvailable.value) {
+            // Cannot enable if not available
+            return
+        }
         viewModelScope.launch {
             settingsRepository.setBiometricEnabled(enabled)
         }

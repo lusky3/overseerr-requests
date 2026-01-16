@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
  */
 class BiometricAuthenticator(
     private val context: Context
-) {
+) : app.lusk.client.domain.security.BiometricManager {
     private val biometricManager = BiometricManager.from(context)
     
     /**
@@ -33,7 +33,7 @@ class BiometricAuthenticator(
      * 
      * @return true if biometric hardware is available and enrolled, false otherwise
      */
-    fun isBiometricAvailable(): Boolean {
+    override fun isBiometricAvailable(): Boolean {
         return when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
             BiometricManager.BIOMETRIC_SUCCESS -> true
             BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE -> false

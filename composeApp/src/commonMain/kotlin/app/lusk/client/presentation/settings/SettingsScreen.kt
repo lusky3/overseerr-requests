@@ -131,11 +131,14 @@ fun SettingsScreen(
             // Security Section
             SettingsSectionHeader(title = "Security")
             
+            val isBiometricAvailable by viewModel.isBiometricAvailable.collectAsState()
+
             SettingsSwitchItem(
                 title = "Biometric Authentication",
-                subtitle = "Require fingerprint or face unlock",
+                subtitle = if (isBiometricAvailable) "Require fingerprint or face unlock" else "Biometrics not available on this device",
                 checked = biometricEnabled,
-                onCheckedChange = { viewModel.setBiometricEnabled(it) }
+                onCheckedChange = { viewModel.setBiometricEnabled(it) },
+                enabled = isBiometricAvailable
             )
             
             HorizontalDivider()
@@ -256,7 +259,8 @@ private fun SettingsSwitchItem(
     title: String,
     subtitle: String,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
+    enabled: Boolean = true
 ) {
     Row(
         modifier = Modifier
@@ -268,17 +272,19 @@ private fun SettingsSwitchItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             )
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (enabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f)
             )
         }
         Switch(
             checked = checked,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
+            enabled = enabled
         )
     }
 }

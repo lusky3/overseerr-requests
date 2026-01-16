@@ -41,7 +41,9 @@ class MainActivity : FragmentActivity() {
             val scope = rememberCoroutineScope()
 
             LaunchedEffect(isBiometricEnabled) {
-                viewModel.checkInitialLockState(isBiometricEnabled)
+                isBiometricEnabled?.let { enabled ->
+                    viewModel.checkInitialLockState(enabled)
+                }
             }
             
             // Auto-trigger authentication when locked
