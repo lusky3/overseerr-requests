@@ -53,13 +53,13 @@ class ProfileViewModel(
                     statistics = statsResult.data
                 )
             } else if (profileResult is Result.Error) {
-                _profileState.value = ProfileState.Error(profileResult.error.toString())
+                _profileState.value = ProfileState.Error(profileResult.error.getUserMessage())
                 return@launch
             } else if (quotaResult is Result.Error) {
-                 _profileState.value = ProfileState.Error(quotaResult.error.toString())
+                 _profileState.value = ProfileState.Error(quotaResult.error.getUserMessage())
                  return@launch
             } else if (statsResult is Result.Error) {
-                 _profileState.value = ProfileState.Error(statsResult.error.toString())
+                 _profileState.value = ProfileState.Error(statsResult.error.getUserMessage())
                  return@launch
             }
             

@@ -71,7 +71,10 @@ fun MainScreen(
             Row(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = paddingValues.calculateTopPadding())
+                    .padding(
+                        top = paddingValues.calculateTopPadding(),
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
             ) {
                 // Navigation rail for larger screens
                 if (showNavigation && layoutConfig.useNavigationRail) {

@@ -20,6 +20,8 @@ import org.koin.compose.viewmodel.koinViewModel
 import app.lusk.client.ui.components.AsyncImage
 import app.lusk.client.presentation.auth.AuthState
 import app.lusk.client.presentation.auth.AuthViewModel
+import app.lusk.client.ui.components.ErrorState
+import app.lusk.client.ui.components.LoadingState
 
 /**
  * Profile screen displaying user information, quota, and statistics.
@@ -71,54 +73,43 @@ fun ProfileScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            when (val state = profileState) {
-                is ProfileState.Loading -> {
-                    if (!pullRefreshing) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                }
-                
-                is ProfileState.Error -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                text = "Failed to load profile",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = state.message,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Button(onClick = { viewModel.refresh() }) {
-                                Text("Retry")
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                ) {
+                    when (val state = profileState) {
+                        is ProfileState.Loading -> {
+                            if (!pullRefreshing) {
+                                LoadingState()
                             }
                         }
+                        
+                        is ProfileState.Error -> {
+                            ErrorState(
+                                message = state.message,
+                                onRetry = { viewModel.refresh() }
+                            )
+                        }
+                        
+                        is ProfileState.Success -> {
+                            ProfileContent(
+                                state = state,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
                     }
                 }
-                
-                is ProfileState.Success -> {
-                    ProfileContent(
-                        state = state,
-                        onNavigateToSettings = onNavigateToSettings,
-                        onLogout = { authViewModel.logout() },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
+
+                // Actions are always visible
+                ProfileActions(
+                    onNavigateToSettings = onNavigateToSettings,
+                    onLogout = { authViewModel.logout() },
+                    modifier = Modifier.padding(16.dp)
+                )
             }
         }
     }
@@ -127,15 +118,13 @@ fun ProfileScreen(
 @Composable
 private fun ProfileContent(
     state: ProfileState.Success,
-    onNavigateToSettings: () -> Unit,
-    onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 100.dp)
+            .padding(16.dp)
     ) {
         // User Info Card
         Card(
@@ -272,6 +261,16 @@ private fun ProfileContent(
             }
         }
         
+    }
+}
+
+@Composable
+private fun ProfileActions(
+    onNavigateToSettings: () -> Unit,
+    onLogout: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
         // Settings Button
         Button(
             onClick = onNavigateToSettings,
