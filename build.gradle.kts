@@ -55,6 +55,7 @@ subprojects {
             // Protobuf vulnerabilities - CVE for DoS
             force("com.google.protobuf:protobuf-java:4.29.3")
             force("com.google.protobuf:protobuf-kotlin:4.29.3")
+            force("com.google.protobuf:protobuf-java-util:4.29.3")
             
             // JDOM2 XXE vulnerability
             force("org.jdom:jdom2:2.0.6.1")
