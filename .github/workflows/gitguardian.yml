@@ -16,8 +16,8 @@ jobs:
   scanning:
     name: GitGuardian Secret Scan
     runs-on: ubuntu-latest
-    # Skip if no API key (e.g., Dependabot PRs don't have access to secrets)
-    if: ${{ github.actor != 'dependabot[bot]' && secrets.GITGUARDIAN_API_KEY != '' }}
+    # Skip for Dependabot PRs (no access to secrets)
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
