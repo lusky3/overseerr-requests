@@ -35,6 +35,8 @@ class PreferencesManager(
         val NOTIFICATION_AVAILABLE = booleanPreferencesKey("notification_available")
         val NOTIFICATION_DECLINED = booleanPreferencesKey("notification_declined")
         val DEFAULT_QUALITY_PROFILE = intPreferencesKey("default_quality_profile")
+        val DEFAULT_MOVIE_QUALITY_PROFILE = intPreferencesKey("default_movie_quality_profile")
+        val DEFAULT_TV_QUALITY_PROFILE = intPreferencesKey("default_tv_quality_profile")
         val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
         val CONFIGURED_SERVERS = stringPreferencesKey("configured_servers")
         val CURRENT_SERVER_URL = stringPreferencesKey("current_server_url")
@@ -196,6 +198,38 @@ class PreferencesManager(
             preferences[PreferenceKeys.DEFAULT_QUALITY_PROFILE]
         }
     }
+
+    suspend fun setDefaultMovieQualityProfile(profileId: Int?) {
+        dataStore.edit { preferences ->
+            if (profileId != null) {
+                preferences[PreferenceKeys.DEFAULT_MOVIE_QUALITY_PROFILE] = profileId
+            } else {
+                preferences.remove(PreferenceKeys.DEFAULT_MOVIE_QUALITY_PROFILE)
+            }
+        }
+    }
+    
+    fun getDefaultMovieQualityProfile(): Flow<Int?> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.DEFAULT_MOVIE_QUALITY_PROFILE]
+        }
+    }
+    
+    suspend fun setDefaultTvQualityProfile(profileId: Int?) {
+        dataStore.edit { preferences ->
+            if (profileId != null) {
+                preferences[PreferenceKeys.DEFAULT_TV_QUALITY_PROFILE] = profileId
+            } else {
+                preferences.remove(PreferenceKeys.DEFAULT_TV_QUALITY_PROFILE)
+            }
+        }
+    }
+    
+    fun getDefaultTvQualityProfile(): Flow<Int?> {
+        return dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.DEFAULT_TV_QUALITY_PROFILE]
+        }
+    }
     
     // Onboarding
     
@@ -223,6 +257,9 @@ class PreferencesManager(
         dataStore.edit { preferences ->
             preferences.remove(PreferenceKeys.API_KEY)
             preferences.remove(PreferenceKeys.USER_ID)
+            preferences.remove(PreferenceKeys.DEFAULT_QUALITY_PROFILE)
+            preferences.remove(PreferenceKeys.DEFAULT_MOVIE_QUALITY_PROFILE)
+            preferences.remove(PreferenceKeys.DEFAULT_TV_QUALITY_PROFILE)
         }
     }
     

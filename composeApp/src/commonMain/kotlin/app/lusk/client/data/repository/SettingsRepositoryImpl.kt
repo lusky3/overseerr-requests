@@ -36,6 +36,20 @@ class SettingsRepositoryImpl(
     override suspend fun setDefaultQualityProfile(profileId: Int) {
         preferencesManager.setDefaultQualityProfile(profileId)
     }
+
+    override fun getDefaultMovieQualityProfile(): Flow<Int?> =
+        preferencesManager.getDefaultMovieQualityProfile()
+
+    override suspend fun setDefaultMovieQualityProfile(profileId: Int?) {
+        preferencesManager.setDefaultMovieQualityProfile(profileId)
+    }
+
+    override fun getDefaultTvQualityProfile(): Flow<Int?> =
+        preferencesManager.getDefaultTvQualityProfile()
+
+    override suspend fun setDefaultTvQualityProfile(profileId: Int?) {
+        preferencesManager.setDefaultTvQualityProfile(profileId)
+    }
     
     override fun getBiometricEnabled(): Flow<Boolean> =
         preferencesManager.getBiometricEnabled()

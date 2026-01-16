@@ -23,7 +23,8 @@ import kotlinx.coroutines.launch
  */
 class SettingsViewModel(
     private val settingsRepository: SettingsRepository,
-    private val authRepository: app.lusk.client.domain.repository.AuthRepository
+    private val authRepository: app.lusk.client.domain.repository.AuthRepository,
+    private val requestRepository: app.lusk.client.domain.repository.RequestRepository
 ) : ViewModel() {
     
     private val _themePreference = MutableStateFlow(ThemePreference.SYSTEM)
@@ -35,8 +36,17 @@ class SettingsViewModel(
     private val _biometricEnabled = MutableStateFlow(false)
     val biometricEnabled: StateFlow<Boolean> = _biometricEnabled.asStateFlow()
     
-    private val _defaultQualityProfile = MutableStateFlow<Int?>(null)
-    val defaultQualityProfile: StateFlow<Int?> = _defaultQualityProfile.asStateFlow()
+    private val _defaultMovieProfile = MutableStateFlow<Int?>(null)
+    val defaultMovieProfile: StateFlow<Int?> = _defaultMovieProfile.asStateFlow()
+
+    private val _defaultTvProfile = MutableStateFlow<Int?>(null)
+    val defaultTvProfile: StateFlow<Int?> = _defaultTvProfile.asStateFlow()
+
+    private val _movieProfiles = MutableStateFlow<List<app.lusk.client.domain.repository.QualityProfile>>(emptyList())
+    val movieProfiles: StateFlow<List<app.lusk.client.domain.repository.QualityProfile>> = _movieProfiles.asStateFlow()
+
+    private val _tvProfiles = MutableStateFlow<List<app.lusk.client.domain.repository.QualityProfile>>(emptyList())
+    val tvProfiles: StateFlow<List<app.lusk.client.domain.repository.QualityProfile>> = _tvProfiles.asStateFlow()
     
     private val _configuredServers = MutableStateFlow<List<ServerConfig>>(emptyList())
     val configuredServers: StateFlow<List<ServerConfig>> = _configuredServers.asStateFlow()
@@ -46,6 +56,7 @@ class SettingsViewModel(
     
     init {
         loadSettings()
+        fetchProfiles()
     }
     
     private fun loadSettings() {
@@ -68,8 +79,14 @@ class SettingsViewModel(
         }
         
         viewModelScope.launch {
-            settingsRepository.getDefaultQualityProfile().collect {
-                _defaultQualityProfile.value = it
+            settingsRepository.getDefaultMovieQualityProfile().collect {
+                _defaultMovieProfile.value = it
+            }
+        }
+
+        viewModelScope.launch {
+            settingsRepository.getDefaultTvQualityProfile().collect {
+                _defaultTvProfile.value = it
             }
         }
         
@@ -82,6 +99,22 @@ class SettingsViewModel(
         viewModelScope.launch {
             settingsRepository.getCurrentServerUrl().collect {
                 _currentServerUrl.value = it
+            }
+        }
+    }
+
+    private fun fetchProfiles() {
+        viewModelScope.launch {
+            // Fetch Movie Profiles
+            val movieResult = requestRepository.getQualityProfiles(isMovie = true)
+            if (movieResult is app.lusk.client.domain.model.Result.Success) {
+                _movieProfiles.value = movieResult.data
+            }
+
+            // Fetch TV Profiles
+            val tvResult = requestRepository.getQualityProfiles(isMovie = false)
+            if (tvResult is app.lusk.client.domain.model.Result.Success) {
+                _tvProfiles.value = tvResult.data
             }
         }
     }
@@ -104,9 +137,15 @@ class SettingsViewModel(
         }
     }
     
-    fun setDefaultQualityProfile(profileId: Int) {
+    fun setDefaultMovieProfile(profileId: Int?) {
         viewModelScope.launch {
-            settingsRepository.setDefaultQualityProfile(profileId)
+            settingsRepository.setDefaultMovieQualityProfile(profileId)
+        }
+    }
+
+    fun setDefaultTvProfile(profileId: Int?) {
+        viewModelScope.launch {
+            settingsRepository.setDefaultTvQualityProfile(profileId)
         }
     }
     

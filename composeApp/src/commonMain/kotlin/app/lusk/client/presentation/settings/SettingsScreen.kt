@@ -30,11 +30,16 @@ fun SettingsScreen(
     val themePreference by viewModel.themePreference.collectAsState()
     val notificationSettings by viewModel.notificationSettings.collectAsState()
     val biometricEnabled by viewModel.biometricEnabled.collectAsState()
-    val defaultQualityProfile by viewModel.defaultQualityProfile.collectAsState()
+    val defaultMovieProfile by viewModel.defaultMovieProfile.collectAsState()
+    val defaultTvProfile by viewModel.defaultTvProfile.collectAsState()
+    val movieProfiles by viewModel.movieProfiles.collectAsState()
+    val tvProfiles by viewModel.tvProfiles.collectAsState()
+    
     val currentServerUrl by viewModel.currentServerUrl.collectAsState()
     
     var showThemeDialog by remember { mutableStateOf(false) }
-    var showQualityProfileDialog by remember { mutableStateOf(false) }
+    var showMovieProfileDialog by remember { mutableStateOf(false) }
+    var showTvProfileDialog by remember { mutableStateOf(false) }
     
     Scaffold(
         topBar = {
@@ -139,9 +144,19 @@ fun SettingsScreen(
             SettingsSectionHeader(title = "Requests")
             
             SettingsItem(
-                title = "Default Quality Profile",
-                subtitle = defaultQualityProfile?.toString() ?: "Not set",
-                onClick = { showQualityProfileDialog = true }
+                title = "Default Movie Profile",
+                subtitle = defaultMovieProfile?.let { id -> 
+                    movieProfiles.find { it.id == id }?.name
+                } ?: "Use server setting",
+                onClick = { showMovieProfileDialog = true }
+            )
+
+            SettingsItem(
+                title = "Default TV Profile",
+                subtitle = defaultTvProfile?.let { id -> 
+                    tvProfiles.find { it.id == id }?.name
+                } ?: "Use server setting",
+                onClick = { showTvProfileDialog = true }
             )
             
             HorizontalDivider()
@@ -169,15 +184,31 @@ fun SettingsScreen(
         )
     }
     
-    // Quality Profile Dialog
-    if (showQualityProfileDialog) {
+    // Movie Profile Dialog
+    if (showMovieProfileDialog) {
         QualityProfileDialog(
-            currentProfile = defaultQualityProfile,
-            onProfileSelected = { profile ->
-                viewModel.setDefaultQualityProfile(profile)
-                showQualityProfileDialog = false
+            title = "Select Movie Profile",
+            currentProfileId = defaultMovieProfile,
+            profiles = movieProfiles,
+            onProfileSelected = { profileId ->
+                viewModel.setDefaultMovieProfile(profileId)
+                showMovieProfileDialog = false
             },
-            onDismiss = { showQualityProfileDialog = false }
+            onDismiss = { showMovieProfileDialog = false }
+        )
+    }
+
+    // TV Profile Dialog
+    if (showTvProfileDialog) {
+        QualityProfileDialog(
+            title = "Select TV Profile",
+            currentProfileId = defaultTvProfile,
+            profiles = tvProfiles,
+            onProfileSelected = { profileId ->
+                viewModel.setDefaultTvProfile(profileId)
+                showTvProfileDialog = false
+            },
+            onDismiss = { showTvProfileDialog = false }
         )
     }
 }
@@ -300,30 +331,60 @@ private fun ThemeSelectionDialog(
 
 @Composable
 private fun QualityProfileDialog(
-    currentProfile: Int?,
-    onProfileSelected: (Int) -> Unit,
+    title: String,
+    currentProfileId: Int?,
+    profiles: List<app.lusk.client.domain.repository.QualityProfile>,
+    onProfileSelected: (Int?) -> Unit,
     onDismiss: () -> Unit
 ) {
-    // Simplified quality profile selection
-    // In a real app, this would fetch available profiles from the server
-    val profiles = listOf(1, 2, 3, 4)
-    
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Select Quality Profile") },
+        title = { Text(title) },
         text = {
-            Column {
+            Column(
+                 modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                // "Use server setting" option
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onProfileSelected(null) }
+                        .padding(vertical = 12.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "Use server setting", style = MaterialTheme.typography.bodyLarge)
+                    if (currentProfileId == null) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Selected",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+
+                HorizontalDivider()
+
+                if (profiles.isEmpty()) {
+                     Text(
+                        text = "No profiles found or loading...",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 12.dp)
+                    )
+                }
+
                 profiles.forEach { profile ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { onProfileSelected(profile) }
+                            .clickable { onProfileSelected(profile.id) }
                             .padding(vertical = 12.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Profile $profile")
-                        if (profile == currentProfile) {
+                        Text(text = profile.name, style = MaterialTheme.typography.bodyLarge)
+                        if (profile.id == currentProfileId) {
                             Icon(
                                 imageVector = Icons.Default.Check,
                                 contentDescription = "Selected",

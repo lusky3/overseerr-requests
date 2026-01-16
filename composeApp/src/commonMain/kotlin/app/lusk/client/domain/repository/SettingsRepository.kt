@@ -36,13 +36,35 @@ interface SettingsRepository {
     
     /**
      * Get default quality profile.
+     * @deprecated Use getDefaultMovieQualityProfile or getDefaultTvQualityProfile
      */
     fun getDefaultQualityProfile(): Flow<Int?>
     
     /**
      * Set default quality profile.
+     * @deprecated Use setDefaultMovieQualityProfile or setDefaultTvQualityProfile
      */
     suspend fun setDefaultQualityProfile(profileId: Int)
+
+    /**
+     * Get default movie quality profile.
+     */
+    fun getDefaultMovieQualityProfile(): Flow<Int?>
+
+    /**
+     * Set default movie quality profile.
+     */
+    suspend fun setDefaultMovieQualityProfile(profileId: Int?)
+
+    /**
+     * Get default TV quality profile.
+     */
+    fun getDefaultTvQualityProfile(): Flow<Int?>
+
+    /**
+     * Set default TV quality profile.
+     */
+    suspend fun setDefaultTvQualityProfile(profileId: Int?)
     
     /**
      * Get biometric authentication enabled status.
