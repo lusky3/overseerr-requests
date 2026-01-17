@@ -1,4 +1,4 @@
-name: "CodeQL Analysis"
+name: "CodeQL Advanced"
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
   schedule:
-    - cron: '24 7 * * 2'
+    - cron: '16 5 * * 3'
 
 jobs:
   analyze:
-    name: Analyze
+    name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -21,7 +21,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'java-kotlin' ]
+        include:
+        - language: java-kotlin
+          build-mode: manual
 
     steps:
     - name: Checkout repository
@@ -37,50 +39,53 @@ jobs:
       uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
-        build-mode: manual
+        build-mode: ${{ matrix.build-mode }}
 
     - name: Setup Gradle
+      if: matrix.build-mode == 'manual'
       uses: gradle/actions/setup-gradle@v4
     
-    - name: Create dummy google-services.json for build
+    - name: Run manual build steps
+      if: matrix.build-mode == 'manual'
       run: |
-          mkdir -p androidApp/src/debug
-          mkdir -p androidApp/src/release
-          echo '{
+        # Create dummy google-services.json files required for Android build
+        mkdir -p androidApp/src/debug
+        mkdir -p androidApp/src/release
+        echo '{
             "project_info": {
-              "project_number": "000000000000",
-              "project_id": "dummy-project",
-              "storage_bucket": "dummy-project.appspot.com"
+            "project_number": "000000000000",
+            "project_id": "dummy-project",
+            "storage_bucket": "dummy-project.appspot.com"
             },
             "client": [{
-              "client_info": {
+            "client_info": {
                 "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
                 "android_client_info": { "package_name": "app.lusk.client.debug" }
-              },
-              "api_key": [{ "current_key": "dummy-api-key" }]
+            },
+            "api_key": [{ "current_key": "dummy-api-key" }]
             }],
             "configuration_version": "1"
-          }' > androidApp/src/debug/google-services.json
-          echo '{
+        }' > androidApp/src/debug/google-services.json
+        echo '{
             "project_info": {
-              "project_number": "000000000000",
-              "project_id": "dummy-project",
-              "storage_bucket": "dummy-project.appspot.com"
+            "project_number": "000000000000",
+            "project_id": "dummy-project",
+            "storage_bucket": "dummy-project.appspot.com"
             },
             "client": [{
-              "client_info": {
+            "client_info": {
                 "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
                 "android_client_info": { "package_name": "app.lusk.client" }
-              },
-              "api_key": [{ "current_key": "dummy-api-key" }]
+            },
+            "api_key": [{ "current_key": "dummy-api-key" }]
             }],
             "configuration_version": "1"
-          }' > androidApp/src/release/google-services.json
+        }' > androidApp/src/release/google-services.json
 
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug --no-daemon
+        # Run the build
+        ./gradlew assembleDebug --no-daemon
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
       with:
-        category: "/language:${{ matrix.language }}"
+        category: "/language:${{matrix.language}}"
