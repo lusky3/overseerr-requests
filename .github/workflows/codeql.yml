@@ -83,7 +83,7 @@ jobs:
         }' > androidApp/src/release/google-services.json
 
         # Run the build
-        ./gradlew assembleDebug --no-daemon
+        ./gradlew clean assembleDebug --no-daemon
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
