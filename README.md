@@ -12,7 +12,7 @@ A native, multiplatform client for [Overseerr](https://overseerr.dev/) built wit
 
 ## 🛠️ Tech Stack
 
-* **Language**: Kotlin (Multiplatform)
+* **Language**: Kotlin 2.3+ (Multiplatform)
 * **UI**: Jetpack Compose Multiplatform
 * **Architecture**: MVVM / Clean Architecture
 * **Dependency Injection**: Koin
@@ -22,10 +22,12 @@ A native, multiplatform client for [Overseerr](https://overseerr.dev/) built wit
 
 ## 🚀 Getting Started
 
+For detailed setup instructions, please see the [Project Wiki](https://github.com/lusky3/overseerr-requests/wiki).
+
 ### Prerequisites
 
 * Android Studio Hedgehog or newer
-* JDK 17+
+* JDK 24+
 * A running Overseerr instance
 
 ### Quick Setup
@@ -33,16 +35,13 @@ A native, multiplatform client for [Overseerr](https://overseerr.dev/) built wit
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/your-username/stream-app.git
-    cd stream-app
+    git clone https://github.com/lusky3/overseerr-requests.git
+    cd overseerr-requests
     ```
 
-2. **Configure Firebase (Push Notifications)**
-    * The project requires `google-services.json` for compilation.
-    * **Debug**: Place your debug config in `androidApp/src/debug/google-services.json`.
-    * **Release**: Place your release config in `androidApp/src/release/google-services.json`.
-    * **CI/CD**: Use `scripts/ci-setup-firebase.sh` to inject these from environment variables.
-    * *Note: These files are git-ignored for security.*
+2. **Configure Environment**
+    * We support [sdkman](https://sdkman.io/) for environment management (`.sdkmanrc` included).
+    * `google-services.json` files are required for compilation. See [Wiki: Setup](https://github.com/lusky3/overseerr-requests/wiki/Setup) for details.
 
 3. **Build and Run**
 
@@ -61,4 +60,6 @@ A native, multiplatform client for [Overseerr](https://overseerr.dev/) built wit
 
 ## 📄 License
 
-This project is for demonstration purposes.
+Copyright 2026 Lusk Technologies, Inc.
+
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
