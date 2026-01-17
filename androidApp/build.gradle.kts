@@ -238,8 +238,16 @@ sentry {
 
     // Upload source code to Sentry for better stack traces
     // Only works when auth token is provided
-    includeSourceContext.set(!System.getenv("SENTRY_AUTH_TOKEN").isNullOrBlank())
+    val hasAuthToken = !System.getenv("SENTRY_AUTH_TOKEN").isNullOrBlank()
+    includeSourceContext.set(hasAuthToken)
     
     // Auto-install Sentry SDK (we already added it manually)
     autoInstallation.enabled.set(false)
+}
+
+// Disable Sentry upload tasks if no auth token is present
+tasks.configureEach {
+    if (name.contains("uploadSentryProguardMappings") || name.contains("uploadSentryNativeSymbols")) {
+        enabled = !System.getenv("SENTRY_AUTH_TOKEN").isNullOrBlank()
+    }
 }
