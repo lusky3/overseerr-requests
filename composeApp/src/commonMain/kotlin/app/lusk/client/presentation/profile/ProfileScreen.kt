@@ -24,6 +24,44 @@ import app.lusk.client.ui.components.ErrorState
 import app.lusk.client.ui.components.LoadingState
 
 /**
+ * Masks an email address for privacy display.
+ * Example: "example@email.com" -> "ex*****@e****.com"
+ */
+private fun maskEmail(email: String): String {
+    if (!email.contains("@")) return email
+    
+    val parts = email.split("@")
+    if (parts.size != 2) return email
+    
+    val localPart = parts[0]
+    val domainPart = parts[1]
+    
+    // Mask local part: show first 2 chars, then asterisks
+    val maskedLocal = if (localPart.length <= 2) {
+        localPart
+    } else {
+        localPart.take(2) + "*".repeat(minOf(5, localPart.length - 2))
+    }
+    
+    // Mask domain: show first char, asterisks, then TLD
+    val domainParts = domainPart.split(".")
+    val maskedDomain = if (domainParts.size >= 2) {
+        val mainDomain = domainParts.dropLast(1).joinToString(".")
+        val tld = domainParts.last()
+        val maskedMain = if (mainDomain.isNotEmpty()) {
+            mainDomain.first() + "*".repeat(minOf(4, mainDomain.length - 1))
+        } else {
+            mainDomain
+        }
+        "$maskedMain.$tld"
+    } else {
+        domainPart
+    }
+    
+    return "$maskedLocal@$maskedDomain"
+}
+
+/**
  * Profile screen displaying user information, quota, and statistics.
  * Refactored for KMP in commonMain.
  */
@@ -174,9 +212,9 @@ private fun ProfileContent(
                     style = MaterialTheme.typography.headlineSmall
                 )
                 
-                // Email
+                // Email (masked for privacy)
                 Text(
-                    text = state.profile.email,
+                    text = maskEmail(state.profile.email),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
