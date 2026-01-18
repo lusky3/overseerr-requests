@@ -77,7 +77,7 @@ fun OverseerrNavHost(
             popEnterTransition = { popEnterTransition() },
             popExitTransition = { popExitTransition() }
         ) { backStackEntry ->
-            val serverUrl = backStackEntry.arguments?.getString("serverUrl")
+            val serverUrl = (backStackEntry.arguments?.get("serverUrl") as? String)
                 ?.let { it.decodeURLQueryComponent() }
             
             ServerConfigScreen(
@@ -121,7 +121,7 @@ fun OverseerrNavHost(
             popEnterTransition = { popEnterTransition() },
             popExitTransition = { popExitTransition() }
         ) { backStackEntry ->
-            val token = backStackEntry.arguments?.getString("token") ?: ""
+            val token = (backStackEntry.arguments?.get("token") as? String) ?: ""
             val viewModel: AuthViewModel = koinViewModel()
             
             // Auto-trigger token exchange when arriving from deep link
@@ -181,9 +181,9 @@ fun OverseerrNavHost(
             popEnterTransition = { popEnterTransition() },
             popExitTransition = { popExitTransition() }
         ) { backStackEntry ->
-            val categoryType = backStackEntry.arguments?.getString("categoryType") ?: ""
-            val categoryId = backStackEntry.arguments?.getInt("categoryId") ?: 0
-            val categoryName = backStackEntry.arguments?.getString("categoryName") ?: ""
+            val categoryType = (backStackEntry.arguments?.get("categoryType") as? String) ?: ""
+            val categoryId = (backStackEntry.arguments?.get("categoryId") as? Int) ?: 0
+            val categoryName = (backStackEntry.arguments?.get("categoryName") as? String) ?: ""
             val viewModel: DiscoveryViewModel = koinViewModel()
 
             app.lusk.client.presentation.discovery.CategoryResultsScreen(
@@ -235,9 +235,9 @@ fun OverseerrNavHost(
             popEnterTransition = { popEnterTransition() },
             popExitTransition = { popExitTransition() }
         ) { backStackEntry ->
-            val mediaTypeString = backStackEntry.arguments?.getString("mediaType") ?: "movie"
-            val mediaId = backStackEntry.arguments?.getInt("mediaId") ?: 0
-            val openRequest = backStackEntry.arguments?.getBoolean("openRequest") ?: false
+            val mediaTypeString = (backStackEntry.arguments?.get("mediaType") as? String) ?: "movie"
+            val mediaId = (backStackEntry.arguments?.get("mediaId") as? Int) ?: 0
+            val openRequest = (backStackEntry.arguments?.get("openRequest") as? Boolean) ?: false
             val mediaType = if (mediaTypeString == "tv") MediaType.TV else MediaType.MOVIE
             val viewModel: DiscoveryViewModel = koinViewModel()
             
@@ -294,7 +294,7 @@ fun OverseerrNavHost(
             popEnterTransition = { popEnterTransition() },
             popExitTransition = { popExitTransition() }
         ) { backStackEntry ->
-            val issueId = backStackEntry.arguments?.getInt("issueId") ?: return@composable
+            val issueId = (backStackEntry.arguments?.get("issueId") as? Int) ?: return@composable
             
             app.lusk.client.presentation.issue.IssueDetailsScreen(
                 issueId = issueId,
@@ -315,7 +315,7 @@ fun OverseerrNavHost(
             popEnterTransition = { popEnterTransition() },
             popExitTransition = { popExitTransition() }
         ) { backStackEntry ->
-            val requestId = backStackEntry.arguments?.getInt("requestId") ?: 0
+            val requestId = (backStackEntry.arguments?.get("requestId") as? Int) ?: 0
             val viewModel: app.lusk.client.presentation.request.RequestViewModel = koinViewModel()
             
             RequestDetailsScreen(

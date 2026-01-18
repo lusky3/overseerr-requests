@@ -11,5 +11,7 @@ fun MainViewController() = ComposeUIViewController {
 }
 
 fun initKoin() {
-    initKoin(NSObject())
+    initKoin(IosPlatformContext())
 }
+
+private class IosPlatformContext : PlatformContext()
