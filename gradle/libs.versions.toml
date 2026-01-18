@@ -11,6 +11,7 @@ agp = "8.13.2"
 kotlin = "2.3.0"
 ksp = "2.3.4"
 coreKtx = "1.15.0"
+coreBundle = "1.0.1"
 
 # Compose
 composeBom = "2026.01.00"
@@ -69,6 +70,7 @@ paging = "3.4.0-rc01"
 [libraries]
 # Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-bundle = { group = "org.jetbrains.androidx.core", name = "core-bundle", version.ref = "coreBundle" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }

@@ -1,5 +1,7 @@
 package app.lusk.client.navigation
 
+import io.ktor.http.decodeURLQueryComponent
+import androidx.core.bundle.Bundle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -76,7 +78,7 @@ fun OverseerrNavHost(
             popExitTransition = { popExitTransition() }
         ) { backStackEntry ->
             val serverUrl = backStackEntry.arguments?.getString("serverUrl")
-                ?.let { java.net.URLDecoder.decode(it, "UTF-8") }
+                ?.let { it.decodeURLQueryComponent() }
             
             ServerConfigScreen(
                 onServerValidated = {

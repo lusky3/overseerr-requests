@@ -91,6 +91,7 @@ kotlin {
             implementation(libs.androidx.paging.common)
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.navigation.compose)
+            implementation(libs.androidx.core.bundle)
         }
         
         androidMain.dependencies {
