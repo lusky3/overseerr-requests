@@ -2,6 +2,7 @@ package app.lusk.client.navigation
 
 import io.ktor.http.decodeURLQueryComponent
 import androidx.core.bundle.Bundle
+import androidx.core.bundle.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
