@@ -4,8 +4,20 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
+      - 'website/**'
+      - 'docs/**'
+      - 'LICENSE'
+      - 'SECURITY.md'
   pull_request:
     types: [opened, synchronize, reopened]
+    paths-ignore:
+      - '**.md'
+      - 'website/**'
+      - 'docs/**'
+      - 'LICENSE'
+      - 'SECURITY.md'
 
 permissions:
   contents: read

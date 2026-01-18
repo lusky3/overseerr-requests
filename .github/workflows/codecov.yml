@@ -6,8 +6,20 @@ name: Code Coverage
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - '**.md'
+      - 'website/**'
+      - 'docs/**'
+      - 'LICENSE'
+      - 'SECURITY.md'
   pull_request:
     branches: ["main"]
+    paths-ignore:
+      - '**.md'
+      - 'website/**'
+      - 'docs/**'
+      - 'LICENSE'
+      - 'SECURITY.md'
 
 permissions:
   contents: read
