@@ -16,14 +16,14 @@ import app.lusk.client.presentation.auth.PlexAuthScreen
 import app.lusk.client.presentation.discovery.DiscoveryViewModel
 import app.lusk.client.presentation.discovery.MediaDetailsScreen
 import app.lusk.client.presentation.discovery.CategoryResultsScreen
+import app.lusk.client.presentation.discovery.SearchScreen
 import app.lusk.client.presentation.home.HomeScreen
 import app.lusk.client.presentation.issue.IssuesListScreen
 import app.lusk.client.presentation.issue.IssueDetailsScreen
 import app.lusk.client.presentation.profile.ProfileScreen
 import app.lusk.client.presentation.request.RequestDetailsScreen
-import app.lusk.client.presentation.request.RequestsScreen
+import app.lusk.client.presentation.request.RequestsListScreen
 import app.lusk.client.presentation.request.RequestViewModel
-import app.lusk.client.presentation.search.SearchScreen
 import app.lusk.client.presentation.server.ServerConfigScreen
 import app.lusk.client.presentation.splash.SplashScreen
 import app.lusk.client.presentation.settings.SettingsScreen
@@ -137,17 +137,20 @@ fun OverseerrNavHost(
                 viewModel = viewModel,
                 onBackClick = { navController.popBackStack() },
                 onMediaClick = { type, id -> 
-                    val mediaTypeEnum = if (type.lowercase() == "tv") MediaType.TV else MediaType.MOVIE
-                    navController.navigate(Screen.MediaDetails(mediaTypeEnum.name.lowercase(), id))
+                    // type is MediaType (enum)
+                    navController.navigate(Screen.MediaDetails(type.name.lowercase(), id))
                 }
             )
         }
 
         composable<Screen.Search> {
+            val viewModel: DiscoveryViewModel = koinViewModel()
             SearchScreen(
+                viewModel = viewModel,
+                onBackClick = { navController.popBackStack() },
                 onMediaClick = { type, id ->
-                    val mediaTypeEnum = if (type.lowercase() == "tv") MediaType.TV else MediaType.MOVIE
-                    navController.navigate(Screen.MediaDetails(mediaTypeEnum.name.lowercase(), id))
+                    // type is MediaType (enum)
+                    navController.navigate(Screen.MediaDetails(type.name.lowercase(), id))
                 }
             )
         }
@@ -164,13 +167,15 @@ fun OverseerrNavHost(
                 viewModel = viewModel,
                 onBackClick = { navController.popBackStack() },
                 onRequestClick = {
-                    // Navigate to request not supported directly here, maybe dialog?
+                    // Navigate to request not supported directly here
                 }
             )
         }
 
         composable<Screen.Requests> {
-            RequestsScreen(
+            val viewModel: RequestViewModel = koinViewModel()
+            RequestsListScreen(
+                viewModel = viewModel,
                 onRequestClick = { requestId ->
                     navController.navigate(Screen.RequestDetails(requestId))
                 }
@@ -185,9 +190,8 @@ fun OverseerrNavHost(
                 requestId = args.requestId,
                 viewModel = viewModel,
                 onBackClick = { navController.popBackStack() },
-                onMediaClick = { type, id ->
-                    val mediaType = if (type == MediaType.TV) "tv" else "movie"
-                    navController.navigate(Screen.MediaDetails(mediaType, id, openRequest = true)) 
+                onModifyRequest = { mediaId ->
+                     navController.navigate(Screen.MediaDetails("tv", mediaId, openRequest = true)) 
                 }
             )
         }
@@ -233,7 +237,7 @@ fun OverseerrNavHost(
         
         composable<Screen.ServerManagement> {
             ServerManagementScreen(
-                onBackClick = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }
