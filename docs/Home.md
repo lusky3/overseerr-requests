@@ -1,6 +1,6 @@
-# Welcome to the Overseerr Android Client Wiki
+# Welcome to the Underseerr Wiki
 
-This is the official documentation for the **Overseerr Android Client**, a native mobile application for [Overseerr](https://overseerr.dev/), built using modern Android and Kotlin technologies.
+This is the official documentation for **Underseerr**, a native mobile application for [Overseerr](https://overseerr.dev/), built using modern Android and Kotlin technologies.
 
 ## 🚀 Getting Started
 

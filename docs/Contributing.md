@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-Thank you for considering contributing to the Overseerr Android Client!
+Thank you for considering contributing to Underseerr!
 
 ## Getting Started
 

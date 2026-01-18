@@ -1,4 +1,4 @@
-# Overseerr KMP Client
+# Underseerr - Overseerr Client
 
 A native, multiplatform client for [Overseerr](https://overseerr.dev/) built with **Kotlin Multiplatform** and **Jetpack Compose**. This app provides a seamless mobile experience for managing your media requests on Android.
 
@@ -60,6 +60,6 @@ For detailed setup instructions, please see the [Project Wiki](https://github.co
 
 ## 📄 License
 
-Copyright 2026 Lusk Technologies, Inc.
+Copyright 2026 lusky3
 
 Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.

@@ -1,6 +1,6 @@
 # Development Setup Guide
 
-Follow these steps to set up your environment and run the Overseerr application.
+Follow these steps to set up your environment and run the Underseerr application.
 
 ## Prerequisites
 
