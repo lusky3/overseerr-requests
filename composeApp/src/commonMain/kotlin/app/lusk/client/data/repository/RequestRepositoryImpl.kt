@@ -15,7 +15,7 @@ import app.lusk.client.domain.repository.RootFolder
 import app.lusk.client.domain.sync.SyncScheduler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
+import kotlinx.datetime.Clock as KClock
 
 /**
  * Implementation of RequestRepository.
@@ -83,7 +83,7 @@ class RequestRepositoryImpl(
                         title = "Queued Request",
                         posterPath = null,
                         status = RequestStatus.PENDING,
-                        requestedDate = kotlinx.datetime.Clock.System.now().toEpochMilliseconds(),
+                        requestedDate = app.lusk.client.util.nowMillis(),
                         seasons = null,
                         isOfflineQueued = true
                     )
@@ -150,7 +150,7 @@ class RequestRepositoryImpl(
                         title = "Queued TV Request",
                         posterPath = null,
                         status = RequestStatus.PENDING,
-                        requestedDate = kotlinx.datetime.Clock.System.now().toEpochMilliseconds(),
+                        requestedDate = app.lusk.client.util.nowMillis(),
                         seasons = seasons,
                         isOfflineQueued = true
                     )

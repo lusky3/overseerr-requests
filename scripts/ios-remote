@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+set -e
+
+show_help() {
+  cat <<'EOF'
+iOS remote build command
+
+This command operates on the local repository and uses rsync + SSH
+to build and test iOS targets on a remote macOS machine.
+
+Commands:
+
+  build
+    Syncs the current working tree to the macOS build host
+    and performs an Xcode simulator build using xcodebuild.
+    Use this to validate compilation errors and basic setup.
+
+  test
+    Syncs the working tree and runs unit/UI tests on the iOS simulator.
+    Use this to verify logic and regressions.
+
+  run
+    Syncs the working tree, boots the iOS simulator if needed,
+    installs the app, and launches it.
+    Use this to manually inspect app behavior.
+
+  screenshot
+    Captures a screenshot of the currently running iOS simulator
+    and copies it back to the local machine.
+    Use this to visually verify UI state or provide feedback to an LLM.
+
+  clean
+    Removes DerivedData and resets all iOS simulators on the macOS host.
+    Use this only if builds behave incorrectly or Xcode state is corrupted.
+
+Examples:
+
+  ios build
+  ios test
+  ios run
+  ios screenshot
+  ios clean
+
+Notes:
+
+  - All editing happens locally.
+  - The macOS machine is treated as a headless build appliance.
+  - No files should be edited directly on macOS.
+
+EOF
+}
+
+case "${1:-}" in
+  build)       ./scripts/ios-build.sh ;;
+  test)        ./scripts/ios-test.sh ;;
+  run)         ./scripts/ios-run.sh ;;
+  screenshot)  ./scripts/ios-screenshot.sh ;;
+  clean)       ./scripts/ios-clean.sh ;;
+  help|-h|--help)
+    show_help
+    ;;
+  *)
+    echo "Unknown command: ${1:-<none>}"
+    echo
+    show_help
+    exit 1
+    ;;
+esac

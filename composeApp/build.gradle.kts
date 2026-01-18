@@ -86,6 +86,7 @@ kotlin {
             
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
             implementation(libs.coil.compose)
             implementation(libs.androidx.paging.compose)
             implementation(libs.androidx.paging.common)

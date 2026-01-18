@@ -52,6 +52,7 @@ security = "1.1.0-alpha06"
 
 # Coroutines
 coroutines = "1.10.1"
+datetime = "0.6.0"
 
 # Testing
 junit = "4.13.2"
@@ -126,6 +127,7 @@ androidx-security-crypto = { group = "androidx.security", name = "security-crypt
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
 
 # Paging
 androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }

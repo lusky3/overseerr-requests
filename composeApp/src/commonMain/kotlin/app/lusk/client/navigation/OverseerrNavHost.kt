@@ -20,16 +20,16 @@ import app.lusk.client.presentation.auth.PlexAuthScreen
 import app.lusk.client.presentation.discovery.DiscoveryViewModel
 import app.lusk.client.presentation.discovery.MediaDetailsScreen
 import app.lusk.client.presentation.discovery.CategoryResultsScreen
+import app.lusk.client.presentation.discovery.HomeScreen
 import app.lusk.client.presentation.discovery.SearchScreen
-import app.lusk.client.presentation.home.HomeScreen
 import app.lusk.client.presentation.issue.IssuesListScreen
 import app.lusk.client.presentation.issue.IssueDetailsScreen
 import app.lusk.client.presentation.profile.ProfileScreen
 import app.lusk.client.presentation.request.RequestDetailsScreen
 import app.lusk.client.presentation.request.RequestsListScreen
 import app.lusk.client.presentation.request.RequestViewModel
-import app.lusk.client.presentation.server.ServerConfigScreen
-import app.lusk.client.presentation.splash.SplashScreen
+import app.lusk.client.presentation.auth.ServerConfigScreen
+import app.lusk.client.presentation.auth.SplashScreen
 import app.lusk.client.presentation.settings.SettingsScreen
 import app.lusk.client.presentation.settings.ServerManagementScreen
 
@@ -71,13 +71,16 @@ fun OverseerrNavHost(
             
             ServerConfigScreen(
                 prefillServerUrl = args.serverUrl,
-                onConfigSaved = {
+                onServerValidated = {
+                    // Logic for what to do after validation (e.g. go to auth)
+                    // If we need to go to PlexAuth:
                     navController.navigate(Screen.PlexAuth)
                 },
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
+                onAuthenticated = {
+                   // Logic for already authenticated
+                   navController.navigate(Screen.Home) {
                         popUpTo<Screen.ServerConfig> { inclusive = true }
-                    }
+                   }
                 }
             )
         }
@@ -127,7 +130,9 @@ fun OverseerrNavHost(
         }
         
         composable<Screen.Home> {
+            val viewModel: DiscoveryViewModel = koinViewModel()
             HomeScreen(
+                viewModel = viewModel,
                 onMovieClick = { movieId ->
                     navController.navigate(Screen.MediaDetails("movie", movieId))
                 },
@@ -138,7 +143,7 @@ fun OverseerrNavHost(
                     navController.navigate(Screen.Search)
                 },
                 onCategoryClick = { type, id, name ->
-                    navController.navigate(Screen.CategoryResults(type, id, name))
+                    navController.navigate(Screen.CategoryResults(type.name, id, name))
                 }
             )
         }
@@ -184,10 +189,7 @@ fun OverseerrNavHost(
                 mediaType = mediaType,
                 openRequest = args.openRequest,
                 viewModel = viewModel,
-                onBackClick = { navController.popBackStack() },
-                onRequestClick = {
-                    // Navigate to request not supported directly here
-                }
+                onBackClick = { navController.popBackStack() }
             )
         }
 
