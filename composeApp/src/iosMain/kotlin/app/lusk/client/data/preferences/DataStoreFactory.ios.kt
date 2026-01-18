@@ -10,7 +10,7 @@ import okio.Path.Companion.toPath
 
 @OptIn(ExperimentalForeignApi::class)
 actual fun createDataStore(context: PlatformContext): DataStore<Preferences> {
-    return PreferenceDataStoreFactory.create(
+    return PreferenceDataStoreFactory.createWithPath(
         produceFile = {
             val directory = NSFileManager.defaultManager.URLForDirectory(
                 directory = NSDocumentDirectory,

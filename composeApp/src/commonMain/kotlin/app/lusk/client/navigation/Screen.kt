@@ -1,5 +1,8 @@
 package app.lusk.client.navigation
 
+import io.ktor.http.encodeURLQueryComponent
+import io.ktor.http.decodeURLQueryComponent
+
 /**
  * Sealed class representing all navigation destinations in the app.
  * KMP Compatible.
@@ -14,7 +17,7 @@ sealed class Screen(val route: String) {
         const val BASE_ROUTE = "server_config"
         fun createRoute(serverUrl: String? = null): String {
             return if (serverUrl != null) {
-                "server_config?serverUrl=${java.net.URLEncoder.encode(serverUrl, "UTF-8")}"
+                "server_config?serverUrl=${serverUrl.encodeURLQueryComponent()}"
             } else {
                 "server_config"
             }
@@ -93,7 +96,7 @@ sealed class Screen(val route: String) {
                     // Extract server URL from query parameter: lusk://setup?server=https://...
                     val serverUrl = uri.substringAfter("server=", "")
                         .takeIf { it.isNotEmpty() }
-                        ?.let { java.net.URLDecoder.decode(it, "UTF-8") }
+                        ?.let { it.decodeURLQueryComponent() }
                     ServerConfig.createRoute(serverUrl)
                 }
                 uri.startsWith("lusk://media/") -> {
