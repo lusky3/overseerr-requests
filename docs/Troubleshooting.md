@@ -16,7 +16,7 @@ Common issues and how to resolve them.
 ### `Lint Error: AppLinkUrlError`
 
 **Cause**: `AndroidManifest.xml` intent filters for deep links are configured incorrectly (e.g., using `autoVerify="true"` on non-http schemes).
-**Fix**: Ensure `android:autoVerify="true"` is ONLY used for `http` or `https` schemes. For custom schemes (e.g., `lusk://`), remove `autoVerify`.
+**Fix**: Ensure `android:autoVerify="true"` is ONLY used for `http` or `https` schemes. For custom schemes (e.g., `underseerr://`), remove `autoVerify`.
 
 ### Dependency Conflicts (e.g., `protobuf-java`)
 

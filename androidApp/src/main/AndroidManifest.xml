@@ -49,7 +49,7 @@
             </intent-filter>
 
             <!-- Deep link support for server setup -->
-            <!-- Format: lusk://setup?server=https://overseerr.example.com -->
+            <!-- Format: underseerr://setup?server=https://overseerr.example.com -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

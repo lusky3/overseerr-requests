@@ -20,5 +20,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Lusk"
+rootProject.name = "Underseerr"
 include(":androidApp", ":composeApp")
