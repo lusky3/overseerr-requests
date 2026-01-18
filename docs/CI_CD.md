@@ -11,7 +11,7 @@ Triggered on: `push` to `main` and `pull_request`.
 **Jobs:**
 
 * **Build & Test**:
-  * Sets up JDK 17.
+  * Sets up JDK 24.
   * Injects `google-services.json` from `FIREBASE_GOOGLE_SERVICES_JSON_DEBUG` secret.
   * Runs Unit Tests (`./gradlew testDebugUnitTest`).
   * Runs Lint Checks (`./gradlew lintDebug`).
@@ -26,11 +26,22 @@ Triggered on: Pushing a tag (e.g., `v1.0.0`).
 **Jobs:**
 
 * **Release**:
-  * Sets up JDK 17.
+  * Sets up JDK 24.
   * Injects **Release** `google-services.json` from `FIREBASE_GOOGLE_SERVICES_JSON_RELEASE` secret.
   * Builds the Release APK (`./gradlew assembleRelease`).
   * *(Future)*: Signs the APK (requires Keystore secrets).
   * Creates a generic GitHub Release with the APK attached.
+
+### 3. Code Quality (`sonarqube.yml`)
+
+Triggered on: `push` to `main` and `pull_request`.
+
+**Jobs:**
+
+* **SonarQube Analysis**:
+  * Sets up JDK 24.
+  * Runs Gradle Sonar analysis (`./gradlew :androidApp:assembleDebug :composeApp:compileAndroidMain sonar`).
+  * Reports to SonarCloud.
 
 ## Secrets & Variables
 
