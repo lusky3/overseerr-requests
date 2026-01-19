@@ -252,8 +252,13 @@ class RequestRepositoryImpl(
         }
         
         // Clear old cache and insert fresh data
-        mediaRequestDao.deleteAll()
-        mediaRequestDao.insertAll(hydratedRequests.map { it.toEntity() })
+        try {
+            mediaRequestDao.deleteAll()
+            mediaRequestDao.insertAll(hydratedRequests.map { it.toEntity() })
+        } catch (e: Exception) {
+            println("DB Error in refreshRequests: ${e.message}")
+            e.printStackTrace()
+        }
     }
     
     /**

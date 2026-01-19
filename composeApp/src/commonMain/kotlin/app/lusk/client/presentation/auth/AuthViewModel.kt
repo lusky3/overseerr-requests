@@ -29,6 +29,9 @@ class AuthViewModel(
     
     private val _serverValidationState = MutableStateFlow<ServerValidationState>(ServerValidationState.Idle)
     val serverValidationState: StateFlow<ServerValidationState> = _serverValidationState.asStateFlow()
+
+    private val _isCheckingStatus = MutableStateFlow(false)
+    val isCheckingStatus: StateFlow<Boolean> = _isCheckingStatus.asStateFlow()
     
     init {
         checkAuthStatus()
@@ -137,7 +140,10 @@ class AuthViewModel(
      * Check Plex PIN status.
      */
     fun checkPlexStatus(pinId: Int) {
+        if (_isCheckingStatus.value) return
+        
         viewModelScope.launch {
+            _isCheckingStatus.value = true
             logger.d("AuthViewModel", "Checking Plex PIN status for ID: $pinId")
             when (val result = authRepository.checkPlexLoginStatus(pinId)) {
                 is Result.Success -> {
@@ -148,9 +154,12 @@ class AuthViewModel(
                 }
                 is Result.Error -> {
                     logger.e("AuthViewModel", "Error checking Plex PIN: ${result.error.message}")
+                    // Don't show error to user during auto-polling, only if manual?
+                    // For now, just log it.
                 }
                 else -> {}
             }
+            _isCheckingStatus.value = false
         }
     }
     
@@ -160,14 +169,6 @@ class AuthViewModel(
      */
     fun handleAuthCallback(plexToken: String) {
         viewModelScope.launch {
-            // Debug Bypass
-            if (plexToken == "debug_token_12345") {
-                logger.d("AuthViewModel", "Debug token detected. Bypassing authentication.")
-                securityManager.storeSecureData("overseerr_api_key", "debug_session_key")
-                _authState.value = AuthState.Authenticated
-                return@launch
-            }
-
             logger.d("AuthViewModel", "Exchanging Plex token for Overseerr session... Token length: ${plexToken.length}")
             _authState.value = AuthState.ExchangingToken
             

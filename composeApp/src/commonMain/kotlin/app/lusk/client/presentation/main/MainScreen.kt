@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -33,77 +33,52 @@ fun MainScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     
-    // Determine if we should show navigation using manual hierarchy check to avoid potential unresolved extension
-    val processingDestination = defaultNavigationDestinations.find { dest ->
-        // Check current destination and its parents
-        var d: NavDestination? = currentDestination
-        while (d != null) {
-            if (d.hasRoute(dest.screen::class)) return@find true
-            d = d.parent
-        }
-        false
+    // Simplified navigation visibility - just check if it's a main tab
+    val showNavigation = currentDestination?.let { dest ->
+        dest.hasRoute(Screen.Home::class) ||
+        dest.hasRoute(Screen.Requests::class) ||
+        dest.hasRoute(Screen.Issues::class) ||
+        dest.hasRoute(Screen.Profile::class)
+    } ?: false
+    
+    // Get current screen for highlighting nav item
+    val currentScreen = when {
+        currentDestination?.hasRoute(Screen.Home::class) == true -> Screen.Home
+        currentDestination?.hasRoute(Screen.Requests::class) == true -> Screen.Requests
+        currentDestination?.hasRoute(Screen.Issues::class) == true -> Screen.Issues
+        currentDestination?.hasRoute(Screen.Profile::class) == true -> Screen.Profile
+        else -> Screen.Home
     }
     
-    val showNavigation = processingDestination != null
-    val currentScreen = processingDestination?.screen ?: Screen.Home
-    
-    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
-        val layoutConfig = calculateAdaptiveLayoutConfig(maxWidth, maxHeight)
-        
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            bottomBar = {
-                if (showNavigation && !layoutConfig.useNavigationRail) {
-                    AdaptiveNavigation(
-                        currentScreen = currentScreen,
-                        layoutConfig = layoutConfig,
-                        destinations = getNavigationDestinations(),
-                        onNavigate = { screen ->
-                            navController.navigate(screen) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = {
+            if (showNavigation) {
+                NavigationBar {
+                    defaultNavigationDestinations.forEach { dest ->
+                        NavigationBarItem(
+                            selected = currentScreen == dest.screen,
+                            onClick = { 
+                                navController.navigate(dest.screen) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    )
+                            },
+                            icon = { Icon(dest.icon, contentDescription = dest.label) },
+                            label = { Text(dest.label) }
+                        )
+                    }
                 }
-            }
-        ) { paddingValues ->
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        top = paddingValues.calculateTopPadding(),
-                        bottom = paddingValues.calculateBottomPadding()
-                    )
-            ) {
-                // Navigation rail for larger screens
-                if (showNavigation && layoutConfig.useNavigationRail) {
-                    AdaptiveNavigation(
-                        currentScreen = currentScreen,
-                        layoutConfig = layoutConfig,
-                        destinations = getNavigationDestinations(),
-                        onNavigate = { screen ->
-                            navController.navigate(screen) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    )
-                }
-                
-                // Main content
-                OverseerrNavHost(
-                    navController = navController,
-                    modifier = Modifier.fillMaxSize()
-                )
             }
         }
+    ) { paddingValues ->
+        OverseerrNavHost(
+            navController = navController,
+            modifier = Modifier.fillMaxSize().padding(paddingValues)
+        )
     }
 }
 

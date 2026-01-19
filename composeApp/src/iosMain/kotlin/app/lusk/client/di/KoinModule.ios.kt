@@ -16,4 +16,6 @@ actual fun platformModule(): Module = module {
         }
     }
     single<app.lusk.client.util.AppLogger> { app.lusk.client.util.ConsoleLogger() }
+    single<app.lusk.client.domain.security.BiometricManager> { app.lusk.client.domain.security.IosBiometricManager() }
+    single<app.lusk.client.domain.permission.PermissionManager> { app.lusk.client.domain.permission.IosPermissionManager() }
 }

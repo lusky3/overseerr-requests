@@ -98,9 +98,9 @@ private fun createHttpClient(
             socketTimeoutMillis = 15000
         }
 
-        // install(io.ktor.client.plugins.cookies.HttpCookies) {
-        //    storage = io.ktor.client.plugins.cookies.AcceptAllCookiesStorage()
-        // }
+        install(io.ktor.client.plugins.cookies.HttpCookies) {
+            storage = io.ktor.client.plugins.cookies.AcceptAllCookiesStorage()
+        }
         
         defaultRequest {
             val baseUrl = baseUrlProvider()
@@ -120,10 +120,11 @@ private fun createHttpClient(
                 header("X-Api-Key", apiKey)
             } else {
                 // If no API key, check for session cookie
-                val cookie = cookieProvider()
-                if (!cookie.isNullOrEmpty()) {
-                     header("Cookie", cookie)
-                }
+                // Manual cookie handling disabled in favor of HttpCookies plugin
+                // val cookie = cookieProvider()
+                // if (!cookie.isNullOrEmpty()) {
+                //      header("Cookie", cookie)
+                // }
             }
         }
     }
