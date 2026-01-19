@@ -7,7 +7,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual fun platformModule(): Module = module {
-    single<SecurityManager> { MemorySecurityManager() }
+    single<SecurityManager> { app.lusk.client.domain.security.IosSecurityManager() }
     single<SyncScheduler> { 
         object : SyncScheduler {
             override fun scheduleOfflineSync() {

@@ -183,7 +183,12 @@ fun OverseerrNavHost(
             )
         }
         
-        composable<Screen.MediaDetails> { backStackEntry ->
+        composable<Screen.MediaDetails>(
+            enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) + fadeOut() },
+            popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) + fadeIn() },
+            popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
+        ) { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.MediaDetails>()
             val mediaType = if (args.mediaType == "tv") MediaType.TV else MediaType.MOVIE
             val viewModel: DiscoveryViewModel = koinViewModel()
@@ -207,7 +212,12 @@ fun OverseerrNavHost(
             )
         }
         
-        composable<Screen.RequestDetails> { backStackEntry ->
+        composable<Screen.RequestDetails>(
+            enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) + fadeOut() },
+            popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) + fadeIn() },
+            popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
+        ) { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.RequestDetails>()
             val viewModel: RequestViewModel = koinViewModel()
             
@@ -229,7 +239,12 @@ fun OverseerrNavHost(
             )
         }
         
-        composable<Screen.IssueDetails> { backStackEntry ->
+        composable<Screen.IssueDetails>(
+            enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) + fadeOut() },
+            popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) + fadeIn() },
+            popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
+        ) { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.IssueDetails>()
             
             IssueDetailsScreen(
@@ -251,7 +266,12 @@ fun OverseerrNavHost(
             )
         }
         
-        composable<Screen.Settings> {
+        composable<Screen.Settings>(
+            enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) + fadeOut() },
+            popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) + fadeIn() },
+            popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
+        ) {
             SettingsScreen(
                 onNavigateToServerManagement = {
                     navController.navigate(Screen.ServerManagement)
@@ -260,7 +280,12 @@ fun OverseerrNavHost(
             )
         }
         
-        composable<Screen.ServerManagement> {
+        composable<Screen.ServerManagement>(
+            enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) + fadeOut() },
+            popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) + fadeIn() },
+            popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
+        ) {
             ServerManagementScreen(
                 onNavigateBack = { navController.popBackStack() }
             )

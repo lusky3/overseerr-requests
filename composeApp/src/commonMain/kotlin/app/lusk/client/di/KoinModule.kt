@@ -31,7 +31,6 @@ fun sharedModule(context: PlatformContext) = module {
     // Database
     single { 
         app.lusk.client.data.local.getDatabaseBuilder(context)
-            .fallbackToDestructiveMigration(true)
             .setQueryCoroutineContext(Dispatchers.IO)
             .build() 
     }

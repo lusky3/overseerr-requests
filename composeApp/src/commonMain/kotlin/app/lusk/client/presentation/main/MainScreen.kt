@@ -50,35 +50,63 @@ fun MainScreen(
         else -> Screen.Home
     }
     
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            if (showNavigation) {
-                NavigationBar {
-                    defaultNavigationDestinations.forEach { dest ->
-                        NavigationBarItem(
-                            selected = currentScreen == dest.screen,
-                            onClick = { 
-                                navController.navigate(dest.screen) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
+    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
+        val layoutConfig = calculateAdaptiveLayoutConfig(maxWidth, maxHeight)
+        
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            bottomBar = {
+                if (showNavigation && !layoutConfig.useNavigationRail) {
+                    AdaptiveNavigation(
+                        currentScreen = currentScreen,
+                        layoutConfig = layoutConfig,
+                        destinations = defaultNavigationDestinations,
+                        onNavigate = { screen ->
+                            navController.navigate(screen) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
                                 }
-                            },
-                            icon = { Icon(dest.icon, contentDescription = dest.label) },
-                            label = { Text(dest.label) }
-                        )
-                    }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                    )
                 }
             }
+        ) { paddingValues ->
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        top = paddingValues.calculateTopPadding(),
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+            ) {
+                // Navigation rail for larger screens
+                if (showNavigation && layoutConfig.useNavigationRail) {
+                    AdaptiveNavigation(
+                        currentScreen = currentScreen,
+                        layoutConfig = layoutConfig,
+                        destinations = defaultNavigationDestinations,
+                        onNavigate = { screen ->
+                            navController.navigate(screen) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                    )
+                }
+                
+                // Main content
+                OverseerrNavHost(
+                    navController = navController,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
-    ) { paddingValues ->
-        OverseerrNavHost(
-            navController = navController,
-            modifier = Modifier.fillMaxSize().padding(paddingValues)
-        )
     }
 }
 
