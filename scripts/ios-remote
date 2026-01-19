@@ -24,6 +24,11 @@ Commands:
     installs the app, and launches it.
     Use this to manually inspect app behavior.
 
+  debug
+    Launches the app and tails the system log for the process.
+    Useful for capturing crash stacks or application logs (println).
+    Press Ctrl+C to stop.
+
   screenshot
     Captures a screenshot of the currently running iOS simulator
     and copies it back to the local machine.
@@ -54,6 +59,7 @@ case "${1:-}" in
   build)       ./scripts/ios-build.sh ;;
   test)        ./scripts/ios-test.sh ;;
   run)         ./scripts/ios-run.sh ;;
+  debug)       ./scripts/ios-debug.sh ;;
   screenshot)  ./scripts/ios-screenshot.sh ;;
   clean)       ./scripts/ios-clean.sh ;;
   help|-h|--help)
