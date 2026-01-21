@@ -10,16 +10,21 @@ import okio.Path.Companion.toPath
 
 @OptIn(ExperimentalForeignApi::class)
 actual fun createDataStore(context: PlatformContext): DataStore<Preferences> {
-    return PreferenceDataStoreFactory.create(
+    return PreferenceDataStoreFactory.createWithPath(
         produceFile = {
-            val directory = NSFileManager.defaultManager.URLForDirectory(
-                directory = NSDocumentDirectory,
+            val fileManager = NSFileManager.defaultManager
+            val directory = fileManager.URLForDirectory(
+                directory = NSApplicationSupportDirectory,
                 inDomain = NSUserDomainMask,
                 appropriateForURL = null,
                 create = true,
                 error = null
             )
-            (directory?.path + "/$DATASTORE_FILE_NAME").toPath()
+            
+            val validDirectory = requireNotNull(directory) { "Application Support directory not found" }
+            val path = validDirectory.path + "/$DATASTORE_FILE_NAME"
+            println("DataStoreFactory: Saving preferences to $path")
+            path.toPath()
         }
     )
 }

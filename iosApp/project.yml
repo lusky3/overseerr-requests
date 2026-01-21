@@ -1,0 +1,59 @@
+name: iOSApp
+options:
+  bundleIdPrefix: app.lusk
+targets:
+  iOSApp:
+    type: application
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources: [iosApp]
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: app.lusk.iosApp
+      INFOPLIST_FILE: iosApp/Info.plist
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      FRAMEWORK_SEARCH_PATHS: "$(SRCROOT)/../composeApp/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)"
+      OTHER_LDFLAGS: "$(inherited) -framework ComposeApp"
+    preBuildScripts:
+      - script: |
+          set -e
+          export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+          cd "$SRCROOT/.."
+          
+          if [ "$PLATFORM_NAME" = "iphonesimulator" ]; then
+              TARGET_NAME="IosSimulatorArm64"
+              DIR_NAME="iosSimulatorArm64"
+          else
+              TARGET_NAME="IosArm64"
+              DIR_NAME="iosArm64"
+          fi
+          
+          if [ "$CONFIGURATION" = "Release" ]; then
+              CONFIG_NAME="Release"
+              TYPE_NAME="releaseFramework"
+          else
+              CONFIG_NAME="Debug"
+              TYPE_NAME="debugFramework"
+          fi
+          
+          ./gradlew ":composeApp:link${CONFIG_NAME}Framework${TARGET_NAME}"
+          
+          SRC_PATH="composeApp/build/bin/$DIR_NAME/$TYPE_NAME/ComposeApp.framework"
+          
+          # Copy to Framework Search Path
+          SEARCH_PATH="composeApp/build/xcode-frameworks/$CONFIGURATION/$SDK_NAME"
+          mkdir -p "$SEARCH_PATH"
+          rm -rf "$SEARCH_PATH/ComposeApp.framework"
+          cp -R "$SRC_PATH" "$SEARCH_PATH/"
+          
+          # Copy to Target Build Directory (Embedding)
+          DEST_PATH="$TARGET_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH/"
+          mkdir -p "$DEST_PATH"
+          rm -rf "$DEST_PATH/ComposeApp.framework"
+          cp -R "$SRC_PATH" "$DEST_PATH/"
+
+        name: Embed and Sign Framework
+        inputFiles:
+          - $(SRCROOT)/../composeApp/src/commonMain/kotlin
+          - $(SRCROOT)/../composeApp/build.gradle.kts
+        outputFiles:
+          - $(SRCROOT)/../composeApp/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)/ComposeApp.framework
