@@ -34,7 +34,7 @@ class PushNotificationService : FirebaseMessagingService() {
     }
 
     private fun showNotification(title: String, body: String) {
-        val channelId = "overseerr_updates"
+        val channelId = "underseerr_updates"
         val notificationManager = getSystemService(android.app.NotificationManager::class.java)
         
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

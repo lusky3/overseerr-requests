@@ -12,7 +12,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for cache synchronization.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 28: Cache Synchronization
  * Validates: Requirements 7.3
  * 
@@ -23,7 +23,7 @@ import io.kotest.property.checkAll
 class CacheSynchronizationPropertyTest : StringSpec({
     
     "Property 28.1: Sync should update last sync timestamp" {
-        // Feature: overseerr-android-client, Property 28: Cache Synchronization
+        // Feature: underseerr, Property 28: Cache Synchronization
         checkAll(100, Arb.long(0..System.currentTimeMillis())) { initialTimestamp ->
             // When sync is performed
             val syncState = SyncState.Success
@@ -35,7 +35,7 @@ class CacheSynchronizationPropertyTest : StringSpec({
     }
     
     "Property 28.2: Sync state should transition correctly" {
-        // Feature: overseerr-android-client, Property 28: Cache Synchronization
+        // Feature: underseerr, Property 28: Cache Synchronization
         checkAll(100, Arb.syncState()) { initialState ->
             // When sync starts
             val syncingState = SyncState.Syncing
@@ -55,7 +55,7 @@ class CacheSynchronizationPropertyTest : StringSpec({
     }
     
     "Property 28.3: Successful sync should set Success state" {
-        // Feature: overseerr-android-client, Property 28: Cache Synchronization
+        // Feature: underseerr, Property 28: Cache Synchronization
         checkAll(100, Arb.int(0..1000)) { _ ->
             // When sync completes successfully
             val successState = SyncState.Success
@@ -66,7 +66,7 @@ class CacheSynchronizationPropertyTest : StringSpec({
     }
     
     "Property 28.4: Failed sync should set Error state" {
-        // Feature: overseerr-android-client, Property 28: Cache Synchronization
+        // Feature: underseerr, Property 28: Cache Synchronization
         checkAll(100, Arb.errorMessage()) { errorMessage ->
             // When sync fails
             val errorState = SyncState.Error(errorMessage)
@@ -78,7 +78,7 @@ class CacheSynchronizationPropertyTest : StringSpec({
     }
     
     "Property 28.5: Sync should not run concurrently" {
-        // Feature: overseerr-android-client, Property 28: Cache Synchronization
+        // Feature: underseerr, Property 28: Cache Synchronization
         checkAll(100, Arb.int(1..10)) { attemptCount ->
             // When multiple sync attempts are made
             val syncingState = SyncState.Syncing
@@ -92,7 +92,7 @@ class CacheSynchronizationPropertyTest : StringSpec({
     }
     
     "Property 28.6: Sync timestamp should be monotonically increasing" {
-        // Feature: overseerr-android-client, Property 28: Cache Synchronization
+        // Feature: underseerr, Property 28: Cache Synchronization
         checkAll(100, Arb.long(0..System.currentTimeMillis() - 1000)) { previousTimestamp ->
             // When sync is performed multiple times
             val newTimestamp = System.currentTimeMillis()
@@ -103,7 +103,7 @@ class CacheSynchronizationPropertyTest : StringSpec({
     }
     
     "Property 28.7: Idle state should be default" {
-        // Feature: overseerr-android-client, Property 28: Cache Synchronization
+        // Feature: underseerr, Property 28: Cache Synchronization
         checkAll(100, Arb.int(0..100)) { _ ->
             // When sync manager is initialized
             val idleState = SyncState.Idle

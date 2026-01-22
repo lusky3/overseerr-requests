@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 
 /**
  * Property-based tests for SecurityManager encryption logic.
- * Feature: overseerr-android-client, Property 3: Secure Credential Storage
+ * Feature: underseerr, Property 3: Secure Credential Storage
  * Validates: Requirements 1.5, 8.1
  * 
  * These tests verify the encryption/decryption logic works correctly.

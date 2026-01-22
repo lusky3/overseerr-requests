@@ -2,7 +2,7 @@ package app.lusk.client.domain.model
 
 /**
  * Sealed class representing different types of application errors.
- * Feature: overseerr-android-client, Property 4: Error Handling with Retry
+ * Feature: underseerr, Property 4: Error Handling with Retry
  * Validates: Requirements 1.7, 3.7
  */
 sealed class AppError {

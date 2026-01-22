@@ -38,7 +38,7 @@ import app.lusk.client.presentation.settings.SettingsScreen
 import app.lusk.client.presentation.settings.ServerManagementScreen
 
 @Composable
-fun OverseerrNavHost(
+fun UnderseerrNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     startDestination: Screen = Screen.Splash

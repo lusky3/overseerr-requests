@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.first
 
 /**
  * Background worker to poll request status updates.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 4.5
  * Property 17: Request Status Updates
  */

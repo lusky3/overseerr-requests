@@ -9,4 +9,4 @@ import app.lusk.client.util.PlatformContext
  */
 expect fun createDataStore(context: PlatformContext): DataStore<Preferences>
 
-internal const val DATASTORE_FILE_NAME = "overseerr_preferences.preferences_pb"
+internal const val DATASTORE_FILE_NAME = "underseerr_preferences.preferences_pb"

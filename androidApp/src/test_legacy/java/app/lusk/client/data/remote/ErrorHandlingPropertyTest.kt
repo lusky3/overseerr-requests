@@ -18,7 +18,7 @@ import java.net.UnknownHostException
 
 /**
  * Property-based tests for error handling with retry logic.
- * Feature: overseerr-android-client, Property 4: Error Handling with Retry
+ * Feature: underseerr, Property 4: Error Handling with Retry
  * Validates: Requirements 1.7, 3.7
  * 
  * These tests verify that errors are properly handled and retried when appropriate.

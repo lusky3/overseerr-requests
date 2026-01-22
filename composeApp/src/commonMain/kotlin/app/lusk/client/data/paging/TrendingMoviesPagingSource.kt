@@ -8,7 +8,7 @@ import app.lusk.client.domain.model.Movie
 
 /**
  * PagingSource for trending movies.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 2.1, 2.5
  */
 class TrendingMoviesPagingSource(

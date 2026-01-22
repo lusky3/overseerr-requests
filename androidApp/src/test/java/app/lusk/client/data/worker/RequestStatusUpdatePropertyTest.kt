@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.flowOf
 
 /**
  * Property-based tests for request status updates.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 17: Request Status Updates
  * Validates: Requirements 4.5
  */

@@ -23,7 +23,7 @@ import io.mockk.mockk
 
 /**
  * Property-based tests for request submission completeness.
- * Feature: overseerr-android-client, Property 9: Request Submission Completeness
+ * Feature: underseerr, Property 9: Request Submission Completeness
  * Validates: Requirements 3.1, 3.2
  */
 class RequestSubmissionPropertyTest : StringSpec({

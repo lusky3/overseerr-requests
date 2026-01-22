@@ -5,8 +5,8 @@ import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
 
 /**
- * Material 3 shape configuration for Overseerr Android Client.
- * Feature: overseerr-android-client
+ * Material 3 shape configuration for Underseerr.
+ * Feature: underseerr
  * Validates: Requirements 9.1, 9.5
  */
 

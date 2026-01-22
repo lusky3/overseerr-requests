@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 
 /**
  * Implementation of NotificationRepository.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 6.1, 6.2, 6.3
  */
 class NotificationRepositoryImpl(

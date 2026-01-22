@@ -10,7 +10,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for notification permission flow.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 22: Notification Permission Flow
  * Validates: Requirements 5.5
  * 
@@ -21,7 +21,7 @@ import io.kotest.property.checkAll
 class NotificationPermissionPropertyTest : StringSpec({
     
     "Property 22.1: Enabling notifications should configure all notification channels" {
-        // Feature: overseerr-android-client, Property 22: Notification Permission Flow
+        // Feature: underseerr, Property 22: Notification Permission Flow
         checkAll(100, Arb.notificationSettings()) { settings ->
             // When notifications are enabled
             if (settings.enabled) {
@@ -39,7 +39,7 @@ class NotificationPermissionPropertyTest : StringSpec({
     }
     
     "Property 22.2: Disabling notifications should preserve channel preferences" {
-        // Feature: overseerr-android-client, Property 22: Notification Permission Flow
+        // Feature: underseerr, Property 22: Notification Permission Flow
         checkAll(100, Arb.notificationSettings()) { originalSettings ->
             // When notifications are disabled
             val disabledSettings = originalSettings.copy(enabled = false)
@@ -52,7 +52,7 @@ class NotificationPermissionPropertyTest : StringSpec({
     }
     
     "Property 22.3: Notification settings should be independent per channel" {
-        // Feature: overseerr-android-client, Property 22: Notification Permission Flow
+        // Feature: underseerr, Property 22: Notification Permission Flow
         checkAll(100, Arb.boolean(), Arb.boolean(), Arb.boolean()) { approved, available, declined ->
             // When different channels have different settings
             val settings = NotificationSettings(
@@ -70,7 +70,7 @@ class NotificationPermissionPropertyTest : StringSpec({
     }
     
     "Property 22.4: All notification channels should default to enabled" {
-        // Feature: overseerr-android-client, Property 22: Notification Permission Flow
+        // Feature: underseerr, Property 22: Notification Permission Flow
         checkAll(100, Arb.boolean()) { enabled ->
             // When creating default notification settings
             val defaultSettings = NotificationSettings(enabled = enabled)
@@ -85,7 +85,7 @@ class NotificationPermissionPropertyTest : StringSpec({
     }
     
     "Property 22.5: Notification settings should be serializable" {
-        // Feature: overseerr-android-client, Property 22: Notification Permission Flow
+        // Feature: underseerr, Property 22: Notification Permission Flow
         checkAll(100, Arb.notificationSettings()) { settings ->
             // When converting settings to data class
             val enabled = settings.enabled

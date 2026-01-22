@@ -3,9 +3,9 @@ package app.lusk.client.ui.theme
 import androidx.compose.ui.graphics.Color
 
 /**
- * Material You color palette for Overseerr Android Client.
+ * Material You color palette for Underseerr.
  * Generated using Material Theme Builder.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 9.1, 9.2
  */
 

@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
 
 /**
  * ViewModel for settings screen.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 5.2, 5.3, 5.5, 5.6
  */
 /**
  * ViewModel for settings screen.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 5.2, 5.3, 5.5, 5.6
  */
 class SettingsViewModel(

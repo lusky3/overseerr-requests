@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * Loading animation components for the Overseerr Android Client.
+ * Loading animation components for the Underseerr.
  * KMP Compatible.
  */
 

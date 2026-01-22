@@ -18,13 +18,13 @@ import kotlin.system.measureTimeMillis
 
 /**
  * Property-based tests for search performance.
- * Feature: overseerr-android-client, Property 5: Search Performance
+ * Feature: underseerr, Property 5: Search Performance
  * Validates: Requirements 2.2
  */
 class SearchPerformancePropertyTest : StringSpec({
     
     "Property 5: Search should return results within 2 seconds" {
-        // Feature: overseerr-android-client, Property 5: Search Performance
+        // Feature: underseerr, Property 5: Search Performance
         checkAll(100, Arb.string(1..50)) { query ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -66,7 +66,7 @@ class SearchPerformancePropertyTest : StringSpec({
     }
     
     "Property 5: Search with empty query should still perform within timeout" {
-        // Feature: overseerr-android-client, Property 5: Search Performance
+        // Feature: underseerr, Property 5: Search Performance
         checkAll(100, Arb.int(1..10)) { page ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -93,7 +93,7 @@ class SearchPerformancePropertyTest : StringSpec({
     }
     
     "Property 5: Search should return success result when API responds" {
-        // Feature: overseerr-android-client, Property 5: Search Performance
+        // Feature: underseerr, Property 5: Search Performance
         checkAll(100, Arb.string(1..50), Arb.int(1..100)) { query, resultCount ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -136,7 +136,7 @@ class SearchPerformancePropertyTest : StringSpec({
     }
     
     "Property 5: Multiple consecutive searches should all complete within timeout" {
-        // Feature: overseerr-android-client, Property 5: Search Performance
+        // Feature: underseerr, Property 5: Search Performance
         checkAll(50, Arb.string(1..30)) { query ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()

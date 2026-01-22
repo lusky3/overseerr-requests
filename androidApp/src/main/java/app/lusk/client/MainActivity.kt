@@ -13,13 +13,13 @@ import app.lusk.client.navigation.Screen
 import app.lusk.client.presentation.main.MainScreen
 import app.lusk.client.presentation.main.MainViewModel
 import app.lusk.client.presentation.security.LockScreen
-import app.lusk.client.ui.theme.OverseerrTheme
+import app.lusk.client.ui.theme.UnderseerrTheme
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
- * Main activity for the Overseerr Android Client.
+ * Main activity for the Underseerr.
  * Entry point for the application UI.
  */
 class MainActivity : FragmentActivity() {
@@ -58,7 +58,7 @@ class MainActivity : FragmentActivity() {
                 }
             }
             
-            OverseerrTheme(themePreference = themePreference) {
+            UnderseerrTheme(themePreference = themePreference) {
                 if (isAppLocked) {
                     LockScreen(
                         onUnlockClick = {

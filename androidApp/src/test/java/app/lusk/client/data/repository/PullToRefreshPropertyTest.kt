@@ -24,7 +24,7 @@ import kotlinx.coroutines.test.runTest
 
 /**
  * Property-based tests for pull-to-refresh data freshness.
- * Feature: overseerr-android-client, Property 18: Pull-to-Refresh Data Freshness
+ * Feature: underseerr, Property 18: Pull-to-Refresh Data Freshness
  * Validates: Requirements 4.6
  */
 class PullToRefreshPropertyTest : StringSpec({

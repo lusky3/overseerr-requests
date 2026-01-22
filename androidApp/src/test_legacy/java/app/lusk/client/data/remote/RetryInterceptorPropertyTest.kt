@@ -13,7 +13,7 @@ import kotlin.math.pow
 
 /**
  * Property-based tests for exponential backoff retry logic.
- * Feature: overseerr-android-client, Property 38: Exponential Backoff Retry
+ * Feature: underseerr, Property 38: Exponential Backoff Retry
  * Validates: Requirements 10.4
  * 
  * These tests verify that retry logic implements proper exponential backoff.

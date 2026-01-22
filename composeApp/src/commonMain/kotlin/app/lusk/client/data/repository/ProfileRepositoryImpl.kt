@@ -11,7 +11,7 @@ import app.lusk.client.domain.repository.RequestQuota
 
 /**
  * Implementation of ProfileRepository.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 5.1
  */
 class ProfileRepositoryImpl(

@@ -2,7 +2,7 @@ package app.lusk.client.domain.security
 
 /**
  * Interface for checking biometric capabilities.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 8.3
  */
 interface BiometricManager {

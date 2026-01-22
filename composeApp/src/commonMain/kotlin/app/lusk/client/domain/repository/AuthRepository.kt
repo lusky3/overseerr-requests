@@ -1,6 +1,6 @@
 package app.lusk.client.domain.repository
 
-import app.lusk.client.domain.model.OverseerrSession
+import app.lusk.client.domain.model.UnderseerrSession
 import app.lusk.client.domain.model.Result
 import app.lusk.client.domain.model.ServerInfo
 import app.lusk.client.domain.model.UserProfile
@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * Repository interface for authentication operations.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 1.2, 1.3, 1.4, 1.5, 1.6
  */
 interface AuthRepository {
@@ -41,7 +41,7 @@ interface AuthRepository {
     /**
      * Get stored session as a Flow.
      */
-    fun getStoredSession(): Flow<OverseerrSession?>
+    fun getStoredSession(): Flow<UnderseerrSession?>
     
     /**
      * Get current authenticated user.

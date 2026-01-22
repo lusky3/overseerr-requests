@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Schedules background workers for the app.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 4.5
  */
 class WorkerScheduler(

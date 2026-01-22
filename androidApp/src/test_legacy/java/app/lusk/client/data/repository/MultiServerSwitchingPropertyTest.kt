@@ -12,7 +12,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for multi-server switching.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 23: Multi-Server Switching
  * Validates: Requirements 5.6
  * 
@@ -23,7 +23,7 @@ import io.kotest.property.checkAll
 class MultiServerSwitchingPropertyTest : StringSpec({
     
     "Property 23.1: Adding a server should preserve existing servers" {
-        // Feature: overseerr-android-client, Property 23: Multi-Server Switching
+        // Feature: underseerr, Property 23: Multi-Server Switching
         checkAll(100, Arb.list(Arb.serverConfig(), 1..5), Arb.serverConfig()) { existingServers, newServer ->
             // When adding a new server to existing list
             val updatedServers = existingServers + newServer
@@ -40,7 +40,7 @@ class MultiServerSwitchingPropertyTest : StringSpec({
     }
     
     "Property 23.2: Only one server should be active at a time" {
-        // Feature: overseerr-android-client, Property 23: Multi-Server Switching
+        // Feature: underseerr, Property 23: Multi-Server Switching
         checkAll(100, Arb.list(Arb.serverConfig(), 2..5), Arb.int(0..4)) { servers, activeIndex ->
             // When marking one server as active
             val validIndex = activeIndex % servers.size
@@ -56,7 +56,7 @@ class MultiServerSwitchingPropertyTest : StringSpec({
     }
     
     "Property 23.3: Switching servers should update active server URL" {
-        // Feature: overseerr-android-client, Property 23: Multi-Server Switching
+        // Feature: underseerr, Property 23: Multi-Server Switching
         checkAll(100, Arb.list(Arb.serverConfig(), 2..5)) { servers ->
             // When switching between servers
             servers.forEach { targetServer ->
@@ -70,7 +70,7 @@ class MultiServerSwitchingPropertyTest : StringSpec({
     }
     
     "Property 23.4: Removing a server should not affect other servers" {
-        // Feature: overseerr-android-client, Property 23: Multi-Server Switching
+        // Feature: underseerr, Property 23: Multi-Server Switching
         checkAll(100, Arb.list(Arb.serverConfig(), 3..5), Arb.int(0..4)) { servers, removeIndex ->
             // When removing a server
             val validIndex = removeIndex % servers.size
@@ -89,7 +89,7 @@ class MultiServerSwitchingPropertyTest : StringSpec({
     }
     
     "Property 23.5: Server configuration should maintain URL uniqueness" {
-        // Feature: overseerr-android-client, Property 23: Multi-Server Switching
+        // Feature: underseerr, Property 23: Multi-Server Switching
         checkAll(100, Arb.list(Arb.serverConfig(), 1..5)) { servers ->
             // When managing multiple servers
             val uniqueUrls = servers.map { it.url }.toSet()
@@ -107,7 +107,7 @@ class MultiServerSwitchingPropertyTest : StringSpec({
     }
     
     "Property 23.6: Server name and URL should be non-empty" {
-        // Feature: overseerr-android-client, Property 23: Multi-Server Switching
+        // Feature: underseerr, Property 23: Multi-Server Switching
         checkAll(100, Arb.serverConfig()) { server ->
             // When creating or validating a server config
             // Then name and URL should not be empty
@@ -122,7 +122,7 @@ class MultiServerSwitchingPropertyTest : StringSpec({
     }
     
     "Property 23.7: Switching to current server should be idempotent" {
-        // Feature: overseerr-android-client, Property 23: Multi-Server Switching
+        // Feature: underseerr, Property 23: Multi-Server Switching
         checkAll(100, Arb.serverConfig()) { server ->
             // When switching to the same server multiple times
             val firstSwitch = server.url

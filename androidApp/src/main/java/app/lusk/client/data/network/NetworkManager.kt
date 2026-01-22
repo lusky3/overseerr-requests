@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 
 /**
  * Manages network connectivity monitoring.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 2.6, 7.1
  */
 class NetworkManager(

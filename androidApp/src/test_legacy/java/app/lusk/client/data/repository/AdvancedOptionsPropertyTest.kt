@@ -22,7 +22,7 @@ import io.mockk.mockk
 
 /**
  * Property-based tests for advanced options availability.
- * Feature: overseerr-android-client, Property 12: Advanced Options Availability
+ * Feature: underseerr, Property 12: Advanced Options Availability
  * Validates: Requirements 3.6
  */
 class AdvancedOptionsPropertyTest : StringSpec({

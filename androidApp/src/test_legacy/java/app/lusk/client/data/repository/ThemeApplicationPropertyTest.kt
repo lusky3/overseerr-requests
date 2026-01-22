@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.flowOf
 
 /**
  * Property-based tests for theme application.
- * Feature: overseerr-android-client, Property 20: Theme Application
+ * Feature: underseerr, Property 20: Theme Application
  * Validates: Requirements 5.3, 9.2, 9.6
  */
 class ThemeApplicationPropertyTest : StringSpec({

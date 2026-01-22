@@ -11,7 +11,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for status change notifications.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 24: Status Change Notifications
  * Validates: Requirements 6.1, 6.2, 6.3
  * 
@@ -22,7 +22,7 @@ import io.kotest.property.checkAll
 class StatusChangeNotificationPropertyTest : StringSpec({
     
     "Property 24.1: Approved notifications should contain request ID" {
-        // Feature: overseerr-android-client, Property 24: Status Change Notifications
+        // Feature: underseerr, Property 24: Status Change Notifications
         checkAll(100, Arb.approvedNotification()) { notification ->
             // When a request is approved
             notification.type shouldBe NotificationType.REQUEST_APPROVED
@@ -34,7 +34,7 @@ class StatusChangeNotificationPropertyTest : StringSpec({
     }
     
     "Property 24.2: Available notifications should contain deep link" {
-        // Feature: overseerr-android-client, Property 24: Status Change Notifications
+        // Feature: underseerr, Property 24: Status Change Notifications
         checkAll(100, Arb.availableNotification()) { notification ->
             // When media becomes available
             notification.type shouldBe NotificationType.REQUEST_AVAILABLE
@@ -49,7 +49,7 @@ class StatusChangeNotificationPropertyTest : StringSpec({
     }
     
     "Property 24.3: Declined notifications should contain request ID" {
-        // Feature: overseerr-android-client, Property 24: Status Change Notifications
+        // Feature: underseerr, Property 24: Status Change Notifications
         checkAll(100, Arb.declinedNotification()) { notification ->
             // When a request is declined
             notification.type shouldBe NotificationType.REQUEST_DECLINED
@@ -63,7 +63,7 @@ class StatusChangeNotificationPropertyTest : StringSpec({
     }
     
     "Property 24.4: All status notifications should have valid timestamps" {
-        // Feature: overseerr-android-client, Property 24: Status Change Notifications
+        // Feature: underseerr, Property 24: Status Change Notifications
         checkAll(100, Arb.statusNotification()) { notification ->
             // When any status notification is created
             // Then timestamp should be valid (positive and reasonable)
@@ -82,7 +82,7 @@ class StatusChangeNotificationPropertyTest : StringSpec({
     }
     
     "Property 24.5: Notifications should have unique IDs" {
-        // Feature: overseerr-android-client, Property 24: Status Change Notifications
+        // Feature: underseerr, Property 24: Status Change Notifications
         checkAll(100, Arb.list(Arb.statusNotification(), 2..10)) { notifications ->
             // When multiple notifications are created
             val ids = notifications.map { it.id }
@@ -99,7 +99,7 @@ class StatusChangeNotificationPropertyTest : StringSpec({
     }
     
     "Property 24.6: Notification title and body should not be empty" {
-        // Feature: overseerr-android-client, Property 24: Status Change Notifications
+        // Feature: underseerr, Property 24: Status Change Notifications
         checkAll(100, Arb.statusNotification()) { notification ->
             // When any notification is created
             // Then title and body should not be empty
@@ -109,7 +109,7 @@ class StatusChangeNotificationPropertyTest : StringSpec({
     }
     
     "Property 24.7: New notifications should be unread by default" {
-        // Feature: overseerr-android-client, Property 24: Status Change Notifications
+        // Feature: underseerr, Property 24: Status Change Notifications
         checkAll(100, Arb.statusNotification()) { notification ->
             // When a new notification is created
             // Then it should be unread by default
@@ -149,7 +149,7 @@ private fun Arb.Companion.availableNotification(): Arb<Notification> = arbitrary
         type = NotificationType.REQUEST_AVAILABLE,
         timestamp = System.currentTimeMillis() - Arb.long(0..86400000).bind(),
         isRead = false,
-        deepLink = "overseerr://media/$mediaType/$mediaId",
+        deepLink = "underseerr://media/$mediaType/$mediaId",
         mediaId = mediaId,
         requestId = Arb.int(1..100000).bind()
     )

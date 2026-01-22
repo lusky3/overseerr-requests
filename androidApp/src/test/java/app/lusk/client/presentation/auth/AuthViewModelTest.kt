@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test
 
 /**
  * Unit tests for AuthViewModel.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 1.1, 1.3, 1.7
  */
 @OptIn(ExperimentalCoroutinesApi::class)

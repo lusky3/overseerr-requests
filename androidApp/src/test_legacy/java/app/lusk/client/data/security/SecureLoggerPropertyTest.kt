@@ -11,7 +11,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for secure logging with redaction.
- * Feature: overseerr-android-client, Property 34: Log Redaction
+ * Feature: underseerr, Property 34: Log Redaction
  * Validates: Requirements 8.6
  * 
  * These tests verify that sensitive information is properly redacted from logs.

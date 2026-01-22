@@ -23,7 +23,7 @@ import coil3.request.crossfade
 
 /**
  * Async image component with progressive loading, placeholders, and error handling.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 10.2
  * Property 36: Progressive Image Loading
  */

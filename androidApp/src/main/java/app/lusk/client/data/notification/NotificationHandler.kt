@@ -7,7 +7,7 @@ import app.lusk.client.MainActivity
 
 /**
  * Handler for notification-related operations.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 6.4
  * Property 25: Notification Deep Link Navigation
  */

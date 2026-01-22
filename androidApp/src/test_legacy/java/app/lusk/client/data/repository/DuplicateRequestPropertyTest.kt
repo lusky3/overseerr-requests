@@ -16,7 +16,7 @@ import io.mockk.mockk
 
 /**
  * Property-based tests for duplicate request prevention.
- * Feature: overseerr-android-client, Property 11: Duplicate Request Prevention
+ * Feature: underseerr, Property 11: Duplicate Request Prevention
  * Validates: Requirements 3.4, 3.5
  */
 class DuplicateRequestPropertyTest : StringSpec({

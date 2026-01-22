@@ -20,13 +20,13 @@ import kotlinx.coroutines.runBlocking
 
 /**
  * Property-based tests for pagination consistency.
- * Feature: overseerr-android-client, Property 8: Pagination Consistency
+ * Feature: underseerr, Property 8: Pagination Consistency
  * Validates: Requirements 2.5
  */
 class PaginationConsistencyPropertyTest : StringSpec({
     
     "Property 8: Loading next page should increase total item count monotonically" {
-        // Feature: overseerr-android-client, Property 8: Pagination Consistency
+        // Feature: underseerr, Property 8: Pagination Consistency
         checkAll(100, Arb.int(10..50)) { itemsPerPage ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -114,7 +114,7 @@ class PaginationConsistencyPropertyTest : StringSpec({
     }
     
     "Property 8: Pagination should not return duplicate items across pages" {
-        // Feature: overseerr-android-client, Property 8: Pagination Consistency
+        // Feature: underseerr, Property 8: Pagination Consistency
         checkAll(100, Arb.int(5..20)) { itemsPerPage ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -195,7 +195,7 @@ class PaginationConsistencyPropertyTest : StringSpec({
     }
     
     "Property 8: Last page should have null nextKey" {
-        // Feature: overseerr-android-client, Property 8: Pagination Consistency
+        // Feature: underseerr, Property 8: Pagination Consistency
         checkAll(100, Arb.int(5..20)) { itemsPerPage ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -242,7 +242,7 @@ class PaginationConsistencyPropertyTest : StringSpec({
     }
     
     "Property 8: First page should have null prevKey" {
-        // Feature: overseerr-android-client, Property 8: Pagination Consistency
+        // Feature: underseerr, Property 8: Pagination Consistency
         checkAll(100, Arb.int(5..20)) { itemsPerPage ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -289,7 +289,7 @@ class PaginationConsistencyPropertyTest : StringSpec({
     }
     
     "Property 8: TV show pagination should work consistently like movies" {
-        // Feature: overseerr-android-client, Property 8: Pagination Consistency
+        // Feature: underseerr, Property 8: Pagination Consistency
         checkAll(100, Arb.int(10..30)) { itemsPerPage ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()

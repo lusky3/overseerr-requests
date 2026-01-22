@@ -9,7 +9,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for certificate pinning and secure connections.
- * Feature: overseerr-android-client, Property 31: Secure Connection Enforcement
+ * Feature: underseerr, Property 31: Secure Connection Enforcement
  * Validates: Requirements 8.2, 8.4
  * 
  * These tests verify that HTTPS connections are enforced and certificates are validated.

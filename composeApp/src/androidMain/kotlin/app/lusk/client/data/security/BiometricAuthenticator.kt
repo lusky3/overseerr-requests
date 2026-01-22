@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 /**
  * Handles biometric authentication using Android BiometricPrompt API.
- * Feature: overseerr-android-client, Property 32: Biometric Authentication Requirement
+ * Feature: underseerr, Property 32: Biometric Authentication Requirement
  * Validates: Requirements 8.3
  */
 class BiometricAuthenticator(

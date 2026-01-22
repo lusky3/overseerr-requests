@@ -17,14 +17,14 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for progressive image loading.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 36: Progressive Image Loading
  * Validates: Requirements 10.2
  */
 class ProgressiveImageLoadingPropertyTest : StringSpec({
     
     "Property 36.1: Image request should be created for any valid URL" {
-        // Feature: overseerr-android-client, Property 36: Progressive Image Loading
+        // Feature: underseerr, Property 36: Progressive Image Loading
         checkAll<String>(100, Arb.string(1..200)) { url ->
             // Act - Create image request
             val request = ImageRequest.Builder(mockk(relaxed = true))
@@ -37,7 +37,7 @@ class ProgressiveImageLoadingPropertyTest : StringSpec({
     }
     
     "Property 36.2: Crossfade should be configurable for smooth transitions" {
-        // Feature: overseerr-android-client, Property 36: Progressive Image Loading
+        // Feature: underseerr, Property 36: Progressive Image Loading
         checkAll<Boolean>(100, Arb.boolean()) { enableCrossfade ->
             // Act - Create request with crossfade setting
             val request = ImageRequest.Builder(mockk(relaxed = true))
@@ -51,7 +51,7 @@ class ProgressiveImageLoadingPropertyTest : StringSpec({
     }
     
     "Property 36.3: Placeholder should be shown during loading" {
-        // Feature: overseerr-android-client, Property 36: Progressive Image Loading
+        // Feature: underseerr, Property 36: Progressive Image Loading
         checkAll<String>(100, Arb.string(1..200)) { url ->
             // Arrange
             var placeholderShown = false
@@ -69,7 +69,7 @@ class ProgressiveImageLoadingPropertyTest : StringSpec({
     }
     
     "Property 36.4: Error placeholder should be shown on load failure" {
-        // Feature: overseerr-android-client, Property 36: Progressive Image Loading
+        // Feature: underseerr, Property 36: Progressive Image Loading
         checkAll<String>(100, Arb.string(1..200)) { url ->
             // Arrange
             var errorShown = false
@@ -86,7 +86,7 @@ class ProgressiveImageLoadingPropertyTest : StringSpec({
     }
     
     "Property 36.5: Cache policy should be configurable" {
-        // Feature: overseerr-android-client, Property 36: Progressive Image Loading
+        // Feature: underseerr, Property 36: Progressive Image Loading
         checkAll<Int>(100, Arb.int(0..2)) { policyIndex ->
             // Arrange
             val policies = listOf(
@@ -110,7 +110,7 @@ class ProgressiveImageLoadingPropertyTest : StringSpec({
     }
     
     "Property 36.6: Image URL construction should handle null paths" {
-        // Feature: overseerr-android-client, Property 36: Progressive Image Loading
+        // Feature: underseerr, Property 36: Progressive Image Loading
         checkAll<String?>(100, Arb.string(1..100).orNull()) { path: String? ->
             // Act - Construct image URL
             val imageUrl: String? = if (path != null) "https://image.tmdb.org/t/p/w500$path" else null
@@ -126,7 +126,7 @@ class ProgressiveImageLoadingPropertyTest : StringSpec({
     }
     
     "Property 36.7: Different image sizes should use appropriate base URLs" {
-        // Feature: overseerr-android-client, Property 36: Progressive Image Loading
+        // Feature: underseerr, Property 36: Progressive Image Loading
         checkAll<String>(100, Arb.string(1..100)) { path ->
             // Act - Construct URLs for different sizes
             val posterUrl = "https://image.tmdb.org/t/p/w500$path"

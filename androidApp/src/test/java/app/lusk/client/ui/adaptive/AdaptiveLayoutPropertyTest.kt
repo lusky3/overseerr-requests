@@ -12,14 +12,14 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Property-based tests for adaptive layout responsiveness.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 35: Adaptive Layout Responsiveness
  * Validates: Requirements 9.4
  */
 class AdaptiveLayoutPropertyTest : StringSpec({
     
     "Property 35.1: Window size class should be determined correctly based on width" {
-        // Feature: overseerr-android-client, Property 35: Adaptive Layout Responsiveness
+        // Feature: underseerr, Property 35: Adaptive Layout Responsiveness
         checkAll<Int>(100, Arb.int(200..2000)) { width ->
             // Act
             val sizeClass = when {
@@ -38,7 +38,7 @@ class AdaptiveLayoutPropertyTest : StringSpec({
     }
     
     "Property 35.2: Grid columns should increase with larger window sizes" {
-        // Feature: overseerr-android-client, Property 35: Adaptive Layout Responsiveness
+        // Feature: underseerr, Property 35: Adaptive Layout Responsiveness
         checkAll<WindowSizeClass>(100, Arb.enum<WindowSizeClass>()) { sizeClass ->
             // Act
             val columns = sizeClass.getGridColumns()
@@ -56,7 +56,7 @@ class AdaptiveLayoutPropertyTest : StringSpec({
     }
     
     "Property 35.3: Navigation rail should be used for medium and expanded screens" {
-        // Feature: overseerr-android-client, Property 35: Adaptive Layout Responsiveness
+        // Feature: underseerr, Property 35: Adaptive Layout Responsiveness
         checkAll<WindowSizeClass>(100, Arb.enum<WindowSizeClass>()) { sizeClass ->
             // Act
             val config = when (sizeClass) {
@@ -99,7 +99,7 @@ class AdaptiveLayoutPropertyTest : StringSpec({
     }
     
     "Property 35.4: Content padding should increase with larger screens" {
-        // Feature: overseerr-android-client, Property 35: Adaptive Layout Responsiveness
+        // Feature: underseerr, Property 35: Adaptive Layout Responsiveness
         checkAll<WindowSizeClass>(100, Arb.enum<WindowSizeClass>()) { sizeClass ->
             // Act
             val padding = when (sizeClass) {
@@ -118,7 +118,7 @@ class AdaptiveLayoutPropertyTest : StringSpec({
     }
     
     "Property 35.5: Tablet detection should work correctly" {
-        // Feature: overseerr-android-client, Property 35: Adaptive Layout Responsiveness
+        // Feature: underseerr, Property 35: Adaptive Layout Responsiveness
         checkAll<WindowSizeClass>(100, Arb.enum<WindowSizeClass>()) { sizeClass ->
             // Act
             val isTablet = sizeClass.isTablet()
@@ -139,7 +139,7 @@ class AdaptiveLayoutPropertyTest : StringSpec({
     }
     
     "Property 35.6: Window height class should be determined correctly" {
-        // Feature: overseerr-android-client, Property 35: Adaptive Layout Responsiveness
+        // Feature: underseerr, Property 35: Adaptive Layout Responsiveness
         checkAll<Int>(100, Arb.int(300..1500)) { height ->
             // Act
             val heightClass = when {
@@ -158,7 +158,7 @@ class AdaptiveLayoutPropertyTest : StringSpec({
     }
     
     "Property 35.7: Adaptive layout config should be consistent for same window size" {
-        // Feature: overseerr-android-client, Property 35: Adaptive Layout Responsiveness
+        // Feature: underseerr, Property 35: Adaptive Layout Responsiveness
         checkAll<WindowSizeClass>(100, Arb.enum<WindowSizeClass>()) { sizeClass ->
             // Act - Create config twice for same size class
             val config1 = when (sizeClass) {

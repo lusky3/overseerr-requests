@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Manager for synchronizing cached data when connectivity is restored.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 7.3
  * Property 28: Cache Synchronization
  */

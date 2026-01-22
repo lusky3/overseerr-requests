@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Plex authentication screen with OAuth flow.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 1.1, 1.3, 1.4
  * Property 28: Koin Dependency Injection
  */

@@ -21,14 +21,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * Property-based tests for offline action queueing.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 30: Offline Action Queueing
  * Validates: Requirements 7.5
  */
 class OfflineActionQueueingPropertyTest : StringSpec({
     
     "Property 30.1: Actions queued while offline should be stored in queue" {
-        // Feature: overseerr-android-client, Property 30: Offline Action Queueing
+        // Feature: underseerr, Property 30: Offline Action Queueing
         checkAll<Int>(100) { actionCount ->
             // Arrange
             val networkManager = mockk<NetworkManager>()
@@ -53,7 +53,7 @@ class OfflineActionQueueingPropertyTest : StringSpec({
     }
     
     "Property 30.2: Queued actions should be executed when connectivity is restored" {
-        // Feature: overseerr-android-client, Property 30: Offline Action Queueing
+        // Feature: underseerr, Property 30: Offline Action Queueing
         checkAll<Int>(100, Arb.int(1..5)) { seed ->
             // Arrange
             val networkManager = mockk<NetworkManager>()
@@ -83,7 +83,7 @@ class OfflineActionQueueingPropertyTest : StringSpec({
     }
     
     "Property 30.3: Successfully executed actions should be removed from queue" {
-        // Feature: overseerr-android-client, Property 30: Offline Action Queueing
+        // Feature: underseerr, Property 30: Offline Action Queueing
         checkAll<Int>(100, Arb.int(1..5)) { seed ->
             // Arrange
             val networkManager = mockk<NetworkManager>()
@@ -115,7 +115,7 @@ class OfflineActionQueueingPropertyTest : StringSpec({
     }
     
     "Property 30.4: Failed actions should remain in queue for retry" {
-        // Feature: overseerr-android-client, Property 30: Offline Action Queueing
+        // Feature: underseerr, Property 30: Offline Action Queueing
         checkAll<Int>(100, Arb.int(1..5)) { seed ->
             // Arrange
             val networkManager = mockk<NetworkManager>()
@@ -144,7 +144,7 @@ class OfflineActionQueueingPropertyTest : StringSpec({
     }
     
     "Property 30.5: Queue should support different action types" {
-        // Feature: overseerr-android-client, Property 30: Offline Action Queueing
+        // Feature: underseerr, Property 30: Offline Action Queueing
         checkAll<List<ActionType>>(100, Arb.list(Arb.enum<ActionType>(), 1..10)) { actionTypes ->
             // Arrange
             val networkManager = mockk<NetworkManager>()
@@ -177,7 +177,7 @@ class OfflineActionQueueingPropertyTest : StringSpec({
     }
     
     "Property 30.6: Queue should preserve action order (FIFO)" {
-        // Feature: overseerr-android-client, Property 30: Offline Action Queueing
+        // Feature: underseerr, Property 30: Offline Action Queueing
         checkAll<Int>(100, Arb.int(3..10)) { count ->
             // Arrange
             val networkManager = mockk<NetworkManager>()
@@ -207,7 +207,7 @@ class OfflineActionQueueingPropertyTest : StringSpec({
     }
     
     "Property 30.7: Queue should handle mixed success and failure scenarios" {
-        // Feature: overseerr-android-client, Property 30: Offline Action Queueing
+        // Feature: underseerr, Property 30: Offline Action Queueing
         checkAll<Int>(100, Arb.int(4..10)) { count ->
             // Arrange
             val networkManager = mockk<NetworkManager>()

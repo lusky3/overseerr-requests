@@ -6,7 +6,7 @@ import app.lusk.client.domain.model.UserStatistics
 
 /**
  * Repository interface for user profile operations.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 5.1
  */
 interface ProfileRepository {

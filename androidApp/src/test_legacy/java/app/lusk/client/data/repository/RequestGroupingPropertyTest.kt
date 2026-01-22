@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.flowOf
 
 /**
  * Property-based tests for request grouping correctness.
- * Feature: overseerr-android-client, Property 14: Request Grouping Correctness
+ * Feature: underseerr, Property 14: Request Grouping Correctness
  * Validates: Requirements 4.2
  */
 class RequestGroupingPropertyTest : StringSpec({

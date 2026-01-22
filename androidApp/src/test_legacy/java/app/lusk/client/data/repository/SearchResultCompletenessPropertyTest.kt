@@ -18,13 +18,13 @@ import kotlinx.coroutines.runBlocking
 
 /**
  * Property-based tests for search result completeness.
- * Feature: overseerr-android-client, Property 6: Search Result Completeness
+ * Feature: underseerr, Property 6: Search Result Completeness
  * Validates: Requirements 2.3
  */
 class SearchResultCompletenessPropertyTest : StringSpec({
     
     "Property 6: All search results should include required fields" {
-        // Feature: overseerr-android-client, Property 6: Search Result Completeness
+        // Feature: underseerr, Property 6: Search Result Completeness
         checkAll(100, Arb.string(1..50), Arb.int(1..20)) { query, resultCount ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -82,7 +82,7 @@ class SearchResultCompletenessPropertyTest : StringSpec({
     }
     
     "Property 6: Search results should preserve all data from API" {
-        // Feature: overseerr-android-client, Property 6: Search Result Completeness
+        // Feature: underseerr, Property 6: Search Result Completeness
         checkAll(100, Arb.string(1..50)) { query ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -138,7 +138,7 @@ class SearchResultCompletenessPropertyTest : StringSpec({
     }
     
     "Property 6: Empty search results should still be valid" {
-        // Feature: overseerr-android-client, Property 6: Search Result Completeness
+        // Feature: underseerr, Property 6: Search Result Completeness
         checkAll(100, Arb.string(1..50)) { query ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -168,7 +168,7 @@ class SearchResultCompletenessPropertyTest : StringSpec({
     }
     
     "Property 6: Search results should include both movies and TV shows" {
-        // Feature: overseerr-android-client, Property 6: Search Result Completeness
+        // Feature: underseerr, Property 6: Search Result Completeness
         checkAll(100, Arb.string(1..50)) { query ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()

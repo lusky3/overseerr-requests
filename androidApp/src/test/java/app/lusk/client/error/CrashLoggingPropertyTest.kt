@@ -17,14 +17,14 @@ import java.io.File
 
 /**
  * Property-based tests for crash logging and recovery.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 39: Crash Logging and Recovery
  * Validates: Requirements 10.5
  */
 class CrashLoggingPropertyTest : StringSpec({
     
     "Property 39.1: Crash log should contain exception details" {
-        // Feature: overseerr-android-client, Property 39: Crash Logging and Recovery
+        // Feature: underseerr, Property 39: Crash Logging and Recovery
         checkAll<String>(100, Arb.string(1..100)) { errorMessage ->
             // Arrange
             val exception = RuntimeException(errorMessage)
@@ -41,7 +41,7 @@ class CrashLoggingPropertyTest : StringSpec({
     }
     
     "Property 39.2: Crash log should include device information" {
-        // Feature: overseerr-android-client, Property 39: Crash Logging and Recovery
+        // Feature: underseerr, Property 39: Crash Logging and Recovery
         checkAll<Int>(100, Arb.int(1..100)) { seed ->
             // Arrange
             val exception = RuntimeException("Test exception $seed")
@@ -58,7 +58,7 @@ class CrashLoggingPropertyTest : StringSpec({
     }
     
     "Property 39.3: Crash log should include stack trace" {
-        // Feature: overseerr-android-client, Property 39: Crash Logging and Recovery
+        // Feature: underseerr, Property 39: Crash Logging and Recovery
         checkAll<String>(100, Arb.string(1..100)) { errorMessage ->
             // Arrange
             val exception = RuntimeException(errorMessage)
@@ -74,7 +74,7 @@ class CrashLoggingPropertyTest : StringSpec({
     }
     
     "Property 39.4: Multiple crashes should be logged separately" {
-        // Feature: overseerr-android-client, Property 39: Crash Logging and Recovery
+        // Feature: underseerr, Property 39: Crash Logging and Recovery
         checkAll<Int>(100, Arb.int(2..5)) { crashCount ->
             // Arrange
             val crashes = mutableListOf<String>()
@@ -93,7 +93,7 @@ class CrashLoggingPropertyTest : StringSpec({
     }
     
     "Property 39.5: Crash logs should be retrievable" {
-        // Feature: overseerr-android-client, Property 39: Crash Logging and Recovery
+        // Feature: underseerr, Property 39: Crash Logging and Recovery
         checkAll<Int>(100, Arb.int(1..10)) { logCount ->
             // Arrange
             val mockLogs = List(logCount) { index ->
@@ -114,7 +114,7 @@ class CrashLoggingPropertyTest : StringSpec({
     }
     
     "Property 39.6: Old crash logs should be cleaned up" {
-        // Feature: overseerr-android-client, Property 39: Crash Logging and Recovery
+        // Feature: underseerr, Property 39: Crash Logging and Recovery
         checkAll<Int>(100, Arb.int(11..20)) { totalLogs ->
             // Arrange
             val maxLogs = 10
@@ -131,7 +131,7 @@ class CrashLoggingPropertyTest : StringSpec({
     }
     
     "Property 39.7: Recovery should be attempted for all exception types" {
-        // Feature: overseerr-android-client, Property 39: Crash Logging and Recovery
+        // Feature: underseerr, Property 39: Crash Logging and Recovery
         checkAll<Int>(100, Arb.int(0..3)) { exceptionType ->
             // Arrange
             val exception = when (exceptionType) {

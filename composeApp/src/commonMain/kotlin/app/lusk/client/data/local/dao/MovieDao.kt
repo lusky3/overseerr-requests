@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * Data Access Object for Movie entities.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 7.1, 7.4
  */
 @Dao

@@ -16,7 +16,7 @@ import java.util.UUID
 
 /**
  * Queue for actions that require network connectivity.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 7.5
  * Property 30: Offline Action Queueing
  */

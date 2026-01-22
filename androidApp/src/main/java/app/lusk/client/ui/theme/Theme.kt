@@ -17,8 +17,8 @@ import androidx.core.view.WindowCompat
 import app.lusk.client.domain.repository.ThemePreference
 
 /**
- * Material You theme configuration for Overseerr Android Client.
- * Feature: overseerr-android-client
+ * Material You theme configuration for Underseerr.
+ * Feature: underseerr
  * Validates: Requirements 9.1, 9.2, 9.5, 9.6
  */
 
@@ -94,7 +94,7 @@ private val DarkColorScheme = darkColorScheme(
  * @param content Content to be themed
  */
 @Composable
-fun OverseerrTheme(
+fun UnderseerrTheme(
     themePreference: ThemePreference = ThemePreference.SYSTEM,
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit

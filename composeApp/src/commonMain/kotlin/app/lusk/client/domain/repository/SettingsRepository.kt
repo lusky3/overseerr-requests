@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * Repository interface for app settings operations.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 5.2, 5.3, 5.5, 5.6
  */
 interface SettingsRepository {

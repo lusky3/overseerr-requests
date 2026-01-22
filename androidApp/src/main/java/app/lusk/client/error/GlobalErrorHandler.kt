@@ -16,7 +16,7 @@ import java.util.Locale
 
 /**
  * Global error handler for uncaught exceptions and crash reporting.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 10.5
  * Property 39: Crash Logging and Recovery
  */

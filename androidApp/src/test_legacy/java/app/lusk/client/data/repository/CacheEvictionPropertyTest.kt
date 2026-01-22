@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.flowOf
 
 /**
  * Property-based tests for cache eviction policy.
- * Feature: overseerr-android-client, Property 29: Cache Eviction Policy
+ * Feature: underseerr, Property 29: Cache Eviction Policy
  * Validates: Requirements 7.4
  * 
  * These tests verify that the LRU cache eviction policy works correctly.

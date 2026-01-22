@@ -6,11 +6,11 @@ import androidx.room.RoomDatabaseConstructor
 import app.lusk.client.util.PlatformContext
 
 
-actual fun getDatabaseBuilder(context: PlatformContext): RoomDatabase.Builder<OverseerrDatabase> {
-    val dbFile = context.context.getDatabasePath(OverseerrDatabase.DATABASE_NAME)
-    return Room.databaseBuilder<OverseerrDatabase>(
+actual fun getDatabaseBuilder(context: PlatformContext): RoomDatabase.Builder<UnderseerrDatabase> {
+    val dbFile = context.context.getDatabasePath(UnderseerrDatabase.DATABASE_NAME)
+    return Room.databaseBuilder<UnderseerrDatabase>(
         context = context.context,
         name = dbFile.absolutePath,
-        factory = { OverseerrDatabaseConstructor.initialize() }
+        factory = { UnderseerrDatabaseConstructor.initialize() }
     )
 }

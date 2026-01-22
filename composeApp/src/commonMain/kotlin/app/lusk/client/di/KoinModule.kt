@@ -1,6 +1,6 @@
 package app.lusk.client.di
 
-import app.lusk.client.data.local.OverseerrDatabase
+import app.lusk.client.data.local.UnderseerrDatabase
 import app.lusk.client.data.preferences.PreferencesManager
 import app.lusk.client.data.preferences.createDataStore
 import app.lusk.client.data.remote.HttpClientFactory
@@ -34,11 +34,11 @@ fun sharedModule(context: PlatformContext) = module {
             .setQueryCoroutineContext(Dispatchers.IO)
             .build() 
     }
-    single { get<OverseerrDatabase>().movieDao() }
-    single { get<OverseerrDatabase>().tvShowDao() }
-    single { get<OverseerrDatabase>().mediaRequestDao() }
-    single { get<OverseerrDatabase>().notificationDao() }
-    single { get<OverseerrDatabase>().offlineRequestDao() }
+    single { get<UnderseerrDatabase>().movieDao() }
+    single { get<UnderseerrDatabase>().tvShowDao() }
+    single { get<UnderseerrDatabase>().mediaRequestDao() }
+    single { get<UnderseerrDatabase>().notificationDao() }
+    single { get<UnderseerrDatabase>().offlineRequestDao() }
     
     // Repositories
     single<AuthRepository> { AuthRepositoryImpl(get(), get(), get(), get()) }

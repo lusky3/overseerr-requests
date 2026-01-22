@@ -13,7 +13,7 @@ import kotlinx.datetime.Clock as KClock
 
 /**
  * Implementation of CacheRepository for managing cached media data.
- * Feature: overseerr-android-client, Property 29: Cache Eviction Policy
+ * Feature: underseerr, Property 29: Cache Eviction Policy
  * Validates: Requirements 7.1, 7.4
  */
 class CacheRepositoryImpl(

@@ -10,7 +10,7 @@ import kotlinx.coroutines.TimeoutCancellationException
 
 /**
  * Extension functions for safe API calls with error handling.
- * Feature: overseerr-android-client, Property 4: Error Handling with Retry
+ * Feature: underseerr, Property 4: Error Handling with Retry
  * Validates: Requirements 1.7, 3.7
  */
 

@@ -8,7 +8,7 @@ import app.lusk.client.data.mapper.toDomain
 import app.lusk.client.data.remote.safeApiCall
 import app.lusk.client.data.remote.toAppError
 import app.lusk.client.domain.security.SecurityManager
-import app.lusk.client.domain.model.OverseerrSession
+import app.lusk.client.domain.model.UnderseerrSession
 import app.lusk.client.domain.model.Result
 import app.lusk.client.domain.model.ServerInfo
 import app.lusk.client.domain.model.UserProfile
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.map
 
 /**
  * Implementation of AuthRepository for authentication operations.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 1.2, 1.3, 1.4, 1.5, 1.6
  */
 class AuthRepositoryImpl(
@@ -32,8 +32,8 @@ class AuthRepositoryImpl(
 ) : AuthRepository {
     
     companion object {
-        private const val API_KEY_STORAGE_KEY = "overseerr_api_key"
-        private const val SESSION_STORAGE_KEY = "overseerr_session"
+        private const val API_KEY_STORAGE_KEY = "underseerr_api_key"
+        private const val SESSION_STORAGE_KEY = "underseerr_session"
     }
     
     override suspend fun validateServerUrl(url: String, allowHttp: Boolean): Result<ServerInfo> {
@@ -208,7 +208,7 @@ class AuthRepositoryImpl(
         }
     }
     
-    override fun getStoredSession(): Flow<OverseerrSession?> {
+    override fun getStoredSession(): Flow<UnderseerrSession?> {
         return preferencesManager.getUserId().map { userId ->
             if (userId != null) {
                 val apiKey = securityManager.retrieveSecureData(API_KEY_STORAGE_KEY)
@@ -223,7 +223,7 @@ class AuthRepositoryImpl(
 
                 val serverUrl = preferencesManager.getServerUrl().first()
                 if (apiKey != null && serverUrl != null) {
-                    OverseerrSession(
+                    UnderseerrSession(
                         userId = userId,
                         apiKey = apiKey,
                         serverUrl = serverUrl,

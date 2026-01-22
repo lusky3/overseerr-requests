@@ -7,8 +7,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 /**
- * Material 3 typography configuration for Overseerr Android Client.
- * Feature: overseerr-android-client
+ * Material 3 typography configuration for Underseerr.
+ * Feature: underseerr
  * Validates: Requirements 9.1, 9.5
  */
 

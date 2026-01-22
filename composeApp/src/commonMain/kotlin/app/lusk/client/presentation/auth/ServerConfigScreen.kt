@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.first
 
 /**
  * Server configuration screen for entering Overseerr server URL.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 1.1, 1.2
  * Property 28: Koin Dependency Injection
  * 

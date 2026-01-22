@@ -21,7 +21,7 @@ import io.mockk.mockk
 
 /**
  * Property-based tests for profile information completeness.
- * Feature: overseerr-android-client, Property 19: Profile Information Completeness
+ * Feature: underseerr, Property 19: Profile Information Completeness
  * Validates: Requirements 5.1
  */
 class ProfileInformationPropertyTest : StringSpec({

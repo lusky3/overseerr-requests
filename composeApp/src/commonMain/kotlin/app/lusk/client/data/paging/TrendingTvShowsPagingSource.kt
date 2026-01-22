@@ -8,7 +8,7 @@ import app.lusk.client.domain.model.TvShow
 
 /**
  * PagingSource for trending TV shows.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 2.1, 2.5
  */
 class TrendingTvShowsPagingSource(

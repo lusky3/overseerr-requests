@@ -19,7 +19,7 @@ import kotlinx.datetime.Clock as KClock
 
 /**
  * Implementation of RequestRepository.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 3.1, 3.2, 4.1, 4.4
  */
 class RequestRepositoryImpl(

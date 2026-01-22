@@ -9,9 +9,9 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSUserDomainMask
 
-actual fun getDatabaseBuilder(context: PlatformContext): RoomDatabase.Builder<OverseerrDatabase> {
-    val dbFilePath = NSHomeDirectory() + "/Documents/" + OverseerrDatabase.DATABASE_NAME
-    return Room.databaseBuilder<OverseerrDatabase>(
+actual fun getDatabaseBuilder(context: PlatformContext): RoomDatabase.Builder<UnderseerrDatabase> {
+    val dbFilePath = NSHomeDirectory() + "/Documents/" + UnderseerrDatabase.DATABASE_NAME
+    return Room.databaseBuilder<UnderseerrDatabase>(
         name = dbFilePath
     )
     .setDriver(BundledSQLiteDriver())

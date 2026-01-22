@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * Implementation of SettingsRepository using DataStore.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 5.2, 5.3, 5.5, 5.6
  */
 class SettingsRepositoryImpl(

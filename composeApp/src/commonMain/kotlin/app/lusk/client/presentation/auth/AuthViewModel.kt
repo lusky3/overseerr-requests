@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 /**
  * ViewModel for authentication screens.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 1.1, 1.6, 5.4
  */
 class AuthViewModel(
@@ -72,7 +72,7 @@ class AuthViewModel(
                 val cleanUrl = url.substringBefore("?apikey=")
                 val apiKey = url.substringAfter("?apikey=")
                 // Store API key securely (bypassing normal login flow for testing/manual override)
-                securityManager.storeSecureData("overseerr_api_key", apiKey)
+                securityManager.storeSecureData("underseerr_api_key", apiKey)
                 // Set the clean URL for validation
                 validateServerUrl(cleanUrl, allowHttp)
             } else {
@@ -87,7 +87,7 @@ class AuthViewModel(
         when (val result = authRepository.validateServerUrl(url, allowHttp)) {
             is Result.Success -> {
                 // Check if we pre-injected an API key
-                val apiKey = securityManager.retrieveSecureData("overseerr_api_key")
+                val apiKey = securityManager.retrieveSecureData("underseerr_api_key")
                 if (apiKey != null) {
                     // Update interceptor with the key immediately so checkAuthStatus picks it up
                     // We need to re-fetch isAuthenticated or rely on checkAuthStatus loop

@@ -1,7 +1,7 @@
 package app.lusk.client.presentation.auth
 
 import app.cash.turbine.test
-import app.lusk.client.domain.model.OverseerrSession
+import app.lusk.client.domain.model.UnderseerrSession
 import app.lusk.client.domain.model.Result
 import app.lusk.client.domain.model.UserProfile
 import app.lusk.client.domain.repository.AuthRepository
@@ -26,7 +26,7 @@ import kotlinx.coroutines.test.setMain
 
 /**
  * Property-based tests for logout cleanup.
- * Feature: overseerr-android-client, Property 21: Logout Cleanup
+ * Feature: underseerr, Property 21: Logout Cleanup
  * Validates: Requirements 5.4
  */
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -43,7 +43,7 @@ class LogoutCleanupPropertyTest : StringSpec({
     }
     
     "Property 21: Logout should clear all stored credentials" {
-        // Feature: overseerr-android-client, Property 21: Logout Cleanup
+        // Feature: underseerr, Property 21: Logout Cleanup
         checkAll(100, Arb.int(1..100000), Arb.string(10..50)) { userId, apiKey ->
             runTest(testDispatcher) {
                 // Arrange
@@ -70,7 +70,7 @@ class LogoutCleanupPropertyTest : StringSpec({
     }
     
     "Property 21: Logout should transition through LoggingOut state" {
-        // Feature: overseerr-android-client, Property 21: Logout Cleanup
+        // Feature: underseerr, Property 21: Logout Cleanup
         checkAll(100, Arb.int(1..100000)) { userId ->
             runTest(testDispatcher) {
                 // Arrange
@@ -103,7 +103,7 @@ class LogoutCleanupPropertyTest : StringSpec({
     }
     
     "Property 21: Logout should be idempotent" {
-        // Feature: overseerr-android-client, Property 21: Logout Cleanup
+        // Feature: underseerr, Property 21: Logout Cleanup
         checkAll(100, Arb.int(2..5)) { logoutCount ->
             runTest(testDispatcher) {
                 // Arrange
@@ -131,7 +131,7 @@ class LogoutCleanupPropertyTest : StringSpec({
     }
     
     "Property 21: After logout, authentication should be required" {
-        // Feature: overseerr-android-client, Property 21: Logout Cleanup
+        // Feature: underseerr, Property 21: Logout Cleanup
         checkAll(100, Arb.int(1..100000)) { userId ->
             runTest(testDispatcher) {
                 // Arrange
@@ -157,7 +157,7 @@ class LogoutCleanupPropertyTest : StringSpec({
     }
     
     "Property 21: Logout should clear session even if API call fails" {
-        // Feature: overseerr-android-client, Property 21: Logout Cleanup
+        // Feature: underseerr, Property 21: Logout Cleanup
         checkAll(100, Arb.string(10..100)) { errorMessage ->
             runTest(testDispatcher) {
                 // Arrange

@@ -24,7 +24,7 @@ import retrofit2.Response
 
 /**
  * Property-based tests for permission-based cancellation.
- * Feature: overseerr-android-client, Property 16: Permission-Based Cancellation
+ * Feature: underseerr, Property 16: Permission-Based Cancellation
  * Validates: Requirements 4.4
  */
 class PermissionBasedCancellationPropertyTest : StringSpec({

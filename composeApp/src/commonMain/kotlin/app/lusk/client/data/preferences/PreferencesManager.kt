@@ -13,7 +13,7 @@ import kotlinx.serialization.json.Json
 
 /**
  * Manages application preferences using DataStore.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 5.2, 5.3
  */
 class PreferencesManager(

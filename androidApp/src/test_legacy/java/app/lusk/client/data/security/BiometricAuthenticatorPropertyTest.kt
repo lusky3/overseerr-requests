@@ -17,7 +17,7 @@ import org.robolectric.annotation.Config
 
 /**
  * Property-based tests for biometric authentication.
- * Feature: overseerr-android-client, Property 32: Biometric Authentication Requirement
+ * Feature: underseerr, Property 32: Biometric Authentication Requirement
  * Validates: Requirements 8.3
  * 
  * These tests verify that biometric authentication is properly enforced when enabled.

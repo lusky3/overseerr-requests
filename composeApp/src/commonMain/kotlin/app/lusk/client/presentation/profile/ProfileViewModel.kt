@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
 
 /**
  * ViewModel for user profile screen.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 5.1
  */
 /**
  * ViewModel for user profile screen.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 5.1
  */
 class ProfileViewModel(

@@ -9,7 +9,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for domain model integrity.
- * Feature: overseerr-android-client, Property: Domain Model Integrity
+ * Feature: underseerr, Property: Domain Model Integrity
  * Validates: Requirements 2.3, 3.1
  * 
  * These tests verify that domain models maintain their integrity through

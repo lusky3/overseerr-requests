@@ -10,7 +10,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for offline cache serving.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 27: Offline Cache Serving
  * Validates: Requirements 7.1, 7.2
  * 
@@ -21,7 +21,7 @@ import io.kotest.property.checkAll
 class OfflineCachePropertyTest : StringSpec({
     
     "Property 27.1: Cached items should be retrievable when offline" {
-        // Feature: overseerr-android-client, Property 27: Offline Cache Serving
+        // Feature: underseerr, Property 27: Offline Cache Serving
         checkAll(100, Arb.cachedMovie()) { cachedMovie ->
             // When an item is cached
             val movieId = cachedMovie.id
@@ -33,7 +33,7 @@ class OfflineCachePropertyTest : StringSpec({
     }
     
     "Property 27.2: Cache timestamp should indicate data age" {
-        // Feature: overseerr-android-client, Property 27: Offline Cache Serving
+        // Feature: underseerr, Property 27: Offline Cache Serving
         checkAll(100, Arb.long(0..86400000)) { ageMillis ->
             // When checking if data is stale
             val cachedTimestamp = System.currentTimeMillis() - ageMillis
@@ -52,7 +52,7 @@ class OfflineCachePropertyTest : StringSpec({
     }
     
     "Property 27.3: Fresh cache should not be marked as stale" {
-        // Feature: overseerr-android-client, Property 27: Offline Cache Serving
+        // Feature: underseerr, Property 27: Offline Cache Serving
         checkAll(100, Arb.long(0..3599999)) { ageMillis ->
             // When data is fresh (less than 1 hour old)
             val cachedTimestamp = System.currentTimeMillis() - ageMillis
@@ -65,7 +65,7 @@ class OfflineCachePropertyTest : StringSpec({
     }
     
     "Property 27.4: Old cache should be marked as stale" {
-        // Feature: overseerr-android-client, Property 27: Offline Cache Serving
+        // Feature: underseerr, Property 27: Offline Cache Serving
         checkAll(100, Arb.long(3600001..86400000)) { ageMillis ->
             // When data is old (more than 1 hour)
             val cachedTimestamp = System.currentTimeMillis() - ageMillis
@@ -78,7 +78,7 @@ class OfflineCachePropertyTest : StringSpec({
     }
     
     "Property 27.5: Cache timestamp should be valid" {
-        // Feature: overseerr-android-client, Property 27: Offline Cache Serving
+        // Feature: underseerr, Property 27: Offline Cache Serving
         checkAll(100, Arb.cachedMovie()) { cachedMovie ->
             // When a movie is cached
             val cachedAt = cachedMovie.cachedAt

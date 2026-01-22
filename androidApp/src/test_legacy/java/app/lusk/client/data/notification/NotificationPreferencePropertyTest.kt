@@ -12,7 +12,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for notification preference respect.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 26: Notification Preference Respect
  * Validates: Requirements 6.5
  * 
@@ -22,7 +22,7 @@ import io.kotest.property.checkAll
 class NotificationPreferencePropertyTest : StringSpec({
     
     "Property 26.1: Disabled notifications should not be shown" {
-        // Feature: overseerr-android-client, Property 26: Notification Preference Respect
+        // Feature: underseerr, Property 26: Notification Preference Respect
         checkAll(100, Arb.notificationSettings()) { settings ->
             // When notifications are globally disabled
             if (!settings.enabled) {
@@ -48,7 +48,7 @@ class NotificationPreferencePropertyTest : StringSpec({
     }
     
     "Property 26.2: Approved notifications respect channel preference" {
-        // Feature: overseerr-android-client, Property 26: Notification Preference Respect
+        // Feature: underseerr, Property 26: Notification Preference Respect
         checkAll(100, Arb.boolean()) { requestApproved ->
             // When approved notification channel has specific setting
             val settings = NotificationSettings(
@@ -69,7 +69,7 @@ class NotificationPreferencePropertyTest : StringSpec({
     }
     
     "Property 26.3: Available notifications respect channel preference" {
-        // Feature: overseerr-android-client, Property 26: Notification Preference Respect
+        // Feature: underseerr, Property 26: Notification Preference Respect
         checkAll(100, Arb.boolean()) { requestAvailable ->
             // When available notification channel has specific setting
             val settings = NotificationSettings(
@@ -90,7 +90,7 @@ class NotificationPreferencePropertyTest : StringSpec({
     }
     
     "Property 26.4: Declined notifications respect channel preference" {
-        // Feature: overseerr-android-client, Property 26: Notification Preference Respect
+        // Feature: underseerr, Property 26: Notification Preference Respect
         checkAll(100, Arb.boolean()) { requestDeclined ->
             // When declined notification channel has specific setting
             val settings = NotificationSettings(
@@ -111,7 +111,7 @@ class NotificationPreferencePropertyTest : StringSpec({
     }
     
     "Property 26.5: System notifications always show when enabled" {
-        // Feature: overseerr-android-client, Property 26: Notification Preference Respect
+        // Feature: underseerr, Property 26: Notification Preference Respect
         checkAll(100, Arb.notificationSettings()) { settings ->
             // When notifications are globally enabled
             if (settings.enabled) {
@@ -127,7 +127,7 @@ class NotificationPreferencePropertyTest : StringSpec({
     }
     
     "Property 26.6: Channel preferences are independent" {
-        // Feature: overseerr-android-client, Property 26: Notification Preference Respect
+        // Feature: underseerr, Property 26: Notification Preference Respect
         checkAll(100, Arb.boolean(), Arb.boolean(), Arb.boolean()) { approved, available, declined ->
             // When each channel has different settings
             val settings = NotificationSettings(
@@ -145,7 +145,7 @@ class NotificationPreferencePropertyTest : StringSpec({
     }
     
     "Property 26.7: Disabling one channel does not affect others" {
-        // Feature: overseerr-android-client, Property 26: Notification Preference Respect
+        // Feature: underseerr, Property 26: Notification Preference Respect
         checkAll(100, Arb.enum<NotificationType>()) { disabledType ->
             // When one notification type is disabled
             val settings = when (disabledType) {

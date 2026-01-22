@@ -19,13 +19,13 @@ import kotlinx.coroutines.runBlocking
 
 /**
  * Property-based tests for media detail navigation.
- * Feature: overseerr-android-client, Property 7: Media Detail Navigation
+ * Feature: underseerr, Property 7: Media Detail Navigation
  * Validates: Requirements 2.4
  */
 class MediaDetailNavigationPropertyTest : StringSpec({
     
     "Property 7: Movie details should include all required information" {
-        // Feature: overseerr-android-client, Property 7: Media Detail Navigation
+        // Feature: underseerr, Property 7: Media Detail Navigation
         checkAll(100, Arb.int(1..100000), Arb.string(1..100), Arb.double(0.0..10.0)) { movieId, title, rating ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -76,7 +76,7 @@ class MediaDetailNavigationPropertyTest : StringSpec({
     }
     
     "Property 7: TV show details should include all required information" {
-        // Feature: overseerr-android-client, Property 7: Media Detail Navigation
+        // Feature: underseerr, Property 7: Media Detail Navigation
         checkAll(100, Arb.int(1..100000), Arb.string(1..100), Arb.int(1..20)) { tvShowId, name, seasons ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -131,7 +131,7 @@ class MediaDetailNavigationPropertyTest : StringSpec({
     }
     
     "Property 7: Media details should indicate availability status" {
-        // Feature: overseerr-android-client, Property 7: Media Detail Navigation
+        // Feature: underseerr, Property 7: Media Detail Navigation
         checkAll(100, Arb.int(1..100000)) { movieId ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -170,7 +170,7 @@ class MediaDetailNavigationPropertyTest : StringSpec({
     }
     
     "Property 7: Media details should show request status when requested" {
-        // Feature: overseerr-android-client, Property 7: Media Detail Navigation
+        // Feature: underseerr, Property 7: Media Detail Navigation
         checkAll(100, Arb.int(1..100000), Arb.int(1..10000)) { movieId, requestId ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()
@@ -210,7 +210,7 @@ class MediaDetailNavigationPropertyTest : StringSpec({
     }
     
     "Property 7: Media details should handle missing optional fields gracefully" {
-        // Feature: overseerr-android-client, Property 7: Media Detail Navigation
+        // Feature: underseerr, Property 7: Media Detail Navigation
         checkAll(100, Arb.int(1..100000)) { movieId ->
             // Arrange
             val discoveryApiService = mockk<DiscoveryApiService>()

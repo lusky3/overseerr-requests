@@ -13,7 +13,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavDestination.Companion.hasRoute
-import app.lusk.client.navigation.OverseerrNavHost
+import app.lusk.client.navigation.UnderseerrNavHost
 import app.lusk.client.navigation.Screen
 import app.lusk.client.ui.adaptive.AdaptiveNavigation
 import app.lusk.client.ui.adaptive.NavigationDestination
@@ -101,7 +101,7 @@ fun MainScreen(
                 }
                 
                 // Main content
-                OverseerrNavHost(
+                UnderseerrNavHost(
                     navController = navController,
                     modifier = Modifier.fillMaxSize()
                 )

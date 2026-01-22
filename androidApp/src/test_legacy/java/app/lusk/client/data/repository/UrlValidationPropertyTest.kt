@@ -19,7 +19,7 @@ import io.mockk.mockk
 
 /**
  * Property-based tests for URL validation.
- * Feature: overseerr-android-client, Property 1: URL Validation Correctness
+ * Feature: underseerr, Property 1: URL Validation Correctness
  * Validates: Requirements 1.2
  * 
  * These tests verify that URL validation correctly identifies valid and invalid URLs.

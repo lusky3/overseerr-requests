@@ -8,11 +8,11 @@ import app.lusk.client.util.PlatformContext
 
 // Room KMP constructor - Room KSP generates the actual implementation
 @Suppress("NO_ACTUAL_FOR_EXPECT", "EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect object OverseerrDatabaseConstructor : RoomDatabaseConstructor<OverseerrDatabase>
+expect object UnderseerrDatabaseConstructor : RoomDatabaseConstructor<UnderseerrDatabase>
 
 /**
- * Room database for the Overseerr Android Client.
- * Feature: overseerr-android-client
+ * Room database for the Underseerr.
+ * Feature: underseerr
  * Validates: Requirements 7.1, 7.4
  */
 @Database(
@@ -27,8 +27,8 @@ expect object OverseerrDatabaseConstructor : RoomDatabaseConstructor<OverseerrDa
     exportSchema = true
 )
 @TypeConverters(IntListConverter::class)
-@ConstructedBy(OverseerrDatabaseConstructor::class)
-abstract class OverseerrDatabase : RoomDatabase() {
+@ConstructedBy(UnderseerrDatabaseConstructor::class)
+abstract class UnderseerrDatabase : RoomDatabase() {
     
     abstract fun movieDao(): MovieDao
     abstract fun tvShowDao(): TvShowDao
@@ -37,11 +37,11 @@ abstract class OverseerrDatabase : RoomDatabase() {
     abstract fun offlineRequestDao(): OfflineRequestDao
     
     companion object {
-        const val DATABASE_NAME = "overseerr_database"
+        const val DATABASE_NAME = "underseerr_database"
     }
 }
 
 /**
  * Base function to create the Room database builder.
  */
-expect fun getDatabaseBuilder(context: PlatformContext): RoomDatabase.Builder<OverseerrDatabase>
+expect fun getDatabaseBuilder(context: PlatformContext): RoomDatabase.Builder<UnderseerrDatabase>

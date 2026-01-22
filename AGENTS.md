@@ -1,6 +1,6 @@
-# Agent Instructions for Overseerr Android Client Development
+# Agent Instructions for Underseerr Development
 
-This document provides guidance for AI agents working on the Overseerr Android Client project. It describes the available MCP (Model Context Protocol) servers and how to use them effectively during development.
+This document provides guidance for AI agents working on the Underseerr project. It describes the available MCP (Model Context Protocol) servers and how to use them effectively during development.
 
 ## Available MCP Servers
 

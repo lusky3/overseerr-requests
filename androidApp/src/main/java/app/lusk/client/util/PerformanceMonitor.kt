@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 /**
  * Performance monitoring utility.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 10.1, 10.6, 10.7
  */
 class PerformanceMonitor {

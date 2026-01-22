@@ -5,7 +5,7 @@ import android.content.Context
 
 /**
  * Memory optimization utility.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 10.6, 10.7
  */
 class MemoryOptimizer(

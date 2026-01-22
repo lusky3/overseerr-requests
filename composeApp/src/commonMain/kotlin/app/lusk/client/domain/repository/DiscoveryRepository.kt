@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * Repository interface for media discovery operations.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 2.1, 2.2, 2.4
  */
 interface DiscoveryRepository {

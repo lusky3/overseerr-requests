@@ -12,7 +12,7 @@ import io.kotest.property.checkAll
 
 /**
  * Property-based tests for notification deep link navigation.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Property 25: Notification Deep Link Navigation
  * Validates: Requirements 6.4
  * 
@@ -22,10 +22,10 @@ import io.kotest.property.checkAll
 class NotificationDeepLinkPropertyTest : StringSpec({
     
     "Property 25.1: Media deep links should parse correctly" {
-        // Feature: overseerr-android-client, Property 25: Notification Deep Link Navigation
+        // Feature: underseerr, Property 25: Notification Deep Link Navigation
         checkAll(100, Arb.int(1..100000), Arb.mediaType()) { mediaId, mediaType ->
             // When creating a media deep link
-            val deepLink = "overseerr://media/$mediaType/$mediaId"
+            val deepLink = "underseerr://media/$mediaType/$mediaId"
             
             // Then it should be parseable
             val handler = NotificationHandler(mockContext())
@@ -41,10 +41,10 @@ class NotificationDeepLinkPropertyTest : StringSpec({
     }
     
     "Property 25.2: Request deep links should parse correctly" {
-        // Feature: overseerr-android-client, Property 25: Notification Deep Link Navigation
+        // Feature: underseerr, Property 25: Notification Deep Link Navigation
         checkAll(100, Arb.int(1..100000)) { requestId ->
             // When creating a request deep link
-            val deepLink = "overseerr://request/$requestId"
+            val deepLink = "underseerr://request/$requestId"
             
             // Then it should be parseable
             val handler = NotificationHandler(mockContext())
@@ -59,7 +59,7 @@ class NotificationDeepLinkPropertyTest : StringSpec({
     }
     
     "Property 25.3: Deep link creation should be reversible" {
-        // Feature: overseerr-android-client, Property 25: Notification Deep Link Navigation
+        // Feature: underseerr, Property 25: Notification Deep Link Navigation
         checkAll(100, Arb.int(1..100000), Arb.mediaType()) { mediaId, mediaType ->
             // When creating and parsing a media deep link
             val handler = NotificationHandler(mockContext())
@@ -77,7 +77,7 @@ class NotificationDeepLinkPropertyTest : StringSpec({
     }
     
     "Property 25.4: Request deep link creation should be reversible" {
-        // Feature: overseerr-android-client, Property 25: Notification Deep Link Navigation
+        // Feature: underseerr, Property 25: Notification Deep Link Navigation
         checkAll(100, Arb.int(1..100000)) { requestId ->
             // When creating and parsing a request deep link
             val handler = NotificationHandler(mockContext())
@@ -94,7 +94,7 @@ class NotificationDeepLinkPropertyTest : StringSpec({
     }
     
     "Property 25.5: Invalid deep links should return null" {
-        // Feature: overseerr-android-client, Property 25: Notification Deep Link Navigation
+        // Feature: underseerr, Property 25: Notification Deep Link Navigation
         checkAll(100, Arb.invalidDeepLink()) { invalidLink ->
             // When parsing an invalid deep link
             val handler = NotificationHandler(mockContext())
@@ -106,19 +106,19 @@ class NotificationDeepLinkPropertyTest : StringSpec({
     }
     
     "Property 25.6: Deep links should have correct scheme" {
-        // Feature: overseerr-android-client, Property 25: Notification Deep Link Navigation
+        // Feature: underseerr, Property 25: Notification Deep Link Navigation
         checkAll(100, Arb.int(1..100000), Arb.mediaType()) { mediaId, mediaType ->
             // When creating a deep link
             val handler = NotificationHandler(mockContext())
             val deepLink = handler.createMediaDeepLink(mediaId, mediaType)
             
             // Then it should start with the correct scheme
-            deepLink.startsWith("overseerr://") shouldBe true
+            deepLink.startsWith("underseerr://") shouldBe true
         }
     }
     
     "Property 25.7: Deep links should not contain invalid characters" {
-        // Feature: overseerr-android-client, Property 25: Notification Deep Link Navigation
+        // Feature: underseerr, Property 25: Notification Deep Link Navigation
         checkAll(100, Arb.int(1..100000), Arb.mediaType()) { mediaId, mediaType ->
             // When creating a deep link
             val handler = NotificationHandler(mockContext())
@@ -145,12 +145,12 @@ private fun Arb.Companion.mediaType(): Arb<String> = arbitrary {
 private fun Arb.Companion.invalidDeepLink(): Arb<String> = arbitrary {
     listOf(
         "http://example.com",
-        "overseerr://invalid",
-        "overseerr://media",
-        "overseerr://media/movie",
-        "overseerr://media/movie/abc",
-        "overseerr://request",
-        "overseerr://request/abc",
+        "underseerr://invalid",
+        "underseerr://media",
+        "underseerr://media/movie",
+        "underseerr://media/movie/abc",
+        "underseerr://request",
+        "underseerr://request/abc",
         "",
         "invalid",
         Arb.string(1..50).bind()

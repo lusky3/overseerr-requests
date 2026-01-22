@@ -5,7 +5,7 @@ import android.util.Log
 
 /**
  * Secure logging wrapper that redacts sensitive information from logs.
- * Feature: overseerr-android-client, Property 34: Log Redaction
+ * Feature: underseerr, Property 34: Log Redaction
  * Validates: Requirements 8.6
  * 
  * Automatically redacts tokens, passwords, API keys, and other sensitive data from logs.

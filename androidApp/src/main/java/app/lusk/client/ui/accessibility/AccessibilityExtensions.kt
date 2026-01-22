@@ -6,7 +6,7 @@ import androidx.compose.ui.semantics.semantics
 
 /**
  * Accessibility extensions for Compose UI.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 9.1
  */
 

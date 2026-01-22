@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Manages memory security by clearing sensitive data after inactivity timeout.
- * Feature: overseerr-android-client, Property 33: Memory Security Timeout
+ * Feature: underseerr, Property 33: Memory Security Timeout
  * Validates: Requirements 8.5
  * 
  * Clears sensitive data from memory after 5 minutes of app being backgrounded.

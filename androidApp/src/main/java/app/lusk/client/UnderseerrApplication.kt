@@ -9,9 +9,9 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
 
 /**
- * Application class for Overseerr Android Client.
+ * Application class for Underseerr.
  */
-class OverseerrApplication : Application() {
+class UnderseerrApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         
@@ -21,7 +21,7 @@ class OverseerrApplication : Application() {
         
         initKoin(PlatformContext(this)) {
             androidLogger()
-            androidContext(this@OverseerrApplication)
+            androidContext(this@UnderseerrApplication)
             workManagerFactory()
             modules(app.lusk.client.di.androidAppModule)
         }

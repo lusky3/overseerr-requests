@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * Repository interface for notification operations.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 6.1, 6.2, 6.3, 6.4, 6.5
  */
 interface NotificationRepository {

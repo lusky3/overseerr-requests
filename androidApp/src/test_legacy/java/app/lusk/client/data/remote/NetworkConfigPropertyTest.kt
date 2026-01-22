@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Property-based tests for API timeout configuration.
- * Feature: overseerr-android-client, Property 37: API Timeout Configuration
+ * Feature: underseerr, Property 37: API Timeout Configuration
  * Validates: Requirements 10.3
  * 
  * These tests verify that API timeouts are properly configured.

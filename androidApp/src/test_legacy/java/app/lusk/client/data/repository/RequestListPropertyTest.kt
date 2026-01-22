@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.flowOf
 
 /**
  * Property-based tests for request list completeness.
- * Feature: overseerr-android-client, Property 13: Request List Completeness
+ * Feature: underseerr, Property 13: Request List Completeness
  * Validates: Requirements 4.1
  */
 class RequestListPropertyTest : StringSpec({

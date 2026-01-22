@@ -39,7 +39,7 @@ class SecurityManagerImpl(
     )
 
     private companion object {
-        const val KEY_ALIAS = "overseerr_encryption_key"
+        const val KEY_ALIAS = "underseerr_encryption_key"
         const val TRANSFORMATION = "AES/GCM/NoPadding"
         const val GCM_TAG_LENGTH = 128
     }

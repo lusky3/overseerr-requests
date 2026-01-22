@@ -18,7 +18,7 @@ import io.mockk.mockk
 
 /**
  * Property-based tests for request confirmation display.
- * Feature: overseerr-android-client, Property 10: Request Confirmation Display
+ * Feature: underseerr, Property 10: Request Confirmation Display
  * Validates: Requirements 3.3
  */
 class RequestConfirmationPropertyTest : StringSpec({

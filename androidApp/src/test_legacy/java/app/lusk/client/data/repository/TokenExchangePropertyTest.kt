@@ -23,7 +23,7 @@ import io.mockk.mockk
 
 /**
  * Property-based tests for token exchange integrity.
- * Feature: overseerr-android-client, Property 2: Token Exchange Integrity
+ * Feature: underseerr, Property 2: Token Exchange Integrity
  * Validates: Requirements 1.4
  * 
  * These tests verify that Plex token exchange works correctly.

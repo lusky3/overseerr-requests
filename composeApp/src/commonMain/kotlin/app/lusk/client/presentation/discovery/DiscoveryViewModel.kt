@@ -21,7 +21,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * ViewModel for discovery screens.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 2.1, 2.2, 2.4
  */
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)

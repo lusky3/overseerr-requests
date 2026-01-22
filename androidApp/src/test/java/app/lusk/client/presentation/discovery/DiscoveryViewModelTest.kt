@@ -23,7 +23,7 @@ import kotlinx.coroutines.test.setMain
 
 /**
  * Unit tests for DiscoveryViewModel.
- * Feature: overseerr-android-client
+ * Feature: underseerr
  * Validates: Requirements 2.2, 2.4, 2.5
  */
 @OptIn(ExperimentalCoroutinesApi::class)
