@@ -143,7 +143,13 @@ fun PosterImage(
     title: String,
     modifier: Modifier = Modifier
 ) {
-    val imageUrl = posterPath?.let { "https://image.tmdb.org/t/p/w500$it" }
+    val imageUrl = posterPath?.let { 
+        if (app.lusk.client.util.AppConfig.isDebug) {
+            "http://10.0.2.2:5055$it"
+        } else {
+            "https://image.tmdb.org/t/p/w500$it"
+        }
+    }
     
     AsyncImage(
         imageUrl = imageUrl,
@@ -162,7 +168,13 @@ fun BackdropImage(
     title: String,
     modifier: Modifier = Modifier
 ) {
-    val imageUrl = backdropPath?.let { "https://image.tmdb.org/t/p/w1280$it" }
+    val imageUrl = backdropPath?.let { 
+        if (app.lusk.client.util.AppConfig.isDebug) {
+            "http://10.0.2.2:5055$it"
+        } else {
+            "https://image.tmdb.org/t/p/w1280$it"
+        }
+    }
     
     AsyncImage(
         imageUrl = imageUrl,

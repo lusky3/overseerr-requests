@@ -62,10 +62,19 @@ def wait_for_text(text, timeout=30):
 
 def main():
     print("Starting automation...")
+
+    # 0. Clear data for a fresh start
+    print("Clearing app data...")
+    adb("shell pm clear app.lusk.client.debug")
+    time.sleep(1)
+    print("Granting notification permission...")
+    # This avoids the permission dialog pop-up
+    adb("shell pm grant app.lusk.client.debug android.permission.POST_NOTIFICATIONS")
+    time.sleep(1)
     
     # 1. Launch
     adb("shell monkey -p app.lusk.client.debug -c android.intent.category.LAUNCHER 1")
-    time.sleep(8)
+    time.sleep(10)
     
     # 2. Permission
     if wait_for_text("Allow", timeout=10):
@@ -98,14 +107,14 @@ def main():
     # 5. Home Capture
     if wait_for_text("Trending", timeout=20) or wait_for_text("Discover", timeout=5):
         print("On Home Screen - Capturing")
-        time.sleep(5) 
+        time.sleep(10) 
         adb("shell screencap -p /data/local/tmp/01_home.png")
         adb("pull /data/local/tmp/01_home.png screenshots/01_home.png")
         
         # 6. Details
         # Try to find a movie title from mock data
         if click_element_by_text("Neon Horizons") or click_element_by_text("Velvet Club"):
-            time.sleep(5)
+            time.sleep(10)
             print("On Details Screen - Capturing")
             adb("shell screencap -p /data/local/tmp/02_details.png")
             adb("pull /data/local/tmp/02_details.png screenshots/02_details.png")
