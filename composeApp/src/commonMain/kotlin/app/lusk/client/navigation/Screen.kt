@@ -51,6 +51,9 @@ sealed class Screen {
     @Serializable
     data object ServerManagement : Screen()
     
+    @Serializable
+    data object About : Screen()
+    
     companion object {
         fun parseDeepLink(uri: String): Screen? {
              return when {

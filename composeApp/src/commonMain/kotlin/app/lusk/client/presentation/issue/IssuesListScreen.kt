@@ -48,12 +48,40 @@ fun IssuesListScreen(
     val filterMap = mapOf("Open" to "open", "All" to "all", "Resolved" to "resolved")
     var selectedTab by remember { mutableStateOf(0) }
     
+    var showFilterMenu by remember { mutableStateOf(false) }
+    
     Scaffold(
         contentWindowInsets = WindowInsets(0.dp),
         topBar = {
             TopAppBar(
                 title = { Text("Issues") },
                 actions = {
+                    // Filter button
+                    Box {
+                        IconButton(onClick = { showFilterMenu = true }) {
+                            Icon(Icons.Default.FilterList, "Filter")
+                        }
+                        DropdownMenu(
+                            expanded = showFilterMenu,
+                            onDismissRequest = { showFilterMenu = false }
+                        ) {
+                            tabs.forEachIndexed { index, title ->
+                                DropdownMenuItem(
+                                    text = { 
+                                        Text(
+                                            title,
+                                            fontWeight = if (index == selectedTab) FontWeight.Bold else FontWeight.Normal
+                                        )
+                                    },
+                                    onClick = {
+                                        selectedTab = index
+                                        viewModel.loadIssues(filterMap[title] ?: "open")
+                                        showFilterMenu = false
+                                    }
+                                )
+                            }
+                        }
+                    }
                     IconButton(onClick = { viewModel.refresh() }) {
                         Icon(Icons.Default.Refresh, contentDescription = "Refresh")
                     }
@@ -73,23 +101,6 @@ fun IssuesListScreen(
                 // Issue counts summary
                 issueCounts?.let { counts ->
                     IssueCountsCard(counts = counts)
-                }
-                
-                // Filter tabs
-                PrimaryTabRow(
-                    selectedTabIndex = selectedTab,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    tabs.forEachIndexed { index, title ->
-                        Tab(
-                            selected = selectedTab == index,
-                            onClick = {
-                                selectedTab = index
-                                viewModel.loadIssues(filterMap[title] ?: "open")
-                            },
-                            text = { Text(title) }
-                        )
-                    }
                 }
                 
                 // Content

@@ -3,16 +3,21 @@ package app.lusk.client.presentation.profile
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.pulltorefresh.*
@@ -69,6 +74,7 @@ private fun maskEmail(email: String): String {
 @Composable
 fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
+    onNavigateToAbout: () -> Unit = {},
     onLogout: () -> Unit,
     viewModel: ProfileViewModel = koinViewModel(),
     authViewModel: AuthViewModel = koinViewModel()
@@ -84,6 +90,7 @@ fun ProfileScreen(
     }
     
     var pullRefreshing by remember { mutableStateOf(false) }
+    var showNotificationsDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         contentWindowInsets = WindowInsets(0.dp),
@@ -116,67 +123,69 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
+                    .padding(16.dp)
             ) {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    when (val state = profileState) {
-                        is ProfileState.Loading -> {
-                            if (!pullRefreshing) {
-                                LoadingState(
-                                    modifier = Modifier.padding(vertical = 32.dp)
-                                )
-                            }
-                        }
-                        
-                        is ProfileState.Error -> {
-                            ErrorState(
-                                message = state.message,
-                                onRetry = { viewModel.refresh() },
+                when (val state = profileState) {
+                    is ProfileState.Loading -> {
+                        if (!pullRefreshing) {
+                            LoadingState(
                                 modifier = Modifier.padding(vertical = 32.dp)
                             )
                         }
-                        
-                        is ProfileState.Success -> {
-                            ProfileContent(
-                                state = state,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
+                    }
+                    
+                    is ProfileState.Error -> {
+                        ErrorState(
+                            message = state.message,
+                            onRetry = { viewModel.refresh() },
+                            modifier = Modifier.padding(vertical = 32.dp)
+                        )
+                    }
+                    
+                    is ProfileState.Success -> {
+                        ProfileContent(
+                            state = state,
+                            onNotificationsClick = { showNotificationsDialog = true },
+                            onNavigateToSettings = onNavigateToSettings,
+                            onNavigateToAbout = onNavigateToAbout,
+                            onLogout = { authViewModel.logout() }
+                        )
                     }
                 }
-
-                // Actions are now part of the scrollable content
-                ProfileActions(
-                    onNavigateToSettings = onNavigateToSettings,
-                    onLogout = { authViewModel.logout() },
-                    modifier = Modifier.padding(16.dp)
-                )
             }
         }
+    }
+    
+    // Notifications Dialog
+    if (showNotificationsDialog) {
+        NotificationsDialog(
+            onDismiss = { showNotificationsDialog = false }
+        )
     }
 }
 
 @Composable
 private fun ProfileContent(
     state: ProfileState.Success,
+    onNotificationsClick: () -> Unit,
+    onNavigateToSettings: () -> Unit,
+    onNavigateToAbout: () -> Unit,
+    onLogout: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .padding(16.dp)
-    ) {
-        // User Info Card
+    Column(modifier = modifier) {
+        // User Info Card - Matching the mockup style
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+            )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // Avatar
@@ -195,12 +204,14 @@ private fun ProfileContent(
                         shape = CircleShape,
                         color = MaterialTheme.colorScheme.primaryContainer
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = "Default avatar",
-                            modifier = Modifier.padding(16.dp),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = "Default avatar",
+                                modifier = Modifier.size(40.dp),
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
                     }
                 }
                 
@@ -209,7 +220,8 @@ private fun ProfileContent(
                 // Display Name
                 Text(
                     text = state.profile.displayName,
-                    style = MaterialTheme.typography.headlineSmall
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
                 )
                 
                 // Email (masked for privacy)
@@ -218,14 +230,63 @@ private fun ProfileContent(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Role Badge
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Text(
+                        text = "Admin",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                    )
+                }
             }
         }
         
+        Spacer(modifier = Modifier.height(20.dp))
+        
+        // Statistics Cards Row - Like the mockup
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            StatCard(
+                icon = Icons.Default.Schedule,
+                value = state.statistics.totalRequests.toString(),
+                label = "Requests",
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.weight(1f)
+            )
+            StatCard(
+                icon = Icons.Default.CheckCircle,
+                value = state.statistics.availableRequests.toString(),
+                label = "Available",
+                color = Color(0xFF4CAF50),
+                modifier = Modifier.weight(1f)
+            )
+            StatCard(
+                icon = Icons.Default.Pending,
+                value = state.statistics.pendingRequests.toString(),
+                label = "Pending",
+                color = Color(0xFFFF9800),
+                modifier = Modifier.weight(1f)
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(20.dp))
+        
         // Request Quota Card
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+            )
         ) {
             Column(
                 modifier = Modifier
@@ -235,6 +296,7 @@ private fun ProfileContent(
                 Text(
                     text = "Request Quota",
                     style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
                 
@@ -258,79 +320,253 @@ private fun ProfileContent(
             }
         }
         
-        // Statistics Card
+        Spacer(modifier = Modifier.height(20.dp))
+        
+        // Settings Section
+        Text(
+            text = "Settings",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+        
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+            )
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = "Statistics",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = 12.dp)
+            Column {
+                // Notifications - clickable row that opens dialog
+                SettingsRow(
+                    icon = Icons.Default.Notifications,
+                    title = "Notifications",
+                    onClick = onNotificationsClick,
+                    trailing = {
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 )
                 
-                StatisticRow(
-                    label = "Total Requests",
-                    value = state.statistics.totalRequests.toString()
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                
+                // Theme
+                SettingsRow(
+                    icon = Icons.Default.Palette,
+                    title = "Theme",
+                    subtitle = "Dark",
+                    onClick = onNavigateToSettings
                 )
                 
-                StatisticRow(
-                    label = "Approved",
-                    value = state.statistics.approvedRequests.toString()
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                
+                // Language
+                SettingsRow(
+                    icon = Icons.Default.Language,
+                    title = "Language",
+                    subtitle = "English",
+                    onClick = onNavigateToSettings
                 )
                 
-                StatisticRow(
-                    label = "Available",
-                    value = state.statistics.availableRequests.toString()
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                
+                // About
+                SettingsRow(
+                    icon = Icons.Default.Info,
+                    title = "About",
+                    onClick = onNavigateToAbout
                 )
                 
-                StatisticRow(
-                    label = "Pending",
-                    value = state.statistics.pendingRequests.toString()
-                )
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
                 
-                StatisticRow(
-                    label = "Declined",
-                    value = state.statistics.declinedRequests.toString()
+                // Sign Out
+                SettingsRow(
+                    icon = Icons.Default.ExitToApp,
+                    title = "Sign Out",
+                    titleColor = MaterialTheme.colorScheme.error,
+                    onClick = onLogout
                 )
             }
         }
         
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
 @Composable
-private fun ProfileActions(
-    onNavigateToSettings: () -> Unit,
-    onLogout: () -> Unit,
+private fun StatCard(
+    icon: ImageVector,
+    value: String,
+    label: String,
+    color: Color,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        // Settings Button
-        Button(
-            onClick = onNavigateToSettings,
-            modifier = Modifier.fillMaxWidth()
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = color.copy(alpha = 0.15f)
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Settings")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Logout Button
-        OutlinedButton(
-            onClick = onLogout,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
-        ) {
-            Text("Logout")
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = color,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = value,
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
+}
+
+@Composable
+private fun SettingsRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String? = null,
+    titleColor: Color = MaterialTheme.colorScheme.onSurface,
+    onClick: () -> Unit,
+    trailing: @Composable (() -> Unit)? = null
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = if (titleColor == MaterialTheme.colorScheme.error) titleColor 
+                   else MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                color = titleColor
+            )
+            if (subtitle != null) {
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        if (trailing != null) {
+            trailing()
+        }
+    }
+}
+
+@Composable
+private fun NotificationsDialog(
+    onDismiss: () -> Unit
+) {
+    var requestApproved by remember { mutableStateOf(true) }
+    var requestAvailable by remember { mutableStateOf(true) }
+    var requestDeclined by remember { mutableStateOf(false) }
+    
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Notification Settings") },
+        text = {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text("Request Approved", style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            "Notify when request is approved",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(
+                        checked = requestApproved,
+                        onCheckedChange = { requestApproved = it }
+                    )
+                }
+                
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text("Media Available", style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            "Notify when media is available",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(
+                        checked = requestAvailable,
+                        onCheckedChange = { requestAvailable = it }
+                    )
+                }
+                
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text("Request Declined", style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            "Notify when request is declined",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(
+                        checked = requestDeclined,
+                        onCheckedChange = { requestDeclined = it }
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Done")
+            }
+        }
+    )
 }
 
 @Composable
@@ -355,7 +591,8 @@ private fun QuotaRow(
                 Text(
                     text = "$remaining / $limit",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Medium
                 )
                 if (days != null) {
                     Text(
@@ -372,28 +609,5 @@ private fun QuotaRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-    }
-}
-
-@Composable
-private fun StatisticRow(
-    label: String,
-    value: String
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary
-        )
     }
 }

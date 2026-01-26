@@ -258,6 +258,9 @@ fun UnderseerrNavHost(
                 onNavigateToSettings = {
                     navController.navigate(Screen.Settings)
                 },
+                onNavigateToAbout = {
+                    navController.navigate(Screen.About)
+                },
                 onLogout = {
                      navController.navigate(Screen.PlexAuth) {
                         popUpTo<Screen.Home> { inclusive = true }
@@ -287,6 +290,17 @@ fun UnderseerrNavHost(
             popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
         ) {
             ServerManagementScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+        
+        composable<Screen.About>(
+            enterTransition = { slideInHorizontally(initialOffsetX = { it }) + fadeIn() },
+            exitTransition = { slideOutHorizontally(targetOffsetX = { -it }) + fadeOut() },
+            popEnterTransition = { slideInHorizontally(initialOffsetX = { -it }) + fadeIn() },
+            popExitTransition = { slideOutHorizontally(targetOffsetX = { it }) + fadeOut() }
+        ) {
+            app.lusk.client.presentation.settings.AboutScreen(
                 onNavigateBack = { navController.popBackStack() }
             )
         }

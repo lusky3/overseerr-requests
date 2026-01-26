@@ -1,9 +1,12 @@
 package app.lusk.client.presentation.discovery
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
@@ -11,7 +14,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.lusk.client.domain.model.MediaType
@@ -57,18 +65,9 @@ fun MediaDetailsScreen(
     }
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Details") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
-                    }
-                }
-            )
-        },
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = modifier
+        modifier = modifier,
+        containerColor = Color.Transparent
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -93,7 +92,8 @@ fun MediaDetailsScreen(
                     MediaDetailsContent(
                         details = detailsState.details,
                         onRequestClick = { showRequestDialog = true },
-                        onReportIssueClick = { showReportIssueDialog = true }
+                        onReportIssueClick = { showReportIssueDialog = true },
+                        onBackClick = onBackClick
                     )
                     
                     if (showRequestDialog) {
@@ -169,175 +169,315 @@ fun MediaDetailsScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MediaDetailsContent(
     details: MediaDetails,
     onRequestClick: () -> Unit,
     onReportIssueClick: () -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        item {
-            // Backdrop image
-            details.backdropPath?.let { backdropPath ->
-                BackdropImage(
-                    backdropPath = backdropPath,
-                    title = details.title,
+    Box(modifier = modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Backdrop with fade overlay
+            item {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
-                )
-            }
-        }
-
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Poster
-                details.posterPath?.let { posterPath ->
-                    PosterImage(
-                        posterPath = posterPath,
-                        title = details.title,
-                        modifier = Modifier
-                            .width(120.dp)
-                            .height(180.dp)
-                    )
-                }
-
-                // Title and basic info
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                        .height(280.dp)
                 ) {
-                    Text(
-                        text = details.title,
-                        style = MaterialTheme.typography.headlineMedium
+                    details.backdropPath?.let { backdropPath ->
+                        BackdropImage(
+                            backdropPath = backdropPath,
+                            title = details.title,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    } ?: Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
                     )
-
-                    details.releaseDate?.let { releaseDate ->
-                        Text(
-                            text = releaseDate.take(4),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                    
+                    // Bottom fade gradient
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp)
+                            .align(Alignment.BottomCenter)
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color.Transparent,
+                                        MaterialTheme.colorScheme.background
+                                    )
+                                )
+                            )
+                    )
+                    
+                    // Back button
+                    IconButton(
+                        onClick = onBackClick,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.TopStart)
+                            .background(
+                                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+                                shape = CircleShape
+                            )
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
+                }
+            }
 
-                    details.voteAverage?.let { rating ->
+            // Info Card overlapping backdrop
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .offset(y = (-48).dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        // Title and Year row
+                        Text(
+                            text = details.title,
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
+                        )
+                        
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        // Info chips row
                         Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Star,
-                                contentDescription = "Rating",
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(20.dp)
-                            )
+                            details.releaseDate?.let { releaseDate ->
+                                Text(
+                                    text = releaseDate.take(4),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            
+                            details.voteAverage?.let { rating ->
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Star,
+                                        contentDescription = "Rating",
+                                        tint = Color(0xFFFFD700),
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Text(
+                                        text = "${(rating * 10.0).roundToInt() / 10.0}/10",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+                            }
+                            
+                            details.runtime?.let { runtime ->
+                                val hours = runtime / 60
+                                val mins = runtime % 60
+                                Text(
+                                    text = if (hours > 0) "${hours}h ${mins}m" else "${mins}m",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        // Overview
+                        details.overview?.let { overview ->
                             Text(
-                                text = "${(rating * 10.0).roundToInt() / 10.0}",
-                                style = MaterialTheme.typography.bodyLarge
+                                text = overview,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        // Request button - prominent gradient style
+                        val canModifyRequest = !details.isAvailable && 
+                            (details.isRequested || details.isPartiallyAvailable) && 
+                            details.isPartialRequestsEnabled && 
+                            details.numberOfSeasons > 0
+
+                        Button(
+                            onClick = onRequestClick,
+                            enabled = (!details.isAvailable && !details.isRequested) || canModifyRequest,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            shape = RoundedCornerShape(24.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            )
+                        ) {
+                            Text(
+                                text = when {
+                                    details.isAvailable -> "Available"
+                                    canModifyRequest -> "Modify Request"
+                                    details.isRequested -> "Requested"
+                                    else -> "Request"
+                                },
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                        
+                        // Report Issue button
+                        if (details.isAvailable || details.isRequested) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            OutlinedButton(
+                                onClick = onReportIssueClick,
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(24.dp)
+                            ) {
+                                Text("Report Issue")
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Genres section
+            if (details.genres.isNotEmpty()) {
+                item {
+                    Column(
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    ) {
+                        Text(
+                            text = "Genres",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            items(details.genres) { genre ->
+                                AssistChip(
+                                    onClick = { },
+                                    label = { Text(genre) }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Cast section (placeholder - would need cast data from API)
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    Text(
+                        text = "Cast",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        // Placeholder cast members
+                        items(6) { index ->
+                            CastMember(
+                                name = listOf("Lead Actor", "Supporting", "Director", "Producer", "Writer", "Composer")[index],
+                                role = listOf("Main Character", "Side Role", "Direction", "Production", "Screenplay", "Music")[index]
                             )
                         }
                     }
+                }
+            }
 
-                    // Request button
-                    val canModifyRequest = !details.isAvailable && 
-                        (details.isRequested || details.isPartiallyAvailable) && 
-                        details.isPartialRequestsEnabled && 
-                        details.numberOfSeasons > 0 // Only for TV basically
-
-                    Button(
-                        onClick = onRequestClick,
-                        enabled = (!details.isAvailable && !details.isRequested) || canModifyRequest,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            when {
-                                details.isAvailable -> "Available"
-                                canModifyRequest -> "Modify Request"
-                                details.isRequested -> "Requested"
-                                else -> "Request"
-                            }
+            // Runtime/Status info
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(24.dp)
+                ) {
+                    details.status?.let { status ->
+                        InfoItem(
+                            label = "Status",
+                            value = status
                         )
                     }
                     
-                    // Report Issue button (only for available/requested media)
-                    if (details.isAvailable || details.isRequested) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        OutlinedButton(
-                            onClick = onReportIssueClick,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Report Issue")
-                        }
+                    if (details.numberOfSeasons > 0) {
+                        InfoItem(
+                            label = "Seasons",
+                            value = details.numberOfSeasons.toString()
+                        )
                     }
                 }
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
+    }
+}
 
-        item {
-            // Overview
-            details.overview?.let { overview ->
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(
-                        text = "Overview",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                    Text(
-                        text = overview,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
+@Composable
+private fun CastMember(
+    name: String,
+    role: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.width(72.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Surface(
+            modifier = Modifier.size(56.dp),
+            shape = CircleShape,
+            color = MaterialTheme.colorScheme.surfaceVariant
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Text(
+                    text = name.first().toString(),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
-
-        item {
-            // Genres
-            if (details.genres.isNotEmpty()) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(
-                        text = "Genres",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(details.genres) { genre ->
-                            AssistChip(
-                                onClick = { },
-                                label = { Text(genre) }
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        item {
-            // Runtime/Status
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                details.runtime?.let { runtime ->
-                    InfoItem(
-                        label = "Runtime",
-                        value = "$runtime min"
-                    )
-                }
-
-                details.status?.let { status ->
-                    InfoItem(
-                        label = "Status",
-                        value = status
-                    )
-                }
-            }
-        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = name,
+            style = MaterialTheme.typography.labelSmall,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = role,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -355,7 +495,8 @@ private fun InfoItem(
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Medium
         )
     }
 }

@@ -3,17 +3,20 @@ package app.lusk.client.presentation.request
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.pulltorefresh.*
@@ -32,8 +35,9 @@ fun RequestsListScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val error by viewModel.error.collectAsState()
     
-    var selectedTab by remember { mutableStateOf(0) }
-    val tabs = listOf("All", "Pending", "Approved", "Available", "Declined")
+    var selectedFilter by remember { mutableStateOf("All") }
+    val filters = listOf("All", "Pending", "Approved", "Available", "Declined")
+    var showFilterMenu by remember { mutableStateOf(false) }
     
     var pullRefreshing by remember { mutableStateOf(false) }
 
@@ -41,8 +45,43 @@ fun RequestsListScreen(
         contentWindowInsets = WindowInsets(0.dp),
         topBar = {
             TopAppBar(
-                title = { Text("My Requests") },
+                title = { Text("Requests") },
                 actions = {
+                    // Filter button
+                    Box {
+                        IconButton(onClick = { showFilterMenu = true }) {
+                            Icon(Icons.Default.FilterList, "Filter")
+                        }
+                        DropdownMenu(
+                            expanded = showFilterMenu,
+                            onDismissRequest = { showFilterMenu = false }
+                        ) {
+                            filters.forEach { filter ->
+                                DropdownMenuItem(
+                                    text = { 
+                                        Text(
+                                            filter,
+                                            fontWeight = if (filter == selectedFilter) FontWeight.Bold else FontWeight.Normal
+                                        )
+                                    },
+                                    onClick = {
+                                        selectedFilter = filter
+                                        showFilterMenu = false
+                                    },
+                                    trailingIcon = if (filter == selectedFilter) {
+                                        { 
+                                            Icon(
+                                                Icons.Default.FilterList,
+                                                null,
+                                                tint = MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier.size(16.dp)
+                                            )
+                                        }
+                                    } else null
+                                )
+                            }
+                        }
+                    }
                     IconButton(onClick = { viewModel.refreshRequests() }) {
                         Icon(Icons.Default.Refresh, "Refresh")
                     }
@@ -62,103 +101,86 @@ fun RequestsListScreen(
                 .fillMaxSize()
                 .padding(top = paddingValues.calculateTopPadding())
         ) {
-            Column(
+            Box(
                 modifier = Modifier.fillMaxSize()
             ) {
-                PrimaryScrollableTabRow(
-                    selectedTabIndex = selectedTab,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    tabs.forEachIndexed { index, title ->
-                        Tab(
-                            selected = selectedTab == index,
-                            onClick = { selectedTab = index },
-                            text = { Text(title) }
+                val filteredRequests = when (selectedFilter) {
+                    "All" -> userRequests
+                    "Pending" -> userRequests.filter { it.status == RequestStatus.PENDING }
+                    "Approved" -> userRequests.filter { it.status == RequestStatus.APPROVED }
+                    "Available" -> userRequests.filter { it.status == RequestStatus.AVAILABLE }
+                    "Declined" -> userRequests.filter { it.status == RequestStatus.DECLINED }
+                    else -> userRequests
+                }
+                
+                val hasCachedData = filteredRequests.isNotEmpty()
+                val isOffline = error != null
+
+                // 1. Content Layer
+                when {
+                    hasCachedData -> {
+                        RequestsList(
+                            requests = filteredRequests,
+                            onRequestClick = onRequestClick,
+                            contentPadding = PaddingValues(top = if (isOffline) 48.dp else 16.dp, start = 16.dp, end = 16.dp, bottom = 32.dp)
                         )
+                    }
+                    isOffline -> {
+                        ErrorDisplay(
+                            message = error!!,
+                            onRetry = { viewModel.refreshRequests() }
+                        )
+                    }
+                    !isLoading -> {
+                        EmptyRequestsDisplay(status = selectedFilter)
                     }
                 }
                 
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    val filteredRequests = when (selectedTab) {
-                        0 -> userRequests
-                        1 -> userRequests.filter { it.status == RequestStatus.PENDING }
-                        2 -> userRequests.filter { it.status == RequestStatus.APPROVED }
-                        3 -> userRequests.filter { it.status == RequestStatus.AVAILABLE }
-                        4 -> userRequests.filter { it.status == RequestStatus.DECLINED }
-                        else -> userRequests
-                    }
-                    
-                    val hasCachedData = filteredRequests.isNotEmpty()
-                    val isOffline = error != null
-
-                    // 1. Content Layer
-                    when {
-                        hasCachedData -> {
-                            RequestsList(
-                                requests = filteredRequests,
-                                onRequestClick = onRequestClick,
-                                contentPadding = PaddingValues(top = if (isOffline) 48.dp else 16.dp, start = 16.dp, end = 16.dp, bottom = 32.dp)
-                            )
-                        }
-                        isOffline -> {
-                            ErrorDisplay(
-                                message = error!!,
-                                onRetry = { viewModel.refreshRequests() }
-                            )
-                        }
-                        !isLoading -> {
-                            EmptyRequestsDisplay(status = tabs[selectedTab])
-                        }
-                    }
-                    
-                    // 2. Overlays
-                    if (isLoading && !pullRefreshing) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.TopCenter)
-                        )
-                    }
-
-                    // Top fade gradient overlay
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(16.dp)
-                            .align(Alignment.TopCenter)
-                            .background(
-                                Brush.verticalGradient(
-                                    colors = listOf(
-                                        MaterialTheme.colorScheme.surface,
-                                        Color.Transparent
-                                    )
-                                )
-                            )
-                    )
-
-                    // Bottom fade gradient overlay
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(32.dp)
-                            .align(Alignment.BottomCenter)
-                            .background(
-                                Brush.verticalGradient(
-                                    colors = listOf(
-                                        Color.Transparent,
-                                        MaterialTheme.colorScheme.background
-                                    )
-                                )
-                            )
-                    )
-                    
-                    // Offline Banner
-                    app.lusk.client.ui.components.OfflineBanner(
-                        visible = isOffline && hasCachedData,
+                // 2. Overlays
+                if (isLoading && !pullRefreshing) {
+                    CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.TopCenter)
                     )
                 }
-                }
+
+                // Top fade gradient overlay
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .align(Alignment.TopCenter)
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(
+                                    MaterialTheme.colorScheme.surface,
+                                    Color.Transparent
+                                )
+                            )
+                        )
+                )
+
+                // Bottom fade gradient overlay
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.dp)
+                        .align(Alignment.BottomCenter)
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    MaterialTheme.colorScheme.background
+                                )
+                            )
+                        )
+                )
+                
+                // Offline Banner
+                app.lusk.client.ui.components.OfflineBanner(
+                    visible = isOffline && hasCachedData,
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
+            }
             }
         }
     }
@@ -194,6 +216,10 @@ private fun RequestItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -201,27 +227,34 @@ private fun RequestItem(
                 .fillMaxWidth()
                 .padding(12.dp)
         ) {
-            AsyncImage(
-                imageUrl = request.posterPath?.let { "https://image.tmdb.org/t/p/w200$it" },
-                contentDescription = request.title,
+            // Poster with rounded corners
+            Card(
+                shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
-                    .width(80.dp)
-                    .height(120.dp),
-                contentScale = ContentScale.Crop
-            )
+                    .width(70.dp)
+                    .height(100.dp)
+            ) {
+                AsyncImage(
+                    imageUrl = request.posterPath?.let { "https://image.tmdb.org/t/p/w200$it" },
+                    contentDescription = request.title,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
             
             Spacer(modifier = Modifier.width(12.dp))
             
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .height(120.dp),
+                    .height(100.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
                     Text(
                         text = request.title,
                         style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -229,7 +262,7 @@ private fun RequestItem(
                     Spacer(modifier = Modifier.height(4.dp))
                     
                     Text(
-                        text = request.mediaType.name,
+                        text = "Requested ${request.mediaType.name.lowercase().replaceFirstChar { it.uppercase() }}",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -248,34 +281,52 @@ private fun RequestItem(
                     }
                 }
                 
-                StatusChip(status = request.status)
+                // Large colorful status badge
+                StatusBadge(status = request.status)
             }
         }
     }
 }
 
 @Composable
-private fun StatusChip(
+private fun StatusBadge(
     status: RequestStatus,
     modifier: Modifier = Modifier
 ) {
-    val (color, text) = when (status) {
-        RequestStatus.PENDING -> MaterialTheme.colorScheme.tertiary to "Pending"
-        RequestStatus.APPROVED -> MaterialTheme.colorScheme.primary to "Approved"
-        RequestStatus.AVAILABLE -> MaterialTheme.colorScheme.secondary to "Available"
-        RequestStatus.DECLINED -> MaterialTheme.colorScheme.error to "Declined"
+    val (backgroundColor, textColor, text) = when (status) {
+        RequestStatus.PENDING -> Triple(
+            Color(0xFFFFC107), // Amber
+            Color.Black,
+            "Pending"
+        )
+        RequestStatus.APPROVED -> Triple(
+            Color(0xFF2196F3), // Blue
+            Color.White,
+            "Processing"
+        )
+        RequestStatus.AVAILABLE -> Triple(
+            Color(0xFF4CAF50), // Green
+            Color.White,
+            "Available"
+        )
+        RequestStatus.DECLINED -> Triple(
+            Color(0xFFF44336), // Red
+            Color.White,
+            "Declined"
+        )
     }
     
     Surface(
-        color = color,
-        shape = MaterialTheme.shapes.small,
+        color = backgroundColor,
+        shape = RoundedCornerShape(8.dp),
         modifier = modifier
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold,
+            color = textColor,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
         )
     }
 }
