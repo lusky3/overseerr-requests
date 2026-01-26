@@ -482,19 +482,33 @@ The mock system also provides **fictional content** for promotional screenshots 
 
 | File | Purpose |
 |------|---------|
-| `MockImageUrls.kt` | Placeholder image URL generator |
-| `MockImageInterceptor.kt` | Coil interceptor for custom images |
+| `MockImageUrls.kt` | Maps media IDs to local asset paths |
+| `MockImageInterceptor.kt` | Coil interceptor that redirects TMDB URLs to local assets |
 | `IMAGE_PROMPTS.md` | AI image generation prompts for all titles |
 
-### Adding Custom Poster Images
+### Mock Image Assets
 
-To replace placeholder images with custom artwork:
+Generated poster and backdrop images are stored in:
 
-1. Generate images using the prompts in `IMAGE_PROMPTS.md`
-2. Place poster images (300x450 or 2:3 ratio) in:
-   `androidApp/src/debug/assets/mock_images/posters/`
-3. Place backdrop images (1280x720 or 16:9 ratio) in:
-   `androidApp/src/debug/assets/mock_images/backdrops/`
-4. Name format: `movie_<ID>.jpg` or `tv_<ID>.jpg`
+```
+androidApp/src/debug/assets/mock_images/
+├── posters/       # 500x750 (2:3 ratio) JPEG images
+│   ├── poster_neon_horizons.jpg
+│   ├── poster_last_cartographer.jpg
+│   └── ... (17 total)
+└── backdrops/     # 1280x720 (16:9 ratio) JPEG images
+    ├── poster_neon_horizons.jpg
+    ├── poster_last_cartographer.jpg
+    └── ... (17 total)
+```
 
-The `MockImageInterceptor` will automatically use local assets if found, otherwise falling back to colorful placehold.co images.
+**Content Coverage:**
+
+- 12 Movie posters (IDs 1001-1012)
+- 5 TV Show posters (IDs 2001-2005)
+- Falls back to colorful placehold.co images for unmapped IDs
+
+The `MockImageInterceptor` intercepts TMDB image URLs and redirects them to:
+
+1. Local assets via `file:///android_asset/` if available
+2. Placeholder service URLs as fallback
