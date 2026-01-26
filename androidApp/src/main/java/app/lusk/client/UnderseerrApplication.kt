@@ -11,7 +11,7 @@ import org.koin.androidx.workmanager.koin.workManagerFactory
 /**
  * Application class for Underseerr.
  */
-class UnderseerrApplication : Application() {
+open class UnderseerrApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         
